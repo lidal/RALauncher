@@ -8,413 +8,154 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
-<meta name="theme-color" content="#101114">
-<meta name="app-version" content="1.1.0">
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-<link rel="icon" href="data:image/png;base64,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">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Inter:wght@400;500;600&display=swap">
+<meta name="theme-color" content="#141414">
+<meta name="app-version" content="2.0.0">
+<link rel="apple-touch-icon" href="img/icon.png">
+<link rel="icon" href="img/icon.png">
 <style>
-/* Built for a controller in landscape: one console in focus, then a rail of that console's cartridges. */
+/* Controller-first launcher for RetroArch. Two screens: pick a console, pick a game. */
 :root{
-  --bg:#101114; --surface:#1a1b20; --raised:#24262d; --line:rgba(255,255,255,.09);
-  --fg:#f3f2ee; --muted:#9c9ea7; --accent:#f2b84b; --glow:#6c63d6;
-  --display:"Archivo", "Helvetica Neue", system-ui, sans-serif;
-  --body:"Inter", -apple-system, system-ui, sans-serif;
-  --sl:max(28px,env(safe-area-inset-left,0px)); --sr:max(28px,env(safe-area-inset-right,0px));
+  --bg:#141414; --fg:#f2f2f2; --muted:#8e8e8e; --faint:#2a2a2a;
+  --font:-apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --sl:max(32px,env(safe-area-inset-left,0px)); --sr:max(32px,env(safe-area-inset-right,0px));
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-tap-highlight-color:transparent;
-  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--font);-webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 body.app{overflow:hidden;position:fixed;inset:0}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
+img{-webkit-user-drag:none}
 
-/* ambient background: console colour glow + blurred screenshot of the focused game */
-#bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-#bg .glow{position:absolute;inset:-20%;background:radial-gradient(ellipse 55% 50% at 50% 46%,color-mix(in srgb,var(--glow) 34%,transparent),transparent 70%);
-  transition:background 0.6s ease}
-#bg .snap{position:absolute;inset:-60px;background-size:cover;background-position:center;filter:blur(36px) saturate(1.3);opacity:0;transition:opacity .7s ease}
-#bg .snap.on{opacity:.32}
-#bg .vig{position:absolute;inset:0;background:radial-gradient(ellipse 90% 80% at 50% 45%,transparent 40%,rgba(8,8,10,.85) 100%),
-  linear-gradient(180deg,rgba(8,8,10,.6),transparent 18%,transparent 70%,rgba(8,8,10,.8))}
+/* the focused game's screenshot, faint and unblurred, pixels kept sharp */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+#bg div{position:absolute;inset:0;background-size:cover;background-position:center;image-rendering:pixelated;opacity:0;transition:opacity .5s ease}
+#bg div.on{opacity:.07}
 
 .screen{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:auto 1fr auto}
 
-/* top bar */
-.top{display:flex;align-items:center;gap:16px;padding:calc(12px + env(safe-area-inset-top,0px)) var(--sr) 0 var(--sl);min-height:52px}
-.brand{font-family:var(--display);font-stretch:118%;font-weight:800;font-size:15px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
-.brand i{width:16px;height:18px;display:block;background:var(--accent);
-  clip-path:polygon(18% 0,82% 0,100% 16%,100% 100%,0 100%,0 16%);border-radius:2px}
-.crumb{color:var(--muted);font-family:var(--display);font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
-.crumb svg{width:16px;height:16px;opacity:.7}
-.back{display:none;align-items:center;gap:2px;color:var(--fg);font-weight:600;font-size:15px;padding:8px 12px 8px 4px;margin-left:-4px;border-radius:10px;background:rgba(255,255,255,.06)}
-.back svg{width:18px;height:18px}
-.games-on .back{display:flex}
+.top{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) var(--sr) 0 var(--sl);min-height:54px;font-size:17px}
+.top h1{font-size:17px;font-weight:600;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .n{color:var(--muted);font-weight:400;margin-left:8px}
+.back{display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin-left:-8px;border-radius:17px;flex:none}
+.back:active{background:var(--faint)}
+.back svg{width:20px;height:20px}
 .spacer{flex:1}
-.status{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
-.pad{display:none;width:22px;height:22px;color:var(--fg);opacity:.75}
-.has-pad .pad{display:block}
-.link{color:var(--muted);font-size:14px;font-weight:500;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.06)}
-.link:active{color:var(--fg)}
-.ver{font-size:12px;opacity:.6;letter-spacing:.02em}
-.games-on .ver{display:none}
-.games-on .link{display:none}
+.clock{color:var(--muted);font-variant-numeric:tabular-nums}
 
-.stage{position:relative;min-height:0;overflow:hidden;touch-action:pan-y}
+.stage{position:relative;min-height:0;overflow:hidden}
 
-/* ---------- console view ---------- */
+/* ---------- consoles ---------- */
 .consoles{position:absolute;inset:0;display:grid;grid-template-rows:1fr auto}
 .carousel{position:relative;min-height:0}
-.cons{position:absolute;left:50%;top:52%;width:var(--cw);height:calc(var(--cw) * .75);margin:calc(var(--cw) * -.375) 0 0 calc(var(--cw) * -.5);
-  transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s ease,filter .45s ease;will-change:transform}
-.cons svg{width:100%;height:100%;display:block;overflow:visible}
-.cons .floor{position:absolute;left:12%;right:12%;bottom:2%;height:12%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);z-index:-1}
-.cons.on{filter:drop-shadow(0 24px 40px rgba(0,0,0,.45))}
-.cons:not(.on){filter:saturate(.55) brightness(.6)}
-.caption{text-align:center;padding:0 var(--sr) 6px var(--sl)}
-.caption .maker{color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
-.caption h1{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:clamp(28px,4vh + 1.6vw,60px);line-height:1.02;letter-spacing:-.015em;margin:6px 0 8px}
-.caption .sub{color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums}
-.caption .sub b{color:var(--fg);font-weight:600}
-.dots{display:flex;justify-content:center;gap:7px;margin-top:14px}
-.dots span{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.22);transition:width .3s ease,background .3s ease}
-.dots span.on{width:22px;background:var(--fg)}
-.swap{animation:swap .35s ease}
-@keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cons{position:absolute;left:50%;bottom:12%;width:var(--cw);height:var(--chh);margin-left:calc(var(--cw) / -2);
+  transform-origin:50% 100%;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .4s ease;cursor:pointer}
+.cons img{width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block;position:relative}
+.cons::before{content:"";position:absolute;left:14%;right:14%;bottom:-2.5%;height:5%;border-radius:50%;background:rgba(0,0,0,.6);filter:blur(12px)}
+.cons .noimg{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;font-size:calc(var(--chh) * .14);font-weight:700;color:#3a3a3a;text-align:center}
+.caption{text-align:center;padding:0 var(--sr) 20px var(--sl);min-height:88px}
+.caption h2{font-size:clamp(26px,3.4vh + 1vw,40px);font-weight:700;letter-spacing:-.02em;margin:0 0 4px}
+.caption p{margin:0;color:var(--muted);font-size:17px}
 
-/* ---------- games view ---------- */
-.games{position:absolute;inset:0;display:grid;grid-template-rows:1fr var(--rail)}
-.hero{min-height:0;display:flex;align-items:center;justify-content:center;gap:clamp(20px,4.5vw,64px);padding:clamp(10px,3vh,32px) var(--sr) clamp(4px,1vh,12px) var(--sl)}
-.box{height:100%;max-height:100%;flex:none;display:flex;align-items:center;justify-content:flex-end;width:var(--boxw);position:relative}
-.box img{max-height:100%;max-width:100%;border-radius:6px;box-shadow:0 22px 50px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);
-  transition:opacity .25s ease}
-.box img.loading{opacity:0}
-.box .nobox{height:100%;aspect-ratio:3/4;border-radius:6px;background:var(--fbc,#333);display:flex;align-items:flex-end;padding:8%;
-  font-family:var(--display);font-stretch:105%;font-weight:800;font-size:clamp(16px,2.6vh + .6vw,30px);line-height:1.05;text-wrap:balance;
-  box-shadow:0 22px 50px rgba(0,0,0,.55)}
-.meta{min-width:0;flex:0 1 560px}
-.meta .eyebrow{color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;display:flex;gap:10px;align-items:center}
-.meta .eyebrow .n{font-variant-numeric:tabular-nums;letter-spacing:.04em}
-.meta h2{font-family:var(--display);font-stretch:108%;font-weight:800;font-size:clamp(24px,3.6vh + 1.5vw,56px);line-height:1.02;letter-spacing:-.015em;
-  margin:10px 0 14px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;text-wrap:balance}
-.chips{display:flex;flex-wrap:wrap;gap:6px;min-height:26px}
-.chip{font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#d9d9dd}
-.play{margin-top:clamp(12px,3vh,26px);display:inline-flex;align-items:center;gap:10px;background:var(--fg);color:#111;font-weight:600;font-size:15px;
-  padding:10px 18px 10px 12px;border-radius:999px}
-.play .g{background:#111;color:var(--fg)}
-.play svg.tri{width:14px;height:14px;margin-left:6px}
-
-.rail{position:relative;overflow:hidden;touch-action:pan-y}
-.rail::before{content:"";position:absolute;left:0;right:0;bottom:calc(var(--rail) * .14 - 1px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14) 20%,rgba(255,255,255,.14) 80%,transparent)}
-.rail::after{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--rail) * .14);background:linear-gradient(180deg,rgba(255,255,255,.035),transparent)}
-.track{position:absolute;left:0;bottom:calc(var(--rail) * .14);height:0;transition:transform .32s cubic-bezier(.2,.8,.2,1);will-change:transform}
+/* ---------- games ---------- */
+.games{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-bottom:2vh}
+.row{position:relative;flex:none;height:var(--rowh)}
+.track{position:absolute;left:0;top:50%;transition:transform .3s cubic-bezier(.2,.8,.2,1);will-change:transform}
 .track.jump{transition:none}
-
-.cart{position:absolute;bottom:0;transform-origin:50% 100%;transition:transform .32s cubic-bezier(.2,.8,.2,1),filter .32s ease;filter:brightness(.5) saturate(.6)}
-.cart>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.cart.on{transform:translateY(-9%) scale(1.14);filter:drop-shadow(0 18px 22px rgba(0,0,0,.6))}
-.label{position:absolute;overflow:hidden;background:#2a2b31}
-.label img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
-.label::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.22),transparent 38%,transparent 70%,rgba(0,0,0,.18))}
-.label .fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:8%;background:var(--fbc);
-  font-family:var(--display);font-stretch:100%;font-weight:800;line-height:1.05;text-wrap:balance;color:#fff;font-size:var(--fbs,12px)}
-.label .band{position:absolute;left:0;right:0;top:0;height:13%;background:linear-gradient(#f4f3ef,#dedcd6);z-index:1;display:flex;align-items:center;gap:3%;padding:0 4%}
-.label .band svg{height:76%;width:auto;display:block}
-.label .band b{flex:1;height:22%;background:#9c9b96;border-radius:2px;max-width:46%}
-.label .band.dark{background:linear-gradient(#2c2d33,#1d1e22)}
-.label .band.dark b{background:#6d6e76}
-.label.withband img,.label.withband .fb{top:13%;height:87%;position:absolute}
-
-.cart.disc .label{border-radius:50%;inset:0;
-  -webkit-mask:radial-gradient(circle,transparent 9%,#000 9.6%);mask:radial-gradient(circle,transparent 9%,#000 9.6%)}
-.cart.disc .label img{object-position:50% 30%}
-.cart.disc .label::before{content:"";position:absolute;inset:0;border-radius:50%;z-index:1;
-  background:radial-gradient(circle,rgba(220,225,235,.85) 9.6%,rgba(160,170,185,.9) 17%,transparent 17.6%,transparent 96%,rgba(210,215,225,.9) 96.5%)}
-.cart.disc .label::after{border-radius:50%;background:conic-gradient(from 200deg,rgba(255,255,255,.18),transparent 15%,rgba(140,220,255,.12) 30%,transparent 45%,rgba(255,200,240,.12) 62%,transparent 78%,rgba(255,255,255,.18))}
-
-.letter{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-family:var(--display);font-stretch:125%;font-weight:800;
-  font-size:clamp(80px,22vh,200px);line-height:1;color:var(--fg);background:rgba(16,17,20,.72);border-radius:28px;padding:.12em .3em;
-  pointer-events:none;opacity:0;transition:opacity .25s ease;z-index:4;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tile{position:absolute;top:0;transform:translateY(-50%);cursor:pointer}
+.tile .art{width:100%;height:100%;border-radius:6px;overflow:hidden;background:#222;opacity:.45;transition:opacity .25s ease}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile .fb{width:100%;height:100%;display:flex;align-items:flex-end;padding:10%;font-weight:700;line-height:1.1;color:#ddd;background:#262626;font-size:var(--fbs)}
+.tile.on .art{opacity:1}
+.tile.on::after{content:"";position:absolute;inset:-7px;border:3px solid var(--fg);border-radius:11px}
+.info{padding:6px var(--sr) 0 var(--sl);min-height:80px}
+.info h2{font-size:clamp(24px,3vh + .9vw,36px);font-weight:700;letter-spacing:-.02em;margin:0 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info p{margin:0;color:var(--muted);font-size:17px;font-variant-numeric:tabular-nums}
+.letter{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:20px;background:rgba(20,20,20,.94);
+  border:1px solid #333;display:grid;place-items:center;font-size:64px;font-weight:700;opacity:0;transition:opacity .2s ease;pointer-events:none;z-index:3}
 .letter.on{opacity:1;transition:none}
 
-/* bottom controller hints */
-.hints{display:flex;justify-content:flex-end;align-items:center;gap:22px;padding:8px var(--sr) calc(12px + env(safe-area-inset-bottom,0px)) var(--sl);
-  color:var(--muted);font-size:13.5px;font-weight:500;min-height:44px}
-.hints:empty{min-height:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
-.hints .h{display:flex;align-items:center;gap:8px;white-space:nowrap}
-.g{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:rgba(255,255,255,.14);color:var(--fg);
-  font-size:12px;font-weight:700;font-family:var(--body);line-height:1}
+/* ---------- bottom bar ---------- */
+.bottom{display:flex;align-items:center;gap:24px;padding:8px var(--sr) calc(14px + env(safe-area-inset-bottom,0px)) var(--sl);
+  color:var(--muted);font-size:15px;min-height:50px}
+.bottom .h{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.g{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:700;line-height:1}
 .g.sq{border-radius:6px}
-.g svg{width:13px;height:13px}
+.g svg{width:14px;height:14px}
+.textbtn{color:var(--muted);font-size:15px;padding:6px 0}
+.textbtn:active{color:var(--fg)}
+.ver{color:#555;font-size:13px}
 
-/* launch overlay */
-.launch{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:rgba(10,10,12,.0);pointer-events:none;transition:background .35s ease}
-.launch.on{background:rgba(10,10,12,.82);pointer-events:auto}
-.launch div{opacity:0;transform:translateY(10px);transition:opacity .3s ease .1s,transform .3s ease .1s;text-align:center}
-.launch.on div{opacity:1;transform:none}
-.launch small{display:block;color:var(--muted);font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
-.launch b{font-family:var(--display);font-stretch:110%;font-weight:800;font-size:clamp(24px,4vh + 1vw,44px)}
-.cart.insert{transform:translateY(-140%) scale(1.14);transition:transform .45s cubic-bezier(.5,0,.75,0)}
+.launch{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .25s ease;text-align:center}
+.launch.on{opacity:1;pointer-events:auto}
+.launch p{margin:0 0 6px;color:var(--muted);font-size:17px}
+.launch h2{margin:0;font-size:32px;font-weight:700;letter-spacing:-.02em;padding:0 32px}
 
-/* empty state */
+/* ---------- first run ---------- */
 .empty{position:fixed;inset:0;z-index:1;overflow:auto;-webkit-user-select:text;user-select:text;
-  padding:calc(40px + env(safe-area-inset-top,0px)) var(--sr) 40px var(--sl);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6vw;align-items:center}
-.empty .art svg{width:100%;max-width:520px;height:auto;display:block;margin-left:auto}
-.empty h2{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:clamp(28px,5vh,46px);line-height:1.04;margin:16px 0 12px}
-.empty p{color:var(--muted);line-height:1.6;margin:0 0 18px;max-width:440px}
-.empty ol{color:var(--muted);line-height:1.8;padding-left:20px;margin:0 0 26px}
+  padding:calc(48px + env(safe-area-inset-top,0px)) var(--sr) 48px var(--sl);display:flex;align-items:center;justify-content:center;gap:6vw}
+.empty>div{flex:1 1 0;max-width:460px}
+.empty img{flex:1 1 0;min-width:0;max-width:440px;height:auto}
+.empty h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0 0 12px}
+.empty p{color:var(--muted);line-height:1.5;margin:0 0 16px;font-size:17px}
+.empty ol{color:var(--muted);line-height:1.8;padding-left:22px;margin:0 0 28px;font-size:17px}
 .empty b{color:var(--fg);font-weight:600}
-.primary{background:var(--accent);color:#1a1408;font-weight:600;font-size:16px;padding:14px 22px;border-radius:12px;display:inline-block;cursor:pointer}
-@media (max-aspect-ratio:1/1){.empty{grid-template-columns:1fr}.empty .art{display:none}}
+.primary{background:var(--fg);color:var(--bg);font-weight:600;font-size:17px;padding:13px 22px;border-radius:12px;display:inline-block;cursor:pointer}
+@media (max-aspect-ratio:1/1){.empty img{display:none}}
 
-.toast{position:fixed;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--raised);
-  padding:12px 16px;border-radius:12px;font-size:14px;max-width:calc(100vw - 48px);z-index:20;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:#2a2a2a;
+  padding:10px 16px;border-radius:10px;font-size:15px;max-width:calc(100vw - 48px);z-index:20}
 
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<!-- shared paint for every illustration -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="hl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>
-    <linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
-    <linearGradient id="hlc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
-    <linearGradient id="lcd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
-  </defs>
-</svg>
-<div id="bg"><div class="glow"></div><div class="snap" id="snapA"></div><div class="snap" id="snapB"></div><div class="vig"></div></div>
+<div id="bg"><div id="snapA"></div><div id="snapB"></div></div>
 <div id="root"></div>
 <input id="lpl" type="file" multiple hidden>
-<div class="launch" id="launch"><div><small>Starting</small><b id="launchTitle"></b></div></div>
+<div class="launch" id="launch"><div><p>Starting</p><h2 id="launchTitle"></h2></div></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "1.1.0";
+const APP_VERSION = "2.0.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
-/* ---------- drawing helpers (viewBox 0 0 320 240 for consoles) ---------- */
-const R=(x,y,w,h,r,f,ex="")=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" ${ex}/>`;
-const C=(cx,cy,r,f,ex="")=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f}" ${ex}/>`;
-const E=(cx,cy,rx,ry,f,ex="")=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${f}" ${ex}/>`;
-const P=(d,f,ex="")=>`<path d="${d}" fill="${f}" ${ex}/>`;
-const ring=(cx,cy,rx,ry,s,w=2)=>E(cx,cy,rx,ry,"none",`stroke="${s}" stroke-width="${w}"`);
-const rep=(n,fn)=>Array.from({length:n},(_,i)=>fn(i)).join("");
-/* an extruded rounded box seen slightly from above: top face + front/side face */
-const slab=(x,y,w,h,r,d,top,side)=>R(x,y+d,w,h,r,side)+R(x,y+h/2,w,d,0,side)+R(x,y+h/2,w,d,0,"url(#sh)")+R(x,y,w,h,r,top)+R(x,y,w,h,r,"url(#hl)");
-const cross=(cx,cy,s,t,f)=>R(cx-s/2,cy-t/2,s,t,1.5,f)+R(cx-t/2,cy-s/2,t,s,1.5,f)+C(cx,cy,t*.22,"rgba(255,255,255,.08)");
-function spiral(cx,cy,turns,r0,k,sy){ let d=""; for(let t=0;t<=turns*Math.PI*2;t+=.12){ const r=r0+k*t, x=cx+r*Math.cos(-t), y=cy+r*Math.sin(-t)*sy; d+=(d?"L":"M")+x.toFixed(1)+" "+y.toFixed(1); } return d; }
-
-const ART = {
-  /* Super Nintendo, PAL / Super Famicom body: rounded, grey sliders, four-colour logo */
-  snes: ()=> slab(38,64,244,100,48,24,"#dedfe4","#a9aab2")
-    + R(80,170,26,12,4,"#8e8f98")+R(84,173,18,6,2,"#46474f")+R(112,170,26,12,4,"#8e8f98")+R(116,173,18,6,2,"#46474f")
-    + slab(98,52,124,72,24,9,"#d3d4da","#b3b4bc")
-    + R(120,60,80,16,5,"#3a3a43")+R(126,65,68,5,2,"#141418")+R(120,60,80,3,1.5,"rgba(255,255,255,.12)")
-    + slab(142,96,36,14,6,5,"#7e7f89","#5d5e68")
-    + R(56,108,40,11,5.5,"#bdbec5")+R(56,108,40,11,5.5,"url(#sh)")+slab(58,103,18,12,5,4,"#8f909a","#6c6d76")
-    + R(224,108,40,11,5.5,"#bdbec5")+R(224,108,40,11,5.5,"url(#sh)")+slab(244,103,18,12,5,4,"#8f909a","#6c6d76")
-    + C(79,126,4.6,"#3c58d6")+C(87,133.5,4.6,"#d93339")+C(79,141,4.6,"#f1c22e")+C(71,133.5,4.6,"#2e9b52")
-    + R(98,129,50,3.4,1.7,"#8e8f98")+R(98,135.5,34,3.4,1.7,"#a7a8b0")
-    + R(234,128,22,3,1.5,"#b6b7be")+R(234,134,22,3,1.5,"#b6b7be"),
-
-  nes: ()=> slab(34,70,252,80,6,44,"#d8d5cd","#cdcac2")
-    + R(34,168,252,26,6,"#3c3c42")+R(34,168,252,8,0,"#3c3c42")+R(34,168,252,1.5,0,"rgba(0,0,0,.25)")
-    + R(96,150,128,18,2,"#c3c0b8")+R(96,150,128,1.5,0,"#a8a59d")
-    + R(50,176,20,10,2,"#bab7af")+R(76,176,20,10,2,"#bab7af")+C(104,181,2.4,"#e2352b")
-    + R(210,175,26,13,2,"#cac7bf")+R(214,178,18,7,1.5,"#26262a")+R(244,175,26,13,2,"#cac7bf")+R(248,178,18,7,1.5,"#26262a")
-    + rep(4,i=>R(48,79+i*7,224,2.6,1.3,"#bdbab2"))
-    + R(96,106,128,44,3,"#cdcac2")+R(96,106,128,44,3,"none",'stroke="#aeaba3" stroke-width="1.6"')+R(98,108,124,4,1,"rgba(255,255,255,.35)")
-    + R(48,128,34,3.2,1.6,"#9c998f")+R(48,135,22,3.2,1.6,"#c43a33")
-    + R(236,128,36,3.2,1.6,"#9c998f"),
-
-  n64: ()=> slab(32,82,256,80,36,24,"#3c3d45","#24252b")
-    + rep(4,i=>R(84+i*40,170,24,12,3.5,"#141519")+R(88+i*40,173.5,16,5,1.5,"#33343c"))
-    + rep(4,i=>R(52,104+i*8,34,3.4,1.7,"#2b2c33")+R(234,104+i*8,34,3.4,1.7,"#2b2c33"))
-    + slab(106,60,108,64,16,12,"#46474f","#2c2d33")
-    + R(122,68,76,15,4,"#121216")+R(128,72.5,64,5,2,"#050506")
-    + R(124,106,26,9,4.5,"#6a6b75")+R(170,106,26,9,4.5,"#6a6b75")
-    + `<g transform="translate(160 144) rotate(45)">${R(-7.5,-7.5,7,7,1.2,"#d8362c")+R(.5,-7.5,7,7,1.2,"#2a9d4b")+R(-7.5,.5,7,7,1.2,"#2f62c9")+R(.5,.5,7,7,1.2,"#f0c22b")}</g>`,
-
-  gc: ()=> P("M84 84 L160 124 L160 208 L84 168 Z","#4e449e")+P("M160 124 L236 84 L236 168 L160 208 Z","#3b3382")
-    + P("M84 84 L160 124 L160 208 L84 168 Z","url(#sh)")
-    + P("M160 44 L236 84 L160 124 L84 84 Z","#6b60c4")+P("M160 44 L236 84 L160 124 L84 84 Z","url(#hl)")
-    + P("M160 124 L160 208","none",'stroke="rgba(255,255,255,.08)" stroke-width="1.5"')
-    + E(160,84,50,26,"#5a50ad")+E(160,85,44,22.5,"#7369cb")+E(160,85,44,22.5,"url(#hl)")+E(160,85,9,4.7,"#5a50ad")
-    + E(132,108,6.5,3.4,"#4a4195")+E(188,108,6.5,3.4,"#4a4195")+E(160,116,5.5,2.8,"#3a3280")
-    + P("M100 80 L100 62 Q100 56 106 53 L150 31 Q160 26 170 31 L214 53 Q220 56 220 62 L220 80","none",'stroke="#3a3180" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"')
-    + P("M100 80 L100 62 Q100 56 106 53 L150 31 Q160 26 170 31 L214 53 Q220 56 220 62 L220 80","none",'stroke="#5248a6" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" transform="translate(0 -2.5)"')
-    + `<g transform="matrix(1 .5263 0 1 84 84)">${rep(4,i=>R(7+i*16.5,56,12,15,2,"#2c2570"))+R(30,14,16,16,2.5,"#dcd7f7")+R(34.5,18.5,7,7,1,"#4e449e")+R(37,22,9,4,0,"#4e449e")}</g>`
-    + `<g transform="matrix(1 -.5263 0 1 160 124)">${rep(5,i=>R(16,22+i*8,44,3,1.5,"#332c74"))}</g>`,
-
-  gb: ()=> P("M102 10 H218 Q226 10 226 18 V188 Q226 230 184 230 H102 Q94 230 94 222 V18 Q94 10 102 10 Z","#c9c6be")
-    + P("M102 10 H218 Q226 10 226 18 V188 Q226 230 184 230 H102 Q94 230 94 222 V18 Q94 10 102 10 Z","url(#hlc)")
-    + R(102,21,116,1.6,.8,"#aeaba3")+R(110,14,22,3,1.5,"#b5b2aa")
-    + P("M106 30 H214 V96 Q214 114 196 114 H112 Q106 114 106 108 Z","#5d5f72")
-    + R(130,40,64,58,2,"#93a03a")+R(130,40,64,58,2,"url(#lcd)")+R(130,40,64,58,2,"none",'stroke="#3e4428" stroke-width="2"')
-    + C(117,64,3.2,"#d63b3b")+R(112,72,10,2,1,"#878a9e")
-    + R(106,121,30,4.5,1,"#2b2f8c")+R(140,121,40,4.5,1,"#2b2f8c")
-    + cross(124,156,32,10.5,"#2a2a30")
-    + `<g transform="rotate(-25 186 146)">${C(174,146,9.5,"#9c2358")+C(198,146,9.5,"#9c2358")}</g>`
-    + `<g transform="rotate(-25 152 188)">${R(132,186,17,5.5,2.75,"#8c8982")+R(155,186,17,5.5,2.75,"#8c8982")}</g>`
-    + `<g transform="rotate(-30 196 206)">${rep(6,i=>R(176+i*7,194,3.6,24,1.8,"#a9a69e"))}</g>`,
-
-  gbc: ()=> P("M110 14 H210 Q220 14 220 24 V190 Q220 226 184 226 H136 Q100 226 100 190 V24 Q100 14 110 14 Z","#7650bd")
-    + P("M110 14 H210 Q220 14 220 24 V190 Q220 226 184 226 H136 Q100 226 100 190 V24 Q100 14 110 14 Z","url(#hlc)")
-    + R(108,26,104,90,9,"#2a2136")
-    + R(128,36,64,58,2,"#86c6cf")+R(128,36,64,58,2,"url(#lcd)")
-    + C(118,58,2.8,"#e2413d")
-    + R(126,102,34,4,1,"#cfc9da")+R(163,102,6,4,1,"#e2413d")+R(170,102,6,4,1,"#9c5ad9")+R(177,102,6,4,1,"#36b25a")+R(184,102,6,4,1,"#3a7ce0")+R(191,102,4,4,1,"#f1c22e")
-    + R(124,124,72,3,1.5,"#5f3ea3")
-    + cross(130,156,30,10,"#2a2236")
-    + C(198,148,9,"#2a2236")+C(178,160,9,"#2a2236")
-    + R(140,186,16,5,2.5,"#4f338e")+R(164,186,16,5,2.5,"#4f338e")
-    + rep(3,i=>rep(3,j=>C(184+i*8-j*3,200+j*7,1.9,"#4f338e"))),
-
-  gba: ()=> R(58,60,56,18,9,"#3b3d88")+R(206,60,56,18,9,"#3b3d88")
-    + P("M84 66 H236 Q292 66 292 124 Q292 186 236 186 H84 Q28 186 28 124 Q28 66 84 66 Z","#4b4ea6")
-    + P("M84 66 H236 Q292 66 292 124 Q292 186 236 186 H84 Q28 186 28 124 Q28 66 84 66 Z","url(#hlc)")
-    + R(98,76,124,98,9,"#22234a")
-    + R(110,86,100,70,2,"#8db0d8")+R(110,86,100,70,2,"url(#lcd)")
-    + R(138,163,44,3.4,1.7,"#5a5db6")+C(104,92,2.4,"#4cd06b")
-    + cross(64,114,30,10,"#262856")
-    + C(258,108,9.5,"#d9d8ee")+C(240,124,9.5,"#d9d8ee")+C(258,108,9.5,"url(#sh)")+C(240,124,9.5,"url(#sh)")
-    + C(56,152,4,"#262856")+C(72,158,4,"#262856")
-    + rep(6,i=>C(244+(i%3)*8,148+Math.floor(i/3)*8,2,"#3a3d8e")),
-
-  nds: ()=> R(76,20,168,92,10,"#e3e4e8")+R(76,20,168,92,10,"url(#hlc)")
-    + R(116,30,88,68,4,"#1d1e23")+R(120,34,80,60,1.5,"#79a3cc")+R(120,34,80,60,1.5,"url(#lcd)")
-    + rep(5,i=>C(96,44+i*8,1.6,"#b7b9bf")+C(224,44+i*8,1.6,"#b7b9bf"))
-    + R(84,108,152,14,7,"#c9cbd1")+R(96,111,36,8,4,"#b3b5bc")+R(188,111,36,8,4,"#b3b5bc")
-    + R(76,118,168,96,12,"#eff0f3")+R(76,118,168,96,12,"url(#hlc)")
-    + R(116,128,88,68,4,"#1d1e23")+R(120,132,80,60,1.5,"#a7c6d9")+R(120,132,80,60,1.5,"url(#lcd)")
-    + cross(97,160,22,7,"#2b2c31")
-    + C(224,152,4.2,"#d4d6dc",'stroke="#9fa2aa" stroke-width="1"')+C(224,168,4.2,"#d4d6dc",'stroke="#9fa2aa" stroke-width="1"')
-    + C(216,160,4.2,"#d4d6dc",'stroke="#9fa2aa" stroke-width="1"')+C(232,160,4.2,"#d4d6dc",'stroke="#9fa2aa" stroke-width="1"')
-    + C(224,186,2.6,"#9fa2aa")+C(224,196,2.6,"#9fa2aa")+C(96,190,2,"#4cd06b"),
-
-  vb: ()=> P("M160 140 L112 206 M160 140 L208 206","none",'stroke="#26262b" stroke-width="11" stroke-linecap="round"')
-    + R(148,118,24,34,5,"#2c2c32")+E(112,210,16,4.5,"#1a1a1e")+E(208,210,16,4.5,"#1a1a1e")
-    + R(44,52,232,80,32,"#1d1d22")+R(44,52,232,80,32,"url(#hl)")
-    + P("M76 52 H244 Q276 52 276 82 V84 H44 V82 Q44 52 76 52 Z","#c4262d")+P("M76 52 H244 Q276 52 276 82 V84 H44 V82 Q44 52 76 52 Z","url(#hl)")
-    + R(76,60,30,3,1.5,"rgba(0,0,0,.25)")+R(214,60,30,3,1.5,"rgba(0,0,0,.25)")
-    + R(78,92,164,28,14,"#111114")+E(122,106,26,9,"#24242a")+E(198,106,26,9,"#24242a")+E(122,104,16,4,"rgba(196,38,45,.35)")+E(198,104,16,4,"rgba(196,38,45,.35)")
-    + R(140,124,40,4,2,"#c4262d"),
-
-  sms: ()=> slab(34,88,252,66,5,38,"#222226","#131316")
-    + R(96,96,128,13,2,"#0a0a0c")+R(100,100,120,4,1,"#1c1c20")
-    + rep(4,i=>R(46,118+i*8,228,2.6,1.3,"#d2302f"))
-    + R(54,164,62,4,1.5,"#cfcfd5")+R(54,172,34,3,1.5,"#7a7a82")
-    + R(212,164,18,11,2,"#d2302f")+R(238,164,18,11,2,"#3c3c42"),
-
-  md: ()=> slab(28,80,264,86,32,26,"#202024","#111114")
-    + R(70,174,28,11,3,"#2a2a30")+R(74,177,20,5,2,"#08080a")+R(104,174,28,11,3,"#2a2a30")+R(108,177,20,5,2,"#08080a")
-    + E(160,112,82,42,"#18181c")+ring(160,112,80,40.5,"#2e2e35")+ring(160,112,71,36,"#2b2b31")+ring(160,112,62,31.5,"#29292f")
-    + E(160,110,52,26,"#26262c")+E(160,110,52,26,"url(#hl)")
-    + R(122,98,76,15,4,"#3a3a42")+R(128,102.5,64,5,2,"#060607")+R(122,98,76,1.6,.8,"#6c6c74")
-    + R(140,134,40,4.4,1.2,"#cfa648")
-    + R(48,106,34,9,4.5,"#2f2f36")+slab(50,101,14,12,3,3,"#4a4a52","#2a2a30")
-    + slab(250,100,22,16,8,4,"#3a3a42","#222227")
-    + R(46,140,46,3.2,1.6,"#a2a2ab")+R(46,146,26,3.2,1.6,"#d13a3a"),
-
-  dc: ()=> slab(48,70,224,100,22,32,"#efeff1","#cdced3")
-    + rep(5,i=>R(86+i*34,180,24,12,3,"#bfc0c6")+R(90+i*34,183,16,6,2,"#55565d"))
-    + E(160,114,72,41,"#e3e4e7")+ring(160,114,72,41,"#d0d1d5")+E(160,114,72,41,"url(#hl)")
-    + P(spiral(160,114,2.1,1.5,2.05,.57),"none",'stroke="#2463d6" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"')
-    + E(80,154,10,5.5,"#dcdde1")+ring(80,154,10,5.5,"#c4c5ca",1.4)+E(240,154,10,5.5,"#dcdde1")+ring(240,154,10,5.5,"#c4c5ca",1.4)
-    + C(224,154,1.9,"#f08a2a"),
-
-  pce: ()=> slab(74,62,172,104,10,42,"#f2f1ec","#d6d4cd")
-    + rep(6,i=>R(94,76+i*7,132,2.5,1.25,"#dedcd4"))
-    + R(94,140,50,6.5,2,"#e0522b")+R(150,141.5,34,3.5,1.75,"#b9b7af")
-    + R(100,184,120,9,3,"#29292d")+R(104,186,112,2,1,"#4a4a50")+R(226,181,13,14,3,"#9a988f")+C(92,188,5.5,"#9a988f")+C(92,188,2.5,"#5a5852"),
-
-  ps1: ()=> slab(32,70,256,98,10,30,"#cdced2","#a9aaae")
-    + rep(2,i=>R(58+i*44,172,32,4,1,"#2b2c31")+R(58+i*44,180,32,12,3,"#8d8e93")+R(63+i*44,183.5,22,5,2,"#2b2c31"))
-    + E(116,116,64,39,"#c3c4c8")+ring(116,116,64,39,"#b1b2b6")+E(116,116,64,39,"url(#hl)")+E(116,116,10,6,"#b3b4b8")+ring(116,116,22,13,"#bbbcc0",1.4)
-    + slab(212,88,32,20,10,5,"#bebfc3","#9c9da1")
-    + E(206,136,8.5,5,"#b6b7bb")+ring(206,136,8.5,5,"#a0a1a5",1.2)+E(250,136,8.5,5,"#b6b7bb")+ring(250,136,8.5,5,"#a0a1a5",1.2)+C(228,136,2,"#3ccf64")
-    + R(236,150,5,5,1,"#e0342b")+R(242,150,5,5,1,"#f1c22e")+R(236,156,5,5,1,"#2f62c9")+R(242,156,5,5,1,"#2a9d4b"),
-
-  arcade: ()=> P("M96 14 H224 V226 H96 Z","#1d2660")
-    + R(104,18,112,30,3,"#f2b84b")+R(112,26,96,14,2,"#ffe2a3")+R(112,26,96,14,2,"url(#sh)")
-    + R(106,54,108,80,4,"#0d0e1f")+R(114,60,92,66,2,"#1f6f86")+R(114,60,92,66,2,"url(#lcd)")
-    + rep(5,i=>R(126+i*14,72,8,6,1,"#f2b84b"))+R(154,106,12,8,1,"#ff6b5a")+R(118,116,84,2,1,"#3fb6c4")
-    + P("M92 138 H228 L240 164 H80 Z","#2c3a8c")+R(80,164,160,9,0,"#161d4c")
-    + R(118,140,3,12,1.5,"#9aa3c9")+C(119.5,139,5.5,"#d63a2f")
-    + E(160,152,5.5,3,"#f2c230")+E(178,152,5.5,3,"#2fa54f")+E(196,152,5.5,3,"#4b8ff2")+E(178,144,5,2.7,"#d63a2f")
-    + R(138,184,44,32,3,"#121844")+R(149,193,6,12,1.5,"#d63a2f")+R(165,193,6,12,1.5,"#d63a2f"),
-
-  other: ()=> P("M84 92 Q84 72 108 72 L212 72 Q236 72 236 92 L248 152 Q252 180 228 180 Q212 180 200 160 L120 160 Q108 180 92 180 Q68 180 72 152 Z","#5c6070")
-    + P("M84 92 Q84 72 108 72 L212 72 Q236 72 236 92 L248 152 Q252 180 228 180 Q212 180 200 160 L120 160 Q108 180 92 180 Q68 180 72 152 Z","url(#hlc)")
-    + cross(118,110,30,10,"#2a2c33")+C(202,100,7,"#f2b84b")+C(218,116,7,"#4b8ff2")+C(186,116,7,"#2fa54f")+C(202,132,7,"#d63a2f")
-    + R(146,96,12,5,2.5,"#3a3d46")+R(162,96,12,5,2.5,"#3a3d46")
-};
-const ARTCACHE = {};
-function consoleSVG(key){ const k=ART[key]?key:"other"; return `<svg viewBox="0 0 320 240" aria-hidden="true">${ARTCACHE[k] ||= ART[k]()}</svg>`; }
-
-/* ---------- cartridges: shell drawing + where the label sits (in the shell's own units) ---------- */
-const CART = {
-  nes:{w:120,h:133,label:[10,8,100,82,1.5], shell:()=>R(0,0,120,133,4,"#a6a59f")+R(0,0,120,133,4,"url(#hlc)")+R(6,4,108,90,2,"#93928c")
-      +rep(7,i=>R(16,101+i*4.2,88,2,1,"#8a8984"))+R(0,128,120,5,2,"#8e8d88")},
-  snes:{w:136,h:100,label:[16,9,104,70,2.5],band:"snes", shell:()=>{const d="M10 0 H126 Q136 0 136 10 V20 Q129 26 129 34 Q129 42 136 48 V96 Q136 100 132 100 H4 Q0 100 0 96 V48 Q7 42 7 34 Q7 26 0 20 V10 Q0 0 10 0 Z";
-      return P(d,"#a2a3a9")+P(d,"url(#hlc)")+R(13,6,110,76,4,"#94959b")+rep(3,i=>R(22,87+i*3.6,92,1.6,.8,"#8d8e94"))}},
-  n64:{w:116,h:76,label:[14,6,88,56,2],band:"n64", shell:()=>{const d="M12 0 H104 Q116 0 116 12 V76 H0 V12 Q0 0 12 0 Z";
-      return P(d,"#5b5c63")+P(d,"url(#hlc)")+rep(8,i=>R(2.5,14+i*6,6,2,1,"#4a4b51")+R(107.5,14+i*6,6,2,1,"#4a4b51"))+R(0,67,116,9,0,"#4d4e54")+R(11,3,94,62,3,"#505158")}},
-  gb:{w:57,h:65,label:[5,14,47,44,1.5],band:"gb", shell:()=>{const d="M3 0 H50 L57 7 V62 Q57 65 54 65 H3 Q0 65 0 62 V3 Q0 0 3 0 Z";
-      return P(d,"#a9a8a4")+P(d,"url(#hlc)")+rep(3,i=>R(6,3+i*2.6,36,1.2,.6,"#93928e"))+R(3,12,51,48,2,"#9a9995")}},
-  gbc:{w:57,h:65,label:[5,14,47,44,1.5],band:"gbc", shell:()=>{const d="M3 0 H50 L57 7 V62 Q57 65 54 65 H3 Q0 65 0 62 V3 Q0 0 3 0 Z";
-      return P(d,"#2f2f35")+P(d,"url(#hlc)")+rep(3,i=>R(6,3+i*2.6,36,1.2,.6,"#45454c"))+R(3,12,51,48,2,"#27272c")}},
-  gba:{w:57,h:35,label:[6,5,45,26,1.5], shell:()=>{const d="M5 0 H52 Q57 0 57 5 V35 H0 V5 Q0 0 5 0 Z";
-      return P(d,"#8f8f95")+P(d,"url(#hlc)")+R(4,3,49,30,2,"#818187")+rep(3,i=>R(1.5,8+i*3,2,1.4,.7,"#77777d"))}},
-  nds:{w:35,h:33,label:[3,6,29,24,1], shell:()=>{const d="M4 0 H32 Q35 0 35 3 V33 H0 V5 Q0 0 4 0 Z";
-      return P(d,"#8f9196")+P(d,"url(#hlc)")+R(2,4.5,31,27,1.5,"#83858a")+rep(4,i=>R(6+i*3,1.2,1.6,2,.5,"#77797e"))}},
-  md:{w:110,h:138,label:[9,8,92,90,2], shell:()=>{const d="M8 0 H102 Q110 0 110 8 V138 H0 V8 Q0 0 8 0 Z";
-      return P(d,"#202024")+P(d,"url(#hlc)")+R(6,5,98,96,3,"#18181b")+rep(7,i=>R(14,108+i*4,82,2,1,"#2c2c31"))}},
-  sms:{w:104,h:130,label:[10,24,84,96,2], shell:()=>{const d="M6 0 H98 Q104 0 104 6 V130 H0 V6 Q0 0 6 0 Z";
-      return P(d,"#1f1f23")+P(d,"url(#hlc)")+rep(4,i=>R(14,5+i*4,76,2,1,"#303036"))+R(7,21,90,102,3,"#17171a")}},
-  pce:{w:85,h:54,label:[4,4,77,38,2], shell:()=>R(0,0,85,54,4,"#d8d9dd")+R(0,0,85,54,4,"url(#hlc)")+rep(8,i=>R(12+i*8,46,4,6,1,"#c9a24a"))},
-  vb:{w:70,h:90,label:[7,8,56,58,2], shell:()=>R(0,0,70,90,5,"#2a2a2f")+R(0,0,70,90,5,"url(#hlc)")+R(0,72,70,18,0,"#c4262d")+rep(4,i=>R(10,76+i*3.4,50,1.4,.7,"#9d1e24"))},
-  disc:{w:100,h:100,disc:true},
-  other:{w:100,h:120,label:[10,10,80,80,2], shell:()=>R(0,0,100,120,5,"#3d4049")+R(0,0,100,120,5,"url(#hlc)")+rep(5,i=>R(16,98+i*4,68,2,1,"#33363e"))}
-};
-const SHELLCACHE = {};
-
-/* libretro playlist name -> name, maker, year, art, cart, glow colour */
+/* libretro playlist name -> display name, console photo, box art shape (width / height) */
 const SYSTEMS = [
-  ["Nintendo - Nintendo Entertainment System","NES","Nintendo",1983,"nes","nes","#e0463c"],
-  ["Nintendo - Family Computer Disk System","Famicom Disk System","Nintendo",1986,"nes","nes","#e8b23a"],
-  ["Nintendo - Super Nintendo Entertainment System","Super Nintendo","Nintendo",1990,"snes","snes","#7d6ee0"],
-  ["Nintendo - Nintendo 64","Nintendo 64","Nintendo",1996,"n64","n64","#2f74e0"],
-  ["Nintendo - GameCube","GameCube","Nintendo",2001,"gc","disc","#6a5fd4"],
-  ["Nintendo - Game Boy","Game Boy","Nintendo",1989,"gb","gb","#9cab3c"],
-  ["Nintendo - Game Boy Color","Game Boy Color","Nintendo",1998,"gbc","gbc","#9a62e6"],
-  ["Nintendo - Game Boy Advance","Game Boy Advance","Nintendo",2001,"gba","gba","#5a5fe0"],
-  ["Nintendo - Nintendo DS","Nintendo DS","Nintendo",2004,"nds","nds","#6aa8e0"],
-  ["Nintendo - Virtual Boy","Virtual Boy","Nintendo",1995,"vb","vb","#e0262e"],
-  ["Sega - Master System - Mark III","Master System","Sega",1985,"sms","sms","#e0332f"],
-  ["Sega - Mega Drive - Genesis","Mega Drive","Sega",1988,"md","md","#3b6fe8"],
-  ["Sega - Dreamcast","Dreamcast","Sega",1998,"dc","disc","#2a6ae0"],
-  ["NEC - PC Engine - TurboGrafx 16","PC Engine","NEC",1987,"pce","pce","#ea5a2c"],
-  ["Sony - PlayStation","PlayStation","Sony",1994,"ps1","disc","#8d93a3"],
-  ["FBNeo - Arcade Games","Arcade","FinalBurn Neo",0,"arcade","other","#f2b84b"],
-  ["MAME","Arcade","MAME",0,"arcade","other","#f2b84b"]
+  ["Nintendo - Nintendo Entertainment System","NES","nes",.72],
+  ["Nintendo - Family Computer Disk System","Famicom Disk System","fds",.72],
+  ["Nintendo - Super Nintendo Entertainment System","Super Nintendo","snes",1.38],
+  ["Nintendo - Nintendo 64","Nintendo 64","n64",1.38],
+  ["Nintendo - GameCube","GameCube","gc",.71],
+  ["Nintendo - Game Boy","Game Boy","gb",.98],
+  ["Nintendo - Game Boy Color","Game Boy Color","gbc",.98],
+  ["Nintendo - Game Boy Advance","Game Boy Advance","gba",.98],
+  ["Nintendo - Nintendo DS","Nintendo DS","nds",.9],
+  ["Nintendo - Virtual Boy","Virtual Boy","vb",.72],
+  ["Sega - Master System - Mark III","Master System","sms",.72],
+  ["Sega - Mega Drive - Genesis","Mega Drive","md",.7],
+  ["Sega - Dreamcast","Dreamcast","dc",.9],
+  ["NEC - PC Engine - TurboGrafx 16","PC Engine","pce",.9],
+  ["Sony - PlayStation","PlayStation","ps1",1],
+  ["FBNeo - Arcade Games","Arcade","arcade",.75],
+  ["MAME","Arcade","arcade",.75]
 ];
-const SYS = Object.fromEntries(SYSTEMS.map((s,i)=>[s[0],{short:s[1],maker:s[2],year:s[3],art:s[4],cart:s[5],glow:s[6],order:i}]));
-function info(name){ return SYS[name] || {short:name.replace(/^.*? - /,""),maker:name.split(" - ")[0],year:0,art:"other",cart:"other",glow:"#8a8f9a",order:999}; }
+/* public-domain console photos in img/consoles (see img/consoles/CREDITS.md) */
+const PHOTOS = new Set(["nes","fds","snes","n64","gc","gb","gbc","gba","nds","vb","sms","md","dc","pce","ps1","arcade"]);
+const SYS = Object.fromEntries(SYSTEMS.map((s,i)=>[s[0],{short:s[1],img:s[2],ar:s[3],order:i}]));
+function info(name){ return SYS[name] || {short:name.replace(/^.*? - /,""),img:null,ar:.75,order:999}; }
+function photo(key){ return key && PHOTOS.has(key) ? `img/consoles/${key}.webp` : null; }
 
 /* ---------- data ---------- */
 let library = load();
-let ui = loadUI();       // {sys: last console, pos: {system: index}}
-let view = "consoles";   // or "games"
+let ui = loadUI();
+let view = "consoles";
 let ci = Math.max(0, library.findIndex(s=>s.system===ui.sys));
 let gi = 0;
 
 function load(){ try{ const s=localStorage.getItem(KEY); return s?JSON.parse(s):[] }catch(e){ return [] } }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(library)) }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(library.map(({system,games})=>({system,games})))) }catch(e){} }
 function loadUI(){ try{ return JSON.parse(localStorage.getItem(UIKEY))||{pos:{}} }catch(e){ return {pos:{}} } }
 function saveUI(){ try{ localStorage.setItem(UIKEY, JSON.stringify(ui)) }catch(e){} }
 
@@ -424,63 +165,43 @@ function thumbURL(system,label,kind="Named_Boxarts"){
 }
 function fileOf(path){ return (path||"").split("#")[0].split(/[\\/]/).pop(); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
-function splitTitle(label){ const m=label.match(/^(.*?)\s*(\(.*)$/); return m?[m[1], m[2].split(/[()\[\]]/).map(s=>s.trim()).filter(Boolean)]:[label,[]]; }
+function splitTitle(label){ const m=label.match(/^(.*?)\s*([(\[].*)$/); return m?[m[1], m[2].split(/[()\[\]]/).map(s=>s.trim()).filter(Boolean)]:[label,[]]; }
 function letterOf(label){ const c=label.replace(/^(the|a)\s+/i,"").trim().charAt(0).toUpperCase(); return /[A-Z]/.test(c)?c:"#"; }
-function hue(s){ let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return h%360; }
-function fbColor(s){ return `hsl(${hue(s)} 38% 34%)`; }
 const failed = new Set();
 const sys = ()=>library[ci];
+const $ = id=>document.getElementById(id);
 
 /* ---------- controller glyphs ---------- */
 let padKind = null; // null | "xbox" | "ps" | "nintendo"
 function glyph(btn){
-  const ps={A:"✕",B:"○",LB:"L1",RB:"R1"}, nin={A:"B",B:"A",LB:"L",RB:"R"};
-  if(btn==="LR") return `<span class="g sq">${padKind==="ps"?"L1":padKind==="nintendo"?"L":"LB"}</span><span class="g sq">${padKind==="ps"?"R1":padKind==="nintendo"?"R":"RB"}</span>`;
+  const L={xbox:{A:"A",B:"B",LB:"LB",RB:"RB"}, ps:{A:"✕",B:"○",LB:"L1",RB:"R1"}, nintendo:{A:"B",B:"A",LB:"L",RB:"R"}}[padKind];
   if(btn==="dpad") return `<span class="g"><svg viewBox="0 0 16 16"><path d="M6 1h4v5h5v4h-5v5H6v-5H1V6h5z" fill="currentColor"/></svg></span>`;
-  const t = padKind==="ps"?ps[btn]:padKind==="nintendo"?nin[btn]:btn;
-  if(!padKind) return `<span class="g sq">${btn==="A"?"Return":"Esc"}</span>`;
-  return `<span class="g">${t}</span>`;
+  if(btn==="LR") return `<span class="g sq">${L.LB}</span><span class="g sq">${L.RB}</span>`;
+  return `<span class="g">${L[btn]}</span>`;
 }
 
 /* ---------- rendering ---------- */
-const root = document.getElementById("root");
 let els = {};
 
 function render(){
   document.body.classList.toggle("app", !!library.length);
-  if(!library.length){ setGlow("#f2b84b"); return renderEmpty(); }
+  if(!library.length) return renderEmpty();
   if(ci>=library.length) ci=0;
-  root.innerHTML = `
-  <div class="screen ${view==="games"?"games-on":""}" id="screen">
-    <header class="top">
-      <button class="back" id="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Consoles</button>
-      <div class="brand"><i></i>Arcade Shelf</div>
-      <div class="spacer"></div>
-      <div class="status">
-        <svg class="pad" viewBox="0 0 24 24" aria-label="Controller connected"><path d="M7 7h10a5 5 0 0 1 4.9 6l-.8 3.6A2.6 2.6 0 0 1 16.7 18l-2.2-2.5h-5L7.3 18a2.6 2.6 0 0 1-4.4-1.4L2.1 13A5 5 0 0 1 7 7Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7.5 10v4M5.5 12h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="16" cy="11" r="1.2" fill="currentColor"/><circle cx="18" cy="13.4" r="1.2" fill="currentColor"/></svg>
-        <span class="ver">v${APP_VERSION}</span>
-        <span id="clock"></span>
-        <button class="link" id="reload">Update library</button>
-      </div>
-    </header>
+  $("root").innerHTML = `
+  <div class="screen">
+    <header class="top" id="top"></header>
     <main class="stage" id="stage"></main>
-    <footer class="hints" id="hints"></footer>
+    <footer class="bottom" id="bottom"></footer>
   </div>`;
-  els = {screen:$("screen"), stage:$("stage"), hints:$("hints")};
-  $("back").onclick=()=>input("back");
-  $("reload").onclick=()=>$("lpl").click();
-  document.body.classList.toggle("has-pad", !!padKind);
-  tick();
+  els = {top:$("top"), stage:$("stage"), bottom:$("bottom")};
   view==="games" ? buildGames() : buildConsoles();
 }
-const $ = id=>document.getElementById(id);
 
 function renderEmpty(){
-  root.innerHTML = `<div class="empty">
+  $("root").innerHTML = `<div class="empty">
     <div>
-      <div class="brand"><i></i>Arcade Shelf</div>
-      <h2>Your RetroArch games, on a shelf.</h2>
-      <p>Arcade Shelf reads the playlists RetroArch already keeps, so it shows exactly what you have imported there. Browse with a controller, launch straight into RetroArch.</p>
+      <h1>Arcade Shelf</h1>
+      <p>A launcher for the games you've already added to RetroArch. It reads RetroArch's playlists, so there's nothing else to set up.</p>
       <ol>
         <li>Tap <b>Choose playlists</b>.</li>
         <li>Go to <b>On My iPad › RetroArch › playlists</b>.</li>
@@ -488,154 +209,116 @@ function renderEmpty(){
       </ol>
       <label class="primary" for="lpl">Choose playlists</label>
     </div>
-    <div class="art">${consoleSVG("snes")}</div>
+    <img src="img/consoles/snes.webp" alt="">
   </div>`;
 }
 
-function playLabel(){ return padKind?`${glyph("A")} Play`:`<svg class="tri" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg> Play`; }
-/* hints only make sense with a controller in hand; touch users get a clean screen */
-function setHints(list){
-  if(!padKind){ els.hints.innerHTML=""; return; }
-  els.hints.innerHTML = list.map(([g,t])=>`<span class="h">${glyph(g)}${t}</span>`).join("");
+function clockHTML(){ return `<span class="clock" id="clock">${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</span>`; }
+
+function bottomBar(hints, withLibrary){
+  els.hints=hints; els.withLibrary=withLibrary;
+  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><span class="ver">v${APP_VERSION}</span>`:"")
+    + `<div class="spacer"></div>` + (padKind ? hints.map(([g,t])=>`<span class="h">${glyph(g)}${t}</span>`).join("") : "");
+  const r=$("reload"); if(r) r.onclick=()=>$("lpl").click();
 }
-function setGlow(c){ document.documentElement.style.setProperty("--glow", c); }
 
 /* --- consoles --- */
 function buildConsoles(){
-  view="consoles";
-  els.screen.classList.remove("games-on");
-  setSnap(null);
+  view="consoles"; setSnap(null);
+  els.top.innerHTML = `<h1>Consoles</h1><div class="spacer"></div>${clockHTML()}`;
   els.stage.innerHTML = `<section class="consoles">
-      <div class="carousel" id="carousel">${library.map((s,i)=>`<div class="cons" data-i="${i}"><div class="floor"></div>${consoleSVG(info(s.system).art)}</div>`).join("")}</div>
+      <div class="carousel" id="carousel">${library.map((s,i)=>{ const p=photo(info(s.system).img);
+        return `<div class="cons" data-i="${i}">${p?`<img src="${p}" alt="" onerror="this.outerHTML='<div class=noimg>${esc(info(s.system).short)}</div>'">`:`<div class="noimg">${esc(info(s.system).short)}</div>`}</div>`; }).join("")}</div>
       <div class="caption" id="caption"></div>
     </section>`;
   els.carousel=$("carousel"); els.caption=$("caption");
   els.carousel.querySelectorAll(".cons").forEach(el=>el.onclick=()=>{ const i=+el.dataset.i; if(i===ci) input("ok"); else { ci=i; updateConsoles(); } });
-  setHints([["dpad","Choose"],["A","Open"]]);
-  sizeConsoles(); updateConsoles(true);
+  bottomBar([["dpad","Choose"],["A","Open"]], true);
+  sizeConsoles(); updateConsoles();
 }
 function sizeConsoles(){
-  if(!els.carousel) return;
   const h=els.carousel.clientHeight, w=els.carousel.clientWidth;
-  const cw=Math.min(h*1.18, w*.5);
-  els.carousel.style.setProperty("--cw", cw+"px");
-  els.cw = cw;
+  els.ch = h*(h<300?.68:.6); els.cw = Math.min(els.ch*1.45, w*.42);
+  els.carousel.style.setProperty("--cw", els.cw+"px");
+  els.carousel.style.setProperty("--chh", els.ch+"px");
 }
-function updateConsoles(first){
-  const cw=els.cw||300;
+function updateConsoles(){
+  const cw=els.cw;
   els.carousel.querySelectorAll(".cons").forEach(el=>{
     const o=+el.dataset.i-ci, a=Math.abs(o);
-    const x = a===0?0:Math.sign(o)*cw*(.78+(a-1)*.5);
-    const s = a===0?1:a===1?.52:.4;
-    el.style.transform=`translateX(${x}px) scale(${s})`;
-    el.style.opacity = a===0?1:a===1?.55:a===2?.2:0;
+    const x = a===0?0:Math.sign(o)*cw*(.9+(a-1)*.5);
+    el.style.transform=`translateX(${x}px) scale(${a===0?1:.48})`;
+    el.style.opacity = a===0?1:a===1?.4:a===2?.14:0;
     el.style.zIndex = 10-a;
-    el.classList.toggle("on", a===0);
   });
-  const s=sys(), i=info(s.system);
-  els.caption.innerHTML = `<div class="${first?"":"swap"}">
-    <div class="maker">${esc(i.maker)}${i.year?` · ${i.year}`:""}</div>
-    <h1>${esc(i.short)}</h1>
-    <div class="sub"><b>${s.games.length}</b> ${s.games.length===1?"game":"games"}</div>
-    <div class="dots">${library.length>1?library.map((_,k)=>`<span class="${k===ci?"on":""}"></span>`).join(""):""}</div></div>`;
-  setGlow(i.glow);
+  const s=sys();
+  els.caption.innerHTML = `<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}</p>`;
   ui.sys=s.system; saveUI();
 }
 
 /* --- games --- */
-const WIN = 14;
+const WIN = 12;
 function buildGames(){
   view="games";
-  els.screen.classList.add("games-on");
   const s=sys(), i=info(s.system);
   gi = Math.min(ui.pos[s.system]||0, s.games.length-1);
   s.keys = s.games.map(g=>letterOf(g.label));
-  els.stage.innerHTML = `<section class="games" id="games">
-      <div class="hero">
-        <div class="box" id="box"></div>
-        <div class="meta">
-          <div class="eyebrow"><span>${esc(i.short)}</span><span class="n" id="count"></span></div>
-          <h2 id="title"></h2>
-          <div class="chips" id="chips"></div>
-          <button class="play" id="play">${playLabel()}</button>
-        </div>
-      </div>
-      <div class="rail" id="rail"><div class="track" id="track"></div></div>
-      <div class="letter" id="letter"></div>
+  els.top.innerHTML = `<button class="back" id="back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <h1>${esc(i.short)}<span class="n">${s.games.length}</span></h1><div class="spacer"></div>${clockHTML()}`;
+  $("back").onclick=()=>input("back");
+  els.stage.innerHTML = `<section class="games">
+      <div class="row" id="row"><div class="track" id="track"></div><div class="letter" id="letter"></div></div>
+      <div class="info" id="info"><h2 id="title"></h2><p id="details"></p></div>
     </section>`;
-  Object.assign(els,{games:$("games"),box:$("box"),title:$("title"),chips:$("chips"),count:$("count"),rail:$("rail"),track:$("track"),letter:$("letter")});
-  els.carts=new Map();
-  els.track.onclick=e=>{ const c=e.target.closest(".cart"); if(!c) return; const k=+c.dataset.i; if(k===gi) input("ok"); else { gi=k; updateGames(); } };
-  els.box.onclick=()=>input("ok"); $("play").onclick=()=>input("ok");
-  setHints([["dpad","Browse"],["LR","Jump letter"],["A","Play"],["B","Back"]]);
-  setGlow(i.glow);
+  Object.assign(els,{row:$("row"),track:$("track"),letter:$("letter"),info:$("info"),title:$("title"),details:$("details")});
+  els.tiles=new Map();
+  els.track.onclick=e=>{ const t=e.target.closest(".tile"); if(!t) return; const k=+t.dataset.i; if(k===gi) input("ok"); else { gi=k; updateGames(); } };
+  bottomBar([["dpad","Browse"],["LR","Jump to letter"],["A","Play"],["B","Back"]], false);
   sizeGames(); updateGames(true);
 }
 function sizeGames(){
-  if(!els.games) return;
-  const H=els.stage.clientHeight, W=els.stage.clientWidth;
-  const rail=Math.round(Math.max(110,Math.min(H*.42,300)));
-  els.games.style.setProperty("--rail", rail+"px");
-  const ct=CART[info(sys().system).cart]||CART.other;
-  const ch=rail*.66, cw=ch*ct.w/ct.h;
-  els.ch=ch; els.cw=cw; els.step=cw+Math.max(14,cw*.16);
-  const heroH=H-rail;
-  els.games.style.setProperty("--boxw", Math.min(heroH*.82, W*.34)+"px");
-  els.carts.forEach(el=>el.remove()); els.carts.clear();
+  const H=els.stage.clientHeight-100, W=els.row.clientWidth, ar=info(sys().system).ar;
+  els.th = Math.round(Math.min(H*.8, 380));
+  els.tw = Math.round(els.th*ar);
+  if(els.tw > W*.32){ els.tw=Math.round(W*.32); els.th=Math.round(els.tw/ar); }
+  els.step = els.tw + Math.round(Math.max(18, els.th*.08));
+  els.row.style.setProperty("--rowh", (els.th+36)+"px");
+  els.pad = parseFloat(getComputedStyle(els.info).paddingLeft)||32;
+  els.tiles.forEach(el=>el.remove()); els.tiles.clear();
 }
-function cartEl(k){
-  const s=sys(), g=s.games[k], type=info(s.system).cart, ct=CART[type]||CART.other;
+function tileEl(k){
+  const s=sys(), g=s.games[k], [name]=splitTitle(g.label);
   const el=document.createElement("div");
-  el.className="cart"+(ct.disc?" disc":""); el.dataset.i=k;
-  el.style.width=els.cw+"px"; el.style.height=els.ch+"px"; el.style.left=(k*els.step)+"px";
-  const [name]=splitTitle(g.label);
-  let shell="", lab="";
-  if(!ct.disc){
-    shell=`<svg viewBox="0 0 ${ct.w} ${ct.h}" preserveAspectRatio="none" aria-hidden="true">${SHELLCACHE[type] ||= ct.shell()}</svg>`;
-    const [x,y,w,h,r]=ct.label;
-    lab=`left:${x/ct.w*100}%;top:${y/ct.h*100}%;width:${w/ct.w*100}%;height:${h/ct.h*100}%;border-radius:${r/ct.w*els.cw}px`;
-  }
-  const band = ct.band==="snes"?`<div class="band"><svg viewBox="0 0 20 20">${C(10,4.5,3.6,"#3c58d6")+C(15.5,10,3.6,"#d93339")+C(10,15.5,3.6,"#f1c22e")+C(4.5,10,3.6,"#2e9b52")}</svg><b></b></div>`
-             : ct.band==="n64"?`<div class="band dark"><b></b></div>`
-             : ct.band==="gb"||ct.band==="gbc"?`<div class="band ${ct.band==="gbc"?"dark":""}"><b style="max-width:70%"></b></div>`:"";
-  el.innerHTML = shell + `<div class="label${band?" withband":""}" style="${lab}">${band}</div>`;
-  const label=el.lastChild, url=thumbURL(s.system,g.label);
-  const fb=()=>{ const f=document.createElement("div"); f.className="fb"; f.style.setProperty("--fbc",fbColor(name)); f.style.setProperty("--fbs",Math.max(9,els.ch*.085)+"px"); f.textContent=name; label.appendChild(f); };
+  el.className="tile"; el.dataset.i=k;
+  el.style.cssText=`left:${k*els.step}px;width:${els.tw}px;height:${els.th}px`;
+  el.innerHTML=`<div class="art"></div>`;
+  const art=el.firstChild, url=thumbURL(s.system,g.label);
+  const fb=()=>{ art.innerHTML=`<div class="fb" style="--fbs:${Math.max(13,Math.round(els.th*.07))}px">${esc(name)}</div>`; };
   if(failed.has(url)) fb(); else {
     const img=new Image(); img.alt=""; img.decoding="async"; img.draggable=false;
-    img.onerror=()=>{ failed.add(url); img.remove(); fb(); };
-    img.src=url; label.appendChild(img);
+    img.onerror=()=>{ failed.add(url); fb(); };
+    img.src=url; art.appendChild(img);
   }
   return el;
 }
-let heroTimer, letterTimer;
+let snapTimer, letterTimer;
 function updateGames(first){
   const s=sys(), n=s.games.length, g=s.games[gi];
-  /* keep only the carts near the focus in the DOM */
-  for(const [k,el] of els.carts) if(Math.abs(k-gi)>WIN){ el.remove(); els.carts.delete(k); }
-  for(let k=Math.max(0,gi-WIN);k<=Math.min(n-1,gi+WIN);k++) if(!els.carts.has(k)){ const el=cartEl(k); els.carts.set(k,el); els.track.appendChild(el); }
-  for(const [k,el] of els.carts) el.classList.toggle("on",k===gi);
+  for(const [k,el] of els.tiles) if(Math.abs(k-gi)>WIN){ el.remove(); els.tiles.delete(k); }
+  for(let k=Math.max(0,gi-WIN);k<=Math.min(n-1,gi+WIN);k++) if(!els.tiles.has(k)){ const el=tileEl(k); els.tiles.set(k,el); els.track.appendChild(el); }
+  for(const [k,el] of els.tiles) el.classList.toggle("on",k===gi);
+  /* focus sits one tile in from the left edge (first tile: at the edge), like a console home screen */
+  const x = els.pad + Math.min(gi,1)*els.step - gi*els.step;
   els.track.classList.toggle("jump",!!first);
-  els.track.style.transform=`translateX(${els.rail.clientWidth/2-(gi*els.step+els.cw/2)}px)`;
+  els.track.style.transform=`translateX(${x}px)`;
   if(first) requestAnimationFrame(()=>els.track.classList.remove("jump"));
 
   const [name,tags]=splitTitle(g.label);
   els.title.textContent=name;
-  els.chips.innerHTML=tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("");
-  els.count.textContent=`${gi+1} / ${n}`;
-  clearTimeout(heroTimer);
-  heroTimer=setTimeout(()=>{ setBox(s.system,g.label,name); setSnap(thumbURL(s.system,g.label,"Named_Snaps")); }, first?0:140);
+  els.details.textContent=[tags.join(", "), `${gi+1} of ${n}`].filter(Boolean).join("  ·  ");
+  clearTimeout(snapTimer);
+  snapTimer=setTimeout(()=>setSnap(thumbURL(s.system,g.label,"Named_Snaps")), first?0:200);
   ui.pos[s.system]=gi; saveUI();
-}
-function setBox(system,label,name){
-  const url=thumbURL(system,label);
-  const nobox=()=>{ els.box.innerHTML=`<div class="nobox" style="--fbc:${fbColor(name)}">${esc(name)}</div>`; };
-  if(failed.has(url)) return nobox();
-  const img=new Image(); img.alt=""; img.className="loading"; img.draggable=false;
-  img.onload=()=>{ if(els.box.contains(img)) img.classList.remove("loading"); };
-  img.onerror=()=>{ failed.add(url); if(els.box.contains(img)) nobox(); };
-  img.src=url;
-  els.box.innerHTML=""; els.box.appendChild(img);
 }
 let snapFlip=false, snapWant=null;
 function setSnap(url){
@@ -650,7 +333,7 @@ function setSnap(url){
 }
 function showLetter(){
   els.letter.textContent=sys().keys[gi]; els.letter.classList.add("on");
-  clearTimeout(letterTimer); letterTimer=setTimeout(()=>els.letter.classList.remove("on"),500);
+  clearTimeout(letterTimer); letterTimer=setTimeout(()=>els.letter.classList.remove("on"),450);
 }
 
 /* ---------- input ---------- */
@@ -672,18 +355,13 @@ function input(a){
   }
 }
 function launch(){
-  const s=sys(), g=s.games[gi], [name]=splitTitle(g.label);
+  const g=sys().games[gi], [name]=splitTitle(g.label);
   launching=true;
-  const el=els.carts.get(gi); if(el) el.classList.add("insert");
   $("launchTitle").textContent=name; $("launch").classList.add("on");
-  setTimeout(()=>{ location.href="retroarch://game/"+encodeURIComponent(g.file); }, 420);
-  setTimeout(endLaunch, 2600);
+  setTimeout(()=>{ location.href="retroarch://game/"+encodeURIComponent(g.file); }, 250);
+  setTimeout(endLaunch, 2500);
 }
-function endLaunch(){
-  if(!launching) return; launching=false;
-  $("launch").classList.remove("on");
-  if(els.carts){ const el=els.carts.get(gi); if(el) el.classList.remove("insert"); }
-}
+function endLaunch(){ if(!launching) return; launching=false; $("launch").classList.remove("on"); }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ endLaunch(); padReset(); checkForUpdate(); } });
 
 window.addEventListener("popstate",()=>{
@@ -692,32 +370,29 @@ window.addEventListener("popstate",()=>{
 });
 
 addEventListener("keydown",e=>{
-  const map={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",Enter:"ok"," ":"ok",Escape:"back",Backspace:"back",PageUp:"prev",PageDown:"next",q:"prev",e:"next"};
+  const map={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",Enter:"ok"," ":"ok",Escape:"back",Backspace:"back",PageUp:"prev",PageDown:"next"};
   const a=map[e.key]; if(!a) return;
   e.preventDefault(); input(a);
 });
 
-/* swipe on the stage */
-let sx=null, sy=0, st=0;
+/* swipe */
+let sx=null, sy=0, st=0, suppressClick=false;
 addEventListener("pointerdown",e=>{ if(e.target.closest(".stage")){ sx=e.clientX; sy=e.clientY; st=Date.now(); } });
 addEventListener("pointerup",e=>{
   if(sx===null) return; const dx=e.clientX-sx, dy=e.clientY-sy; sx=null;
   if(Math.abs(dx)<40 || Math.abs(dx)<Math.abs(dy)) return;
-  const step = view==="games"?els.step:(els.cw||300)*.78;
-  const fast = Date.now()-st<220 ? 2 : 1;
-  const nsteps = Math.max(1,Math.round(Math.abs(dx)/step*fast));
-  for(let i=0;i<nsteps;i++) input(dx<0?"right":"left");
+  const step = view==="games"?els.step:els.cw*.8;
+  const n = Math.max(1,Math.round(Math.abs(dx)/step*(Date.now()-st<220?2:1)));
+  for(let i=0;i<n;i++) input(dx<0?"right":"left");
   suppressClick=true; setTimeout(()=>suppressClick=false,50);
 });
-let suppressClick=false;
 addEventListener("click",e=>{ if(suppressClick){ e.stopPropagation(); e.preventDefault(); } },true);
 
-/* Gamepad: standard mapping. Bottom face button confirms, right face button goes back. */
+/* Gamepad, standard mapping: bottom face button confirms, right face button goes back. */
 const BTN={0:"ok",1:"back",4:"prev",5:"next",6:"prev",7:"next",12:"up",13:"down",14:"left",15:"right"};
 const REPEATS=new Set(["left","right","up","down","prev","next"]);
-const held={}; let prevPressed={};
+const held={}; let prevPressed={}, ignoreUntilRelease=false;
 function padReset(){ prevPressed={}; for(const k in held) delete held[k]; ignoreUntilRelease=true; }
-let ignoreUntilRelease=false;
 function detectKind(id){ id=id.toLowerCase();
   if(/054c|playstation|dualshock|dualsense|wireless controller/.test(id)) return "ps";
   if(/057e|nintendo|pro controller|joy-con/.test(id)) return "nintendo";
@@ -732,7 +407,7 @@ function poll(){
     if(y<-.7) pressed.up=true; if(y>.7) pressed.down=true;
   }
   const kind = pads.length?detectKind(pads[0].id):null;
-  if(kind!==padKind){ padKind=kind; if(library.length) refreshHints(); }
+  if(kind!==padKind){ padKind=kind; if(els.bottom&&els.hints) bottomBar(els.hints, els.withLibrary); }
   if(ignoreUntilRelease){ if(!Object.keys(pressed).length) ignoreUntilRelease=false; }
   else for(const a in pressed){
     if(!prevPressed[a]){ input(a); held[a]=now+380; }
@@ -744,21 +419,13 @@ function poll(){
   prevPressed=pressed;
   requestAnimationFrame(poll);
 }
-function refreshHints(){
-  document.body.classList.toggle("has-pad",!!padKind);
-  if(!els.hints) return;
-  if(view==="games"){ setHints([["dpad","Browse"],["LR","Jump letter"],["A","Play"],["B","Back"]]); const p=els.games&&els.games.querySelector(".play"); if(p) p.innerHTML=playLabel(); }
-  else setHints([["dpad","Choose"],["A","Open"]]);
-}
-addEventListener("gamepadconnected",()=>{});
 requestAnimationFrame(poll);
 
-/* clock */
-function tick(){ const c=$("clock"); if(c) c.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); }
-setInterval(tick, 15000);
+setInterval(()=>{ const c=$("clock"); if(c) c.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); }, 15000);
 
 let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>{
-  if(view==="games"&&els.games){ sizeGames(); updateGames(true); } else if(els.carousel){ sizeConsoles(); updateConsoles(true); }
+  if(!library.length || !els.stage) return;
+  if(view==="games"){ sizeGames(); updateGames(true); } else { sizeConsoles(); updateConsoles(); }
 },80); });
 
 let tt; function toast(msg){ const t=$("toast"); t.textContent=msg; t.hidden=false; clearTimeout(tt); tt=setTimeout(()=>t.hidden=true,3000); }
@@ -784,7 +451,6 @@ $("lpl").addEventListener("change", async e=>{
     }catch(err){ bad.push(f.name); }
   }
   library=next.sort((a,b)=>info(a.system).order-info(b.system).order || a.system.localeCompare(b.system));
-  library.forEach(s=>delete s.keys);
   save(); view="consoles"; ci=Math.max(0,library.findIndex(s=>s.system===ui.sys)); history.replaceState({v:"consoles"},""); render();
   toast(bad.length?`Couldn't read ${bad.join(", ")}. Pick the .lpl files in RetroArch › playlists.`:`Loaded ${added} games`);
   e.target.value="";
@@ -794,8 +460,7 @@ $("lpl").addEventListener("change", async e=>{
    The service worker serves the app network-first, so a cold start always gets the newest index.html.
    iOS often resumes a home-screen app instead of reloading it, so on every return to the app we also
    fetch the page, compare its version, and reload if it changed. Library and position survive the reload. */
-const canSW = "serviceWorker" in navigator && /^https?:$/.test(location.protocol);
-if(canSW){
+if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
   navigator.serviceWorker.register("sw.js?v="+encodeURIComponent(APP_VERSION), {scope:"./", updateViaCache:"none"}).catch(()=>{});
 }
 let lastCheck=0;
