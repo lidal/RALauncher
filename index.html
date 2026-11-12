@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.0.0">
+<meta name="app-version" content="2.1.0">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -48,10 +48,9 @@ img{-webkit-user-drag:none}
 /* ---------- consoles ---------- */
 .consoles{position:absolute;inset:0;display:grid;grid-template-rows:1fr auto}
 .carousel{position:relative;min-height:0}
-.cons{position:absolute;left:50%;bottom:12%;width:var(--cw);height:var(--chh);margin-left:calc(var(--cw) / -2);
-  transform-origin:50% 100%;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .4s ease;cursor:pointer}
-.cons img{width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block;position:relative}
-.cons::before{content:"";position:absolute;left:14%;right:14%;bottom:-2.5%;height:5%;border-radius:50%;background:rgba(0,0,0,.6);filter:blur(12px)}
+.cons{position:absolute;left:50%;top:50%;width:var(--cw);height:var(--chh);margin:calc(var(--chh) / -2) 0 0 calc(var(--cw) / -2);
+  transform-origin:50% 50%;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .4s ease;cursor:pointer}
+.cons img{width:100%;height:100%;object-fit:contain;display:block}
 .cons .noimg{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;font-size:calc(var(--chh) * .14);font-weight:700;color:#3a3a3a;text-align:center}
 .caption{text-align:center;padding:0 var(--sr) 20px var(--sl);min-height:88px}
 .caption h2{font-size:clamp(26px,3.4vh + 1vw,40px);font-weight:700;letter-spacing:-.02em;margin:0 0 4px}
@@ -118,7 +117,7 @@ img{-webkit-user-drag:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.0.0";
+const APP_VERSION = "2.1.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -141,11 +140,11 @@ const SYSTEMS = [
   ["FBNeo - Arcade Games","Arcade","arcade",.75],
   ["MAME","Arcade","arcade",.75]
 ];
-/* public-domain console photos in img/consoles (see img/consoles/CREDITS.md) */
-const PHOTOS = new Set(["nes","fds","snes","n64","gc","gb","gbc","gba","nds","vb","sms","md","dc","pce","ps1","arcade"]);
+/* flat system icons in img/systems: RetroArch "Retrosystem" theme, CC BY 4.0 (see img/systems/CREDITS.md) */
+const ICONS = new Set(["nes","fds","snes","n64","gc","gb","gbc","gba","nds","vb","sms","md","dc","pce","ps1","arcade"]);
 const SYS = Object.fromEntries(SYSTEMS.map((s,i)=>[s[0],{short:s[1],img:s[2],ar:s[3],order:i}]));
 function info(name){ return SYS[name] || {short:name.replace(/^.*? - /,""),img:null,ar:.75,order:999}; }
-function photo(key){ return key && PHOTOS.has(key) ? `img/consoles/${key}.webp` : null; }
+function photo(key){ return key && ICONS.has(key) ? `img/systems/${key}.svg` : null; }
 
 /* ---------- data ---------- */
 let library = load();
@@ -209,7 +208,7 @@ function renderEmpty(){
       </ol>
       <label class="primary" for="lpl">Choose playlists</label>
     </div>
-    <img src="img/consoles/snes.webp" alt="">
+    <img src="img/systems/snes.svg" alt="">
   </div>`;
 }
 
@@ -238,7 +237,7 @@ function buildConsoles(){
 }
 function sizeConsoles(){
   const h=els.carousel.clientHeight, w=els.carousel.clientWidth;
-  els.ch = h*(h<300?.68:.6); els.cw = Math.min(els.ch*1.45, w*.42);
+  els.ch = Math.min(h*1.05, w*.4); els.cw = els.ch;
   els.carousel.style.setProperty("--cw", els.cw+"px");
   els.carousel.style.setProperty("--chh", els.ch+"px");
 }
@@ -246,8 +245,8 @@ function updateConsoles(){
   const cw=els.cw;
   els.carousel.querySelectorAll(".cons").forEach(el=>{
     const o=+el.dataset.i-ci, a=Math.abs(o);
-    const x = a===0?0:Math.sign(o)*cw*(.9+(a-1)*.5);
-    el.style.transform=`translateX(${x}px) scale(${a===0?1:.48})`;
+    const x = a===0?0:Math.sign(o)*cw*(.86+(a-1)*.56);
+    el.style.transform=`translateX(${x}px) scale(${a===0?1:.56})`;
     el.style.opacity = a===0?1:a===1?.4:a===2?.14:0;
     el.style.zIndex = 10-a;
   });

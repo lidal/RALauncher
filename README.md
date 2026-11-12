@@ -6,7 +6,7 @@ Arcade Shelf: a PWA launcher for RetroArch on iPad/iPhone, built to be driven by
 - Games: a row of box art (from the libretro thumbnail server) with the selected game's title below. LB/RB (or up/down) jumps by letter, A launches in RetroArch, B goes back.
 - Touch and keyboard work too (swipe or tap, arrows, Enter, Esc, PageUp/PageDown).
 
-Console photos are public domain, by Evan Amos (see `img/consoles/CREDITS.md`).
+System icons are from RetroArch's Retrosystem theme, CC BY 4.0 (see `img/systems/CREDITS.md`).
 
 Add it to the home screen from Safari, then tap **Update library** and pick the `.lpl` playlists from `RetroArch › playlists`.
 
