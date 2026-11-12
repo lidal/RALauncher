@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arcade Shelf</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arcade Shelf">
+<meta name="theme-color" content="#0c0e1a">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAE6ElEQVR4Xu3dMU5bQRSFYRMhCoRoI9mt90DNRiiQSyoqlkBFRWlReCPU7CGtI3kDKaIUUTTSk+PnN/Z9njkzvvN/XYQS8PjozL08klzc3E4nwD7fOBYMIRwgHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0Bu0v7b8nlabnO9Uefm/fFrIYv+aL4P1JLJiLKpqRYOMiESZGUlBlISYZVkRNTN0eRF+mJskKk4YgnY/Vy7+ldPMXD62cNg4guHEPJIBMRQynR9IcoHHuTQSyOtDcignwowtEl4+P57sjjQMTj21f4aO58ZN9WmEDzyX220u+Qhshzm4wWH1STy9sc/WiTjFP0Ty9reWQMB8nIQZmPjOHYQWekIjtJ6czx5/evVAfUssura83Lz9UcO3eKLOyN2DnPTJOHtDlkkUcSuZoDDmQJB3eKgOBmyRIO+CCdOdhWkpCNbjQHBkmbQxZ5JEFzYBDhAOGAnXTmKLutbFbz7w8/7EdUHdno1ta1slnNN6t5de92raTNIYt83GY1ny1+1vqOVKSt5uisl9P1clrR+1ClRsMRkI+4psMR8kFEhkhnjrLbSsR6OT2jRUY2urXeHB0WmT5pc8giP1pYdNllAppjD6YQwnFgCiEiNMeBiEQ/7px05qh2W4kvMpPJpKpdRja60RxHaXOXkTaHLPKZtPZQhuawaeo7qoRjjEYWGcIxUgsVIp05znFbiSvyUEY2utEcp3K8yEibQxZ5PZcPZWiOlJwNqoQjMU+DKuHIwkeFSGcOf9tKkYcystFNGo6mVPWsbhxpOGSRL262+OngxUrD0QJPP2LIQJqSp2RMJjRHIs5iEUivFZfbin7wlE0zXCsn0SdDSdocssgLhHvE0yvqoznGcDlh9Embw4FGYhHQHAZNJYNt5VhVDZ6yQYdr5YCqYiEmDYcs8qn4eEQymjQcZ6S18WIvBtI9SEZAc/yHWGyThqPmZytnNHjKRjeulX/OKBlK0uaQRf54LTwiGa3p5mDCiJM2Rz2IxTFabA6ScSRpcxTfVnwMnrLRraHm8JEMJWlzyCKPJBpqDlgRDgwiHBgknTmKbys+yEY3mgN1NIcs8kgiS3O8L2bbX9zD62eSrxWRU9058ySyhAM+EA4Muri5zfX/zTwt19ufdvVyz7aSxOXV9c5NneNO4W+8IUb3fY6H18/Vyz3vxulkA37GmaPfdbJX5Vj/DDPdKdmvFfKRljIZ2cOxF/0xjv7cMm4rnW5t+Xi+G3cu2Pb49hV+me9CCTLOHJ3cr6FNglNVNEew822PDitMxNBVIkjGZCIMRyQfASnpxMcLTTLU4TiYDxwkS0aBcMSvGEQoYxEoBtI+/es8d0VOTDeQDhkaVCFYVuPKh6NDSjpFeqKvonCgNmVmDpwFwoFBhAOEA3a6nwTTk60/lSwXyfncVmSx2OYvIswcaGnmKFIbLp8p0hxoqTmQisPmKDUYlvq8+TgMB1LxucoGssnUX2cEnsOBE3GtgG0FdjQHaA7Y0RygOWBHc4DmgB3NAZoDdjQHaA7Y0RygOWBHc4DmgB3NAZoDdjQHaA7Y0RygOWBHc4DmgN1fqXYycRUK/xYAAAAASUVORK5CYII=">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAE6ElEQVR4Xu3dMU5bQRSFYRMhCoRoI9mt90DNRiiQSyoqlkBFRWlReCPU7CGtI3kDKaIUUTTSk+PnN/Z9njkzvvN/XYQS8PjozL08klzc3E4nwD7fOBYMIRwgHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0BO5oDNAfsaA7QHLCjOUBzwI7mAM0Bu0v7b8nlabnO9Uefm/fFrIYv+aL4P1JLJiLKpqRYOMiESZGUlBlISYZVkRNTN0eRF+mJskKk4YgnY/Vy7+ldPMXD62cNg4guHEPJIBMRQynR9IcoHHuTQSyOtDcignwowtEl4+P57sjjQMTj21f4aO58ZN9WmEDzyX220u+Qhshzm4wWH1STy9sc/WiTjFP0Ty9reWQMB8nIQZmPjOHYQWekIjtJ6czx5/evVAfUssura83Lz9UcO3eKLOyN2DnPTJOHtDlkkUcSuZoDDmQJB3eKgOBmyRIO+CCdOdhWkpCNbjQHBkmbQxZ5JEFzYBDhAOGAnXTmKLutbFbz7w8/7EdUHdno1ta1slnNN6t5de92raTNIYt83GY1ny1+1vqOVKSt5uisl9P1clrR+1ClRsMRkI+4psMR8kFEhkhnjrLbSsR6OT2jRUY2urXeHB0WmT5pc8giP1pYdNllAppjD6YQwnFgCiEiNMeBiEQ/7px05qh2W4kvMpPJpKpdRja60RxHaXOXkTaHLPKZtPZQhuawaeo7qoRjjEYWGcIxUgsVIp05znFbiSvyUEY2utEcp3K8yEibQxZ5PZcPZWiOlJwNqoQjMU+DKuHIwkeFSGcOf9tKkYcystFNGo6mVPWsbhxpOGSRL262+OngxUrD0QJPP2LIQJqSp2RMJjRHIs5iEUivFZfbin7wlE0zXCsn0SdDSdocssgLhHvE0yvqoznGcDlh9Embw4FGYhHQHAZNJYNt5VhVDZ6yQYdr5YCqYiEmDYcs8qn4eEQymjQcZ6S18WIvBtI9SEZAc/yHWGyThqPmZytnNHjKRjeulX/OKBlK0uaQRf54LTwiGa3p5mDCiJM2Rz2IxTFabA6ScSRpcxTfVnwMnrLRraHm8JEMJWlzyCKPJBpqDlgRDgwiHBgknTmKbys+yEY3mgN1NIcs8kgiS3O8L2bbX9zD62eSrxWRU9058ySyhAM+EA4Muri5zfX/zTwt19ufdvVyz7aSxOXV9c5NneNO4W+8IUb3fY6H18/Vyz3vxulkA37GmaPfdbJX5Vj/DDPdKdmvFfKRljIZ2cOxF/0xjv7cMm4rnW5t+Xi+G3cu2Pb49hV+me9CCTLOHJ3cr6FNglNVNEew822PDitMxNBVIkjGZCIMRyQfASnpxMcLTTLU4TiYDxwkS0aBcMSvGEQoYxEoBtI+/es8d0VOTDeQDhkaVCFYVuPKh6NDSjpFeqKvonCgNmVmDpwFwoFBhAOEA3a6nwTTk60/lSwXyfncVmSx2OYvIswcaGnmKFIbLp8p0hxoqTmQisPmKDUYlvq8+TgMB1LxucoGssnUX2cEnsOBE3GtgG0FdjQHaA7Y0RygOWBHc4DmgB3NAZoDdjQHaA7Y0RygOWBHc4DmgB3NAZoDdjQHaA7Y0RygOWBHc4DmgN1fqXYycRUK/xYAAAAASUVORK5CYII=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: a console shelf. System tabs across the top, box-art grid below, tap a cover to play. */
+:root{
+  --bg:#0c0e1a; --panel:#151a2e; --line:#252c48; --fg:#e8ecf8; --muted:#8b93b3;
+  --accent:#78aaff; --warm:#ffbe5a;
+  --display:"Chakra Petch", "Avenir Next Condensed", system-ui, sans-serif;
+  --body:"Inter", -apple-system, system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;
+  background:radial-gradient(1200px 700px at 85% -10%, #1b2a55 0%, transparent 60%),
+             radial-gradient(900px 600px at -10% 110%, #2a1a48 0%, transparent 60%), var(--bg);
+  background-attachment:fixed;
+  padding:env(safe-area-inset-top,0) max(20px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 4px);mix-blend-mode:multiply;opacity:.5}
+header{display:flex;align-items:center;gap:16px;padding-block:22px 10px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,38px);letter-spacing:.04em;margin:0;text-transform:uppercase}
+h1 span{color:var(--accent)}
+.spacer{flex:1}
+button,.btn{font:600 14px/1 var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:11px 16px;cursor:pointer}
+button:focus-visible,.card:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-block:10px 18px;scrollbar-width:none;position:sticky;top:0;z-index:5;
+  background:linear-gradient(var(--bg) 70%, transparent);margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px))}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:10px 16px}
+.tab[aria-selected="true"]{color:#0c0e1a;background:var(--accent);border-color:var(--accent)}
+.tab small{font-family:var(--body);font-weight:500;opacity:.7;margin-left:6px;letter-spacing:0}
+.meta{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;color:var(--muted);font-size:13px}
+.meta b{font-family:var(--display);font-size:20px;color:var(--fg);letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:22px 18px}
+.card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;cursor:pointer;min-width:0;border:0;background:none;padding:0;text-align:left}
+.art{aspect-ratio:3/4;max-width:100%;border-radius:10px;overflow:hidden;background:var(--panel);border:1px solid var(--line);
+  display:grid;place-items:center;transition:transform .18s ease, box-shadow .18s ease;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.art img{width:100%;height:100%;object-fit:contain;background:#0a0c16}
+.card:active .art{transform:scale(.96)}
+@media (hover:hover){.card:hover .art{transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.5),0 0 0 2px var(--accent)}}
+.fallback{padding:14px;font-family:var(--display);font-weight:600;font-size:17px;line-height:1.15;text-align:center;color:var(--fg);text-wrap:balance;
+  background:linear-gradient(160deg,#1f2950,#141a30);width:100%;height:100%;display:grid;place-items:center}
+.title{font-size:13px;font-weight:500;line-height:1.3;color:var(--fg);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.empty{max-width:560px;margin:8vh auto;text-align:center;color:var(--muted);line-height:1.6}
+.empty h2{font-family:var(--display);color:var(--fg);letter-spacing:.04em;text-transform:uppercase}
+.note{font-size:12px;color:var(--warm);margin-left:auto}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);
+  padding:12px 16px;border-radius:12px;font-size:14px;max-width:90vw;z-index:20}
+code{font-size:12px;background:var(--panel);padding:2px 6px;border-radius:6px;word-break:break-all}
+@media (prefers-reduced-motion:reduce){.art{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Arcade <span>Shelf</span></h1>
+  <div class="spacer"></div>
+  <label class="btn" for="lpl">Load playlists</label>
+  <input id="lpl" type="file" multiple hidden>
+</header>
+<nav class="tabs" id="tabs" role="tablist"></nav>
+<main id="main"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const KEY = "arcade-shelf-library-v1";
+const SHORT = { // nicer tab names for libretro system names
+  "Nintendo - Game Boy Advance":"GBA","Nintendo - Game Boy":"Game Boy","Nintendo - Game Boy Color":"GBC",
+  "Nintendo - Nintendo Entertainment System":"NES","Nintendo - Super Nintendo Entertainment System":"SNES",
+  "Nintendo - Nintendo 64":"N64","Nintendo - GameCube":"GameCube","Nintendo - Nintendo DS":"DS",
+  "Nintendo - Virtual Boy":"Virtual Boy","Sega - Mega Drive - Genesis":"Genesis","Sega - Master System - Mark III":"Master System",
+  "Sega - Dreamcast":"Dreamcast","Sony - PlayStation":"PlayStation","NEC - PC Engine - TurboGrafx 16":"PC Engine","FBNeo - Arcade Games":"Arcade"
+};
+// Example shelf shown until real playlists are loaded (filenames are guesses).
+const EXAMPLE = [{system:"Nintendo - Game Boy Advance", example:true, games:[
+  "Kurukuru Kururin (Europe)","Mario & Luigi - Superstar Saga (USA)","Mario Golf - Advance Tour (USA)",
+  "Metroid - Zero Mission (Europe) (En,Fr,De,Es,It)","Metroid Fusion (USA)","Pokemon - Sapphire Version (USA, Europe)"
+].map(l=>({label:l,file:l+".gba"}))}];
+
+let library = load() || EXAMPLE;
+let current = 0;
+
+function load(){ try{ const s=localStorage.getItem(KEY); return s?JSON.parse(s):null }catch(e){ return null } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(library)) }catch(e){} }
+
+function thumbURL(system,label){
+  const clean = label.replace(/[&*\/:`<>?\\|"]/g,"_");
+  return "https://thumbnails.libretro.com/"+encodeURIComponent(system)+"/Named_Boxarts/"+encodeURIComponent(clean)+".png";
+}
+function fileOf(path){ const p=(path||"").split("#")[0]; return p.split(/[\\/]/).pop(); }
+function shortName(s){ return SHORT[s] || s.replace(/^.*? - /,""); }
+
+function renderTabs(){
+  const t=document.getElementById("tabs"); t.innerHTML="";
+  library.forEach((sys,i)=>{
+    const b=document.createElement("button"); b.className="tab"; b.role="tab"; b.id="tab-"+i;
+    b.setAttribute("aria-selected", i===current);
+    b.innerHTML=shortName(sys.system)+"<small>"+sys.games.length+"</small>";
+    b.onclick=()=>{ current=i; try{localStorage.setItem(KEY+"-tab",i)}catch(e){}; render(); };
+    t.appendChild(b);
+  });
+}
+function render(){
+  renderTabs();
+  const m=document.getElementById("main"); m.innerHTML="";
+  const sys=library[current]; if(!sys){ m.innerHTML='<div class="empty"><h2>No games yet</h2><p>Tap Load playlists.</p></div>'; return; }
+  const meta=document.createElement("div"); meta.className="meta";
+  meta.innerHTML="<b>"+esc(sys.system.replace(/^.*? - /,""))+"</b><span>"+sys.games.length+" games</span>"+
+    (sys.example?'<span class="note">Example shelf. Tap Load playlists to use your own library.</span>':"");
+  m.appendChild(meta);
+  const g=document.createElement("div"); g.className="grid";
+  sys.games.forEach(game=>{
+    const c=document.createElement("a"); c.className="card";
+    c.href="retroarch://game/"+encodeURIComponent(game.file);
+    c.onclick=()=>toast("Opening "+game.label+" in RetroArch");
+    const art=document.createElement("div"); art.className="art";
+    const img=new Image(); img.loading="lazy"; img.alt=""; img.src=thumbURL(sys.system,game.label);
+    img.onerror=()=>{ art.innerHTML='<div class="fallback">'+esc(game.label.replace(/\s*\(.*$/,""))+'</div>'; };
+    art.appendChild(img);
+    const t=document.createElement("div"); t.className="title"; t.textContent=game.label.replace(/\s*\(.*$/,"");
+    c.append(art,t); g.appendChild(c);
+  });
+  m.appendChild(g);
+}
+function esc(s){ return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+let tt; function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.hidden=false; clearTimeout(tt); tt=setTimeout(()=>t.hidden=true,2600); }
+
+document.getElementById("lpl").addEventListener("change", async e=>{
+  const files=[...e.target.files]; if(!files.length) return;
+  const fresh = library.filter(s=>!s.example);
+  let added=0, bad=[];
+  for(const f of files){
+    try{
+      const data=JSON.parse(await f.text());
+      const fallbackSys=f.name.replace(/\.lpl$/i,"");
+      const bySys={};
+      (data.items||[]).forEach(it=>{
+        const sysName=(it.db_name||"").replace(/\.lpl$/i,"") || fallbackSys;
+        (bySys[sysName] ||= []).push({label:it.label||fileOf(it.path).replace(/\.[^.]+$/,""), file:fileOf(it.path)});
+      });
+      for(const [sysName,games] of Object.entries(bySys)){
+        const i=fresh.findIndex(s=>s.system===sysName);
+        games.sort((a,b)=>a.label.localeCompare(b.label));
+        if(i>=0) fresh[i].games=games; else fresh.push({system:sysName,games});
+        added+=games.length;
+      }
+    }catch(err){ bad.push(f.name); }
+  }
+  if(fresh.length){
+    library=fresh.sort((a,b)=>shortName(a.system).localeCompare(shortName(b.system)));
+    current=0; save(); render();
+  }
+  toast(bad.length ? "Could not read "+bad.join(", ")+". Pick .lpl files from RetroArch › playlists." : "Loaded "+added+" games");
+  e.target.value="";
+});
+
+try{ const t=+localStorage.getItem(KEY+"-tab"); if(t>=0 && t<library.length) current=t; }catch(e){}
+render();
+</script>
+</body>
+</html>
