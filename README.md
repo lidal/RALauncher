@@ -27,7 +27,7 @@ Tap **Update library** whenever you add games in RetroArch.
 
 iOS also counts pulling down Control Center as RetroArch "closing", so the automation runs a shortcut that first checks RetroArch really is gone.
 
-**1. Make the shortcut** (Shortcuts › **+**, name it "Back to Arcade Shelf"):
+**1. Get the shortcut:** [Back to Arcade Shelf](https://www.icloud.com/shortcuts/d054cdb1502243bba798543ed64d9a7e). Or build it yourself (Shortcuts › **+**):
 
 1. **Get Current App**
 2. **If** *Current App* **is not** *RetroArch*
@@ -36,7 +36,7 @@ iOS also counts pulling down Control Center as RetroArch "closing", so the autom
 
 The `webapp://` prefix opens the Home Screen app rather than Safari. If you host the launcher elsewhere, put your own address after `webapp://`.
 
-**2. Make the automation:** Shortcuts › Automation › New Automation › **App** › **RetroArch**, tick **Is Closed** only, **Run Immediately**. Then add **Run Shortcut** › **Back to Arcade Shelf**.
+**2. Make the automation:** Shortcuts › Automation › New Automation › **App** › **RetroArch**, tick **Is Closed** only, **Run Immediately**. Then add **Run Shortcut** and pick the shortcut from step 1.
 
 ## Good to know
 
