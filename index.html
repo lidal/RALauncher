@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.4.0">
+<meta name="app-version" content="2.4.1">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -112,7 +112,7 @@ img{-webkit-user-drag:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.4.0";
+const APP_VERSION = "2.4.1";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -231,8 +231,8 @@ function bottomBar(hints, withLibrary){
    then settles on the nearest item. Only items near the focus exist in the DOM. */
 class Flow{
   constructor(host,o){
-    Object.assign(this,{host,count:o.count,make:o.make,onFocus:o.onFocus,onTap:o.onTap,angle:o.angle||62,
-      gapF:o.gap||.78,spacingF:o.spacing||.24,depthF:o.depth||.55,fade:!!o.fade,
+    Object.assign(this,{host,count:o.count,make:o.make,onFocus:o.onFocus,onTap:o.onTap,angle:o.angle??62,
+      gapF:o.gap||.78,spacingF:o.spacing||.24,depthF:o.depth||.55,flatScale:o.shrink??.4,fade:!!o.fade,
       pos:o.start||0,target:o.start||0,vel:0,speed:0,items:new Map(),focus:-1,raf:0,last:0,drag:null});
     host.classList.add("flow");
     this.tick=this.tick.bind(this);
@@ -245,7 +245,7 @@ class Flow{
     const H=this.host;
     Object.assign(this,{w,h,gap:w*this.gapF,spacing:w*this.spacingF,depth:w*this.depthF,unit:w*.36});
     H.style.setProperty("--cfw",w+"px"); H.style.setProperty("--cfh",h+"px"); H.style.setProperty("--cft",top+"px");
-    H.style.perspective=(w*3.4)+"px";
+    H.style.perspective=this.angle?(w*3.4)+"px":"none";
     this.radius=Math.ceil((H.clientWidth/2-this.gap)/this.spacing)+2;
     this.items.forEach(el=>el.remove()); this.items.clear();
     this.render();
@@ -284,7 +284,9 @@ class Flow{
     for(const [k,el] of this.items){
       const d=k-this.pos, a=Math.abs(d), t=Math.max(-1,Math.min(1,d));
       const x = a<=1 ? d*this.gap : Math.sign(d)*(this.gap+(a-1)*this.spacing);
-      el.style.transform=`translate3d(${x.toFixed(1)}px,0,${(-Math.min(a,1)*this.depth).toFixed(1)}px) rotateY(${(-t*this.angle).toFixed(2)}deg)`.replace(" rotateY(0.00deg)","").replace(" rotateY(-0.00deg)","");
+      el.style.transform = this.angle
+        ? `translate3d(${x.toFixed(1)}px,0,${(-Math.min(a,1)*this.depth).toFixed(1)}px) rotateY(${(-t*this.angle).toFixed(2)}deg)`
+        : `translateX(${x.toFixed(1)}px) scale(${(1-Math.min(a,1)*this.flatScale).toFixed(4)})`;   // flat: plain 2D, no perspective
       el.style.zIndex=1000-Math.round(a*10);
       const edge = a>R-1.5 ? Math.max(0,R-.5-a) : 1;
       const dim=Math.min(a,1)*.55+Math.max(0,a-1)*.05;
@@ -337,7 +339,7 @@ function buildConsoles(){
   els.top.innerHTML = `<h1>Consoles</h1><div class="spacer"></div>${clockHTML()}`;
   els.stage.innerHTML = `<section class="consoles"><div id="flow"></div><div class="caption" id="caption"></div></section>`;
   els.caption=$("caption");
-  els.flow=new Flow($("flow"),{count:library.length,start:ci,angle:0,gap:1.1,spacing:.74,depth:1.6,fade:true,
+  els.flow=new Flow($("flow"),{count:library.length,start:ci,angle:0,gap:1.06,spacing:.66,shrink:.4,fade:true,
     make:i=>{ const el=document.createElement("div"), s=library[i], p=photo(info(s.system).img);
       el.innerHTML=`<div class="cover">${p?`<img src="${p}" alt="" draggable="false">`:`<div class="noimg">${esc(info(s.system).short)}</div>`}</div>`; return el; },
     onFocus:i=>{ ci=i; const s=sys();
