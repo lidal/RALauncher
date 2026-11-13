@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.5.0">
+<meta name="app-version" content="2.5.1">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -76,6 +76,9 @@ img{-webkit-user-drag:none}
 .g{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:700;line-height:1}
 .g.sq{border-radius:6px}
 .g svg{width:14px;height:14px}
+.g.face{background:none;color:var(--fg);padding:0;min-width:24px}
+.g.face svg{width:24px;height:24px}
+.g.wide svg{width:22px;height:13px}
 .textbtn{color:var(--muted);font-size:15px;padding:6px 0}
 .textbtn:active{color:var(--fg)}
 .ver{color:#555;font-size:13px}
@@ -112,7 +115,7 @@ img{-webkit-user-drag:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.5.0";
+const APP_VERSION = "2.5.1";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -180,12 +183,19 @@ const sys = ()=>library[ci];
 const $ = id=>document.getElementById(id);
 
 /* ---------- controller glyphs ---------- */
-let padKind = null; // null | "xbox" | "ps" | "nintendo"
+let padKind = null; // set while a controller is connected; hints only show then
+/* Controller-agnostic glyphs: face buttons are drawn by position (the filled dot in the diamond),
+   so they read the same on Xbox, PlayStation, Switch and MFi pads. */
 function glyph(btn){
-  const L={xbox:{A:"A",B:"B",X:"X",LB:"LB",RB:"RB"}, ps:{A:"✕",B:"○",X:"□",LB:"L1",RB:"R1"}, nintendo:{A:"B",B:"A",X:"Y",LB:"L",RB:"R"}}[padKind];
-  if(btn==="dpad") return `<span class="g"><svg viewBox="0 0 16 16"><path d="M6 1h4v5h5v4h-5v5H6v-5H1V6h5z" fill="currentColor"/></svg></span>`;
-  if(btn==="LR") return `<span class="g sq">${L.LB}</span><span class="g sq">${L.RB}</span>`;
-  return `<span class="g">${L[btn]}</span>`;
+  const face=pos=>{ const at={south:[12,19],east:[19,12],west:[5,12],north:[12,5]};
+    return `<span class="g face"><svg viewBox="0 0 24 24">${Object.entries(at).map(([k,[x,y]])=>
+      k===pos?`<circle cx="${x}" cy="${y}" r="4.2" fill="currentColor"/>`:`<circle cx="${x}" cy="${y}" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".55"/>`).join("")}</svg></span>`; };
+  if(btn==="ok") return face("south");
+  if(btn==="back") return face("east");
+  if(btn==="save") return face("west");
+  if(btn==="leftright") return `<span class="g wide"><svg viewBox="0 0 28 16"><path d="M9 3 4 8l5 5M19 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+  if(btn==="LR") return `<span class="g sq">L</span><span class="g sq">R</span>`;
+  return "";
 }
 
 /* ---------- rendering ---------- */
@@ -225,7 +235,7 @@ function clockHTML(){ return `<span class="clock" id="clock">${new Date().toLoca
 
 function bottomBar(hints, withLibrary){
   els.hints=hints; els.withLibrary=withLibrary;
-  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><button class="textbtn" id="offline">${offlineLabel()}</button><span class="ver">v${APP_VERSION}</span>`:"")
+  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button>${padKind&&!offlineJob?"":`<button class="textbtn" id="offline">${offlineLabel()}</button>`}<span class="ver">v${APP_VERSION}</span>`:"")
     + `<div class="spacer"></div>` + (padKind ? hints.map(([g,t])=>`<span class="h">${glyph(g)}${t}</span>`).join("") : "");
   const r=$("reload"); if(r) r.onclick=()=>$("lpl").click();
   const o=$("offline"); if(o) o.onclick=saveOffline;
@@ -352,7 +362,7 @@ function buildConsoles(){
       els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}</p>`;
       ui.sys=s.system; saveUISoon(); },
     onTap:()=>input("ok")});
-  bottomBar([["dpad","Choose"],["A","Open"],["X","Save offline"]], true);
+  bottomBar([["leftright","Browse consoles"],["ok","Open"],["save","Save artwork offline"]], true);
   sizeConsoles();
 }
 function sizeConsoles(){
@@ -374,7 +384,7 @@ function buildGames(){
       <div class="caption"><h2 id="title"></h2><p id="details"></p></div></section>`;
   Object.assign(els,{letter:$("letter"),title:$("title"),details:$("details")});
   els.flow=new Flow($("flow"),{count:s.games.length,start:gi,make:coverEl,onFocus:focusGame,onTap:()=>input("ok")});
-  bottomBar([["dpad","Browse"],["LR","Jump to letter"],["A","Play"],["B","Back"]], false);
+  bottomBar([["leftright","Browse games"],["LR","Jump to letter"],["ok","Play"],["back","Back"]], false);
   sizeGames();
 }
 function sizeGames(){
