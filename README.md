@@ -25,13 +25,18 @@ Tap **Update library** whenever you add games in RetroArch.
 
 ## Come back here when you leave RetroArch
 
-Use a Shortcuts automation so closing RetroArch drops you back in the launcher:
+iOS also counts pulling down Control Center as RetroArch "closing", so the automation runs a shortcut that first checks RetroArch really is gone.
 
-1. **Shortcuts › Automation › New Automation › App**.
-2. Choose **RetroArch**, tick **Is Closed** only, and pick **Run Immediately**.
-3. Add an **Open URLs** action with `webapp://lidal.github.io/RALauncher`. The `webapp://` prefix opens the Home Screen app rather than Safari. If you host the launcher elsewhere, use your own address after `webapp://`.
+**1. Make the shortcut** (Shortcuts › **+**, name it "Back to Arcade Shelf"):
 
-"Is Closed" fires when you leave RetroArch, for example by quitting a game and swiping home.
+1. **Get Current App**
+2. **If** *Current App* **is not** *RetroArch*
+3. Inside the If: **Open URLs** `webapp://lidal.github.io/RALauncher`
+4. **End If**
+
+The `webapp://` prefix opens the Home Screen app rather than Safari. If you host the launcher elsewhere, put your own address after `webapp://`.
+
+**2. Make the automation:** Shortcuts › Automation › New Automation › **App** › **RetroArch**, tick **Is Closed** only, **Run Immediately**. Then add **Run Shortcut** › **Back to Arcade Shelf**.
 
 ## Good to know
 
