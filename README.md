@@ -29,7 +29,7 @@ Use a Shortcuts automation so closing RetroArch drops you back in the launcher:
 
 1. **Shortcuts › Automation › New Automation › App**.
 2. Choose **RetroArch**, tick **Is Closed** only, and pick **Run Immediately**.
-3. Add an **Open App** action and pick **Arcade Shelf**. If it isn't in the list (iOS doesn't always offer web apps there), use **Open URLs** with the launcher's address instead. That opens it in Safari rather than as the Home Screen app.
+3. Add an **Open URLs** action with `webapp://lidal.github.io/RALauncher`. The `webapp://` prefix opens the Home Screen app rather than Safari. If you host the launcher elsewhere, use your own address after `webapp://`.
 
 "Is Closed" fires when you leave RetroArch, for example by quitting a game and swiping home.
 
