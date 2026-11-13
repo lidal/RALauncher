@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.4.1">
+<meta name="app-version" content="2.5.0">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -112,7 +112,7 @@ img{-webkit-user-drag:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.4.1";
+const APP_VERSION = "2.5.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -171,13 +171,18 @@ function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 function splitTitle(label){ const m=label.match(/^(.*?)\s*([(\[].*)$/); return m?[m[1], m[2].split(/[()\[\]]/).map(s=>s.trim()).filter(Boolean)]:[label,[]]; }
 function letterOf(label){ const c=label.replace(/^(the|a)\s+/i,"").trim().charAt(0).toUpperCase(); return /[A-Z]/.test(c)?c:"#"; }
 const failed = new Set();
+/* box art cache, filled by the service worker (sw.js). A cached response that turns out not to be an
+   image (the server's 404s look the same as hits to the worker) is removed so it can't stick. */
+const ART_CACHE = "arcade-art-v1";
+function forgetArt(url){ if(window.caches) caches.open(ART_CACHE).then(c=>c.delete(url)).catch(()=>{}); }
+addEventListener("online",()=>failed.clear());
 const sys = ()=>library[ci];
 const $ = id=>document.getElementById(id);
 
 /* ---------- controller glyphs ---------- */
 let padKind = null; // null | "xbox" | "ps" | "nintendo"
 function glyph(btn){
-  const L={xbox:{A:"A",B:"B",LB:"LB",RB:"RB"}, ps:{A:"✕",B:"○",LB:"L1",RB:"R1"}, nintendo:{A:"B",B:"A",LB:"L",RB:"R"}}[padKind];
+  const L={xbox:{A:"A",B:"B",X:"X",LB:"LB",RB:"RB"}, ps:{A:"✕",B:"○",X:"□",LB:"L1",RB:"R1"}, nintendo:{A:"B",B:"A",X:"Y",LB:"L",RB:"R"}}[padKind];
   if(btn==="dpad") return `<span class="g"><svg viewBox="0 0 16 16"><path d="M6 1h4v5h5v4h-5v5H6v-5H1V6h5z" fill="currentColor"/></svg></span>`;
   if(btn==="LR") return `<span class="g sq">${L.LB}</span><span class="g sq">${L.RB}</span>`;
   return `<span class="g">${L[btn]}</span>`;
@@ -220,9 +225,10 @@ function clockHTML(){ return `<span class="clock" id="clock">${new Date().toLoca
 
 function bottomBar(hints, withLibrary){
   els.hints=hints; els.withLibrary=withLibrary;
-  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><span class="ver">v${APP_VERSION}</span>`:"")
+  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><button class="textbtn" id="offline">${offlineLabel()}</button><span class="ver">v${APP_VERSION}</span>`:"")
     + `<div class="spacer"></div>` + (padKind ? hints.map(([g,t])=>`<span class="h">${glyph(g)}${t}</span>`).join("") : "");
   const r=$("reload"); if(r) r.onclick=()=>$("lpl").click();
+  const o=$("offline"); if(o) o.onclick=saveOffline;
 }
 
 /* ---------- coverflow ----------
@@ -346,7 +352,7 @@ function buildConsoles(){
       els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}</p>`;
       ui.sys=s.system; saveUISoon(); },
     onTap:()=>input("ok")});
-  bottomBar([["dpad","Choose"],["A","Open"]], true);
+  bottomBar([["dpad","Choose"],["A","Open"],["X","Save offline"]], true);
   sizeConsoles();
 }
 function sizeConsoles(){
@@ -387,7 +393,7 @@ function coverEl(k){
   const fb=()=>{ cover.innerHTML=`<div class="fb" style="--fbs:${els.fbs}px">${esc(name)}</div>`; };
   if(failed.has(url)) fb(); else {
     const img=new Image(); img.alt=""; img.decoding="async"; img.draggable=false;
-    img.onerror=()=>{ failed.add(url); fb(); };
+    img.onerror=()=>{ failed.add(url); forgetArt(url); fb(); };
     img.dataset.src=url; cover.appendChild(img);
   }
   return el;
@@ -410,7 +416,7 @@ function setSnap(url){
   const img=new Image();
   img.onload=()=>{ if(snapWant!==url) return; snapFlip=!snapFlip; const show=snapFlip?a:b, hide=snapFlip?b:a;
     show.style.backgroundImage=`url("${url}")`; show.classList.add("on"); hide.classList.remove("on"); };
-  img.onerror=()=>{ failed.add(url); if(snapWant===url){ a.classList.remove("on"); b.classList.remove("on"); } };
+  img.onerror=()=>{ failed.add(url); forgetArt(url); if(snapWant===url){ a.classList.remove("on"); b.classList.remove("on"); } };
   img.src=url;
 }
 function showLetter(j){
@@ -425,7 +431,7 @@ function input(a){
   const f=els.flow;
   if(a==="left") f.go(-1);
   else if(a==="right") f.go(1);
-  else if(view==="consoles"){ if(a==="ok"){ ci=f.focus; history.pushState({v:"games"},""); buildGames(); } }
+  else if(view==="consoles"){ if(a==="save") saveOffline(); else if(a==="ok"){ ci=f.focus; history.pushState({v:"games"},""); buildGames(); } }
   else {
     const s=sys(), n=s.games.length, keys=s.keys, cur=Math.round(f.target);
     if(a==="next"||a==="down"){ const k=keys[cur]; let j=cur; while(j<n&&keys[j]===k) j++; if(j<n){ f.setTarget(j); showLetter(j); } }
@@ -456,7 +462,7 @@ addEventListener("keydown",e=>{
 });
 
 /* Gamepad, standard mapping: bottom face button confirms, right face button goes back. */
-const BTN={0:"ok",1:"back",4:"prev",5:"next",6:"prev",7:"next",12:"up",13:"down",14:"left",15:"right"};
+const BTN={0:"ok",1:"back",2:"save",4:"prev",5:"next",6:"prev",7:"next",12:"up",13:"down",14:"left",15:"right"};
 const REPEATS=new Set(["left","right","up","down","prev","next"]);
 const held={}; let prevPressed={}, ignoreUntilRelease=false;
 function padReset(){ prevPressed={}; for(const k in held) delete held[k]; ignoreUntilRelease=true; }
@@ -522,6 +528,37 @@ $("lpl").addEventListener("change", async e=>{
   toast(bad.length?`Couldn't read ${bad.join(", ")}. Pick the .lpl files in RetroArch › playlists.`:`Loaded ${added} games`);
   e.target.value="";
 });
+
+/* ---------- offline artwork ----------
+   Loads every game's box art and screenshot once, through the service worker, which keeps them.
+   Loading as images (not fetch) is what tells real art apart from the server's missing-file replies. */
+let offlineJob=null;
+function offlineLabel(){
+  if(!offlineJob) return "Save artwork offline";
+  return offlineJob.done ? `Artwork saved (${offlineJob.ok} images)` : `Saving artwork ${offlineJob.n} / ${offlineJob.total}`;
+}
+function refreshOfflineLabel(){ const o=$("offline"); if(o) o.textContent=offlineLabel(); }
+async function saveOffline(){
+  if(offlineJob && !offlineJob.done) return;
+  if(!navigator.serviceWorker || !navigator.serviceWorker.controller){ toast("Offline saving needs the installed app over the internet. Reopen it and try again."); return; }
+  if(!navigator.onLine){ toast("You're offline. Connect to the internet to save artwork."); return; }
+  if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+  const cache=await caches.open(ART_CACHE), urls=[];
+  for(const s of library) for(const g of s.games){ urls.push(thumbURL(s.system,g.label)); urls.push(thumbURL(s.system,g.label,"Named_Snaps")); }
+  const todo=[];
+  for(const u of urls) if(!failed.has(u) && !(await cache.match(u))) todo.push(u);
+  const job=offlineJob={n:urls.length-todo.length,total:urls.length,ok:urls.length-todo.length,done:false};
+  refreshOfflineLabel();
+  const one=u=>new Promise(res=>{ const im=new Image();
+    im.onload=()=>{ job.ok++; res(); };
+    im.onerror=()=>{ failed.add(u); cache.delete(u).catch(()=>{}); res(); };
+    im.src=u; });
+  let i=0;
+  const worker=async()=>{ while(i<todo.length && offlineJob===job){ await one(todo[i++]); job.n++; if(job.n%5===0||job.n===job.total) refreshOfflineLabel(); } };
+  await Promise.all([1,2,3,4,5,6].map(worker));
+  job.done=true; refreshOfflineLabel();
+  toast(`Artwork saved for offline use: ${job.ok} of ${job.total} images. The rest aren't on libretro's server.`, 6000);
+}
 
 /* ---------- updates ----------
    The service worker serves the app network-first, so a cold start always gets the newest index.html.
