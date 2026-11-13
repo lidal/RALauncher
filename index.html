@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.1.0">
+<meta name="app-version" content="2.2.0">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -30,7 +30,7 @@ img{-webkit-user-drag:none}
 /* the focused game's screenshot, faint and unblurred, pixels kept sharp */
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 #bg div{position:absolute;inset:0;background-size:cover;background-position:center;image-rendering:pixelated;opacity:0;transition:opacity .5s ease}
-#bg div.on{opacity:.07}
+#bg div.on{opacity:.06}
 
 .screen{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:auto 1fr auto}
 
@@ -45,33 +45,28 @@ img{-webkit-user-drag:none}
 
 .stage{position:relative;min-height:0;overflow:hidden}
 
-/* ---------- consoles ---------- */
-.consoles{position:absolute;inset:0;display:grid;grid-template-rows:1fr auto}
-.carousel{position:relative;min-height:0}
-.cons{position:absolute;left:50%;top:50%;width:var(--cw);height:var(--chh);margin:calc(var(--chh) / -2) 0 0 calc(var(--cw) / -2);
-  transform-origin:50% 50%;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .4s ease;cursor:pointer}
-.cons img{width:100%;height:100%;object-fit:contain;display:block}
-.cons .noimg{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;font-size:calc(var(--chh) * .14);font-weight:700;color:#3a3a3a;text-align:center}
-.caption{text-align:center;padding:0 var(--sr) 20px var(--sl);min-height:88px}
-.caption h2{font-size:clamp(26px,3.4vh + 1vw,40px);font-weight:700;letter-spacing:-.02em;margin:0 0 4px}
-.caption p{margin:0;color:var(--muted);font-size:17px}
+/* ---------- coverflow (shared by both screens) ---------- */
+.flow{position:relative;min-height:0;overflow:hidden;touch-action:none;cursor:grab}
+.flow.dragging{cursor:grabbing}
+.cf{position:absolute;left:50%;top:var(--cft);width:var(--cfw);height:var(--cfh);margin-left:calc(var(--cfw) / -2);
+  backface-visibility:hidden;will-change:transform}
+.cf .cover{position:absolute;inset:0;overflow:hidden;background:#222}
+.cf .cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cf .shade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+.cf .fb{width:100%;height:100%;display:flex;align-items:flex-end;padding:10%;font-weight:700;line-height:1.1;color:#ddd;background:#262626;font-size:var(--fbs)}
+.cf{-webkit-box-reflect:below 1px linear-gradient(transparent 62%,rgba(255,255,255,.22))}
+/* consoles: each icon sits on a card so it behaves exactly like a cover */
+.consoles .cf .cover{background:linear-gradient(#262626,#1d1d1d);border-radius:14px;padding:13%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.consoles .cf .cover img{object-fit:contain}
+.consoles .cf .shade{border-radius:14px}
+.cf .noimg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--cfh) * .14);font-weight:700;color:#3a3a3a;text-align:center}
 
-/* ---------- games ---------- */
-.games{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-bottom:2vh}
-.row{position:relative;flex:none;height:var(--rowh)}
-.track{position:absolute;left:0;top:50%;transition:transform .3s cubic-bezier(.2,.8,.2,1);will-change:transform}
-.track.jump{transition:none}
-.tile{position:absolute;top:0;transform:translateY(-50%);cursor:pointer}
-.tile .art{width:100%;height:100%;border-radius:6px;overflow:hidden;background:#222;opacity:.45;transition:opacity .25s ease}
-.tile img{width:100%;height:100%;object-fit:cover;display:block}
-.tile .fb{width:100%;height:100%;display:flex;align-items:flex-end;padding:10%;font-weight:700;line-height:1.1;color:#ddd;background:#262626;font-size:var(--fbs)}
-.tile.on .art{opacity:1}
-.tile.on::after{content:"";position:absolute;inset:-7px;border:3px solid var(--fg);border-radius:11px}
-.info{padding:6px var(--sr) 0 var(--sl);min-height:80px}
-.info h2{font-size:clamp(24px,3vh + .9vw,36px);font-weight:700;letter-spacing:-.02em;margin:0 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.info p{margin:0;color:var(--muted);font-size:17px;font-variant-numeric:tabular-nums}
-.letter{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:20px;background:rgba(20,20,20,.94);
-  border:1px solid #333;display:grid;place-items:center;font-size:64px;font-weight:700;opacity:0;transition:opacity .2s ease;pointer-events:none;z-index:3}
+.consoles,.games{position:absolute;inset:0;display:grid;grid-template-rows:1fr auto}
+.caption{text-align:center;padding:0 var(--sr) 18px var(--sl);min-height:84px}
+.caption h2{font-size:clamp(24px,3vh + .9vw,36px);font-weight:700;letter-spacing:-.02em;margin:0 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.caption p{margin:0;color:var(--muted);font-size:17px;font-variant-numeric:tabular-nums}
+.letter{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:20px;background:rgba(20,20,20,.94);
+  border:1px solid #333;display:grid;place-items:center;font-size:64px;font-weight:700;opacity:0;transition:opacity .2s ease;pointer-events:none;z-index:2000}
 .letter.on{opacity:1;transition:none}
 
 /* ---------- bottom bar ---------- */
@@ -117,7 +112,7 @@ img{-webkit-user-drag:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.1.0";
+const APP_VERSION = "2.2.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -221,42 +216,123 @@ function bottomBar(hints, withLibrary){
   const r=$("reload"); if(r) r.onclick=()=>$("lpl").click();
 }
 
+/* ---------- coverflow ----------
+   One engine for both screens. `pos` is a continuous index that eases toward `target` every frame.
+   Controller and keys move the target; a finger drags `pos` directly and a flick carries on with momentum,
+   then settles on the nearest item. Only items near the focus exist in the DOM. */
+class Flow{
+  constructor(host,o){
+    Object.assign(this,{host,count:o.count,make:o.make,onFocus:o.onFocus,onTap:o.onTap,angle:o.angle||62,
+      gapF:o.gap||.78,spacingF:o.spacing||.24,fade:!!o.fade,
+      pos:o.start||0,target:o.start||0,items:new Map(),focus:-1,raf:0,last:0,drag:null,k:11});
+    host.classList.add("flow");
+    this.tick=this.tick.bind(this);
+    host.addEventListener("pointerdown",this); host.addEventListener("pointermove",this);
+    host.addEventListener("pointerup",this); host.addEventListener("pointercancel",this);
+    host.addEventListener("wheel",this,{passive:false});
+  }
+  /* w,h: item size. top: item's top edge inside the host. */
+  layout({w,h,top}){
+    const H=this.host;
+    Object.assign(this,{w,h,gap:w*this.gapF,spacing:w*this.spacingF,depth:w*.55,unit:w*.36});
+    H.style.setProperty("--cfw",w+"px"); H.style.setProperty("--cfh",h+"px"); H.style.setProperty("--cft",top+"px");
+    H.style.perspective=(w*3.4)+"px";
+    this.radius=Math.ceil((H.clientWidth/2-this.gap)/this.spacing)+2;
+    this.items.forEach(el=>el.remove()); this.items.clear();
+    this.render();
+  }
+  clamp(i){ return Math.max(0,Math.min(this.count-1,i)); }
+  setTarget(i,instant){ this.target=this.clamp(Math.round(i)); if(instant){ this.pos=this.target; this.render(); } else this.run(); }
+  go(d){ this.setTarget(Math.round(this.target)+d); }
+  run(){ if(!this.raf){ this.last=performance.now(); this.raf=requestAnimationFrame(this.tick); } }
+  tick(now){
+    const dt=Math.min(.05,(now-this.last)/1000); this.last=now;
+    if(!this.drag){
+      const diff=this.target-this.pos;
+      if(Math.abs(diff)<.0015){ this.pos=this.target; this.render(); this.raf=0; return; }
+      this.pos+=diff*(1-Math.exp(-dt*this.k));
+    }
+    this.render();
+    this.raf=requestAnimationFrame(this.tick);
+  }
+  render(){
+    if(!this.w) return;
+    const n=this.count, c=Math.round(this.pos), R=this.radius;
+    for(const [k,el] of this.items) if(Math.abs(k-c)>R){ el.remove(); this.items.delete(k); }
+    for(let k=Math.max(0,c-R);k<=Math.min(n-1,c+R);k++) if(!this.items.has(k)){
+      const el=this.make(k); el.classList.add("cf"); el.dataset.i=k;
+      if(!el.querySelector(".shade")) el.insertAdjacentHTML("beforeend",'<div class="shade"></div>');
+      this.items.set(k,el); this.host.appendChild(el);
+    }
+    for(const [k,el] of this.items){
+      const d=k-this.pos, a=Math.abs(d), t=Math.max(-1,Math.min(1,d));
+      const x = a<=1 ? d*this.gap : Math.sign(d)*(this.gap+(a-1)*this.spacing);
+      el.style.transform=`translate3d(${x.toFixed(1)}px,0,${(-Math.min(a,1)*this.depth).toFixed(1)}px) rotateY(${(-t*this.angle).toFixed(2)}deg)`;
+      el.style.zIndex=1000-Math.round(a*10);
+      const edge = a>R-1.5 ? Math.max(0,R-.5-a) : 1;
+      if(this.fade) el.style.opacity=(edge*(1-Math.min(a,1)*.6-Math.max(0,a-1)*.08)).toFixed(3);   // transparent icons: fade
+      else { el.style.opacity=edge; el.lastChild.style.opacity=(Math.min(a,1)*.55+Math.max(0,a-1)*.05).toFixed(3); }  // covers: darken
+    }
+    const f=this.clamp(Math.round(this.pos));
+    if(f!==this.focus){ this.focus=f; this.onFocus&&this.onFocus(f); }
+  }
+  handleEvent(e){
+    const dr=this.drag;
+    if(e.type==="pointerdown"){
+      if(e.button>0) return;
+      this.host.setPointerCapture(e.pointerId);
+      const item=e.target.closest&&e.target.closest(".cf");
+      this.drag={id:e.pointerId,x0:e.clientX,y0:e.clientY,p0:this.pos,moved:false,item:item?+item.dataset.i:null,s:[[e.timeStamp,this.pos]]};
+      this.target=this.pos; this.run();
+    } else if(e.type==="pointermove" && dr && e.pointerId===dr.id){
+      const dx=e.clientX-dr.x0;
+      if(!dr.moved && Math.abs(dx)>6){ dr.moved=true; this.host.classList.add("dragging"); }
+      if(!dr.moved) return;
+      const raw=dr.p0-dx/this.unit, max=this.count-1;
+      this.pos = raw<0 ? raw*.3 : raw>max ? max+(raw-max)*.3 : raw;   // rubber band past the ends
+      dr.s.push([e.timeStamp,this.pos]); if(dr.s.length>8) dr.s.shift();
+    } else if((e.type==="pointerup"||e.type==="pointercancel") && dr && e.pointerId===dr.id){
+      this.drag=null; this.host.classList.remove("dragging");
+      if(!dr.moved){
+        if(e.type==="pointerup" && dr.item!==null){ if(dr.item===this.focus && Math.abs(this.pos-this.focus)<.2) this.onTap&&this.onTap(dr.item); else this.setTarget(dr.item); }
+        else this.setTarget(this.pos);
+        return;
+      }
+      const now=e.timeStamp, s=dr.s.filter(p=>now-p[0]<120), a=s[0]||[now,this.pos];
+      const v = now-a[0]>8 ? (this.pos-a[1])/((now-a[0])/1000) : 0;       // items per second
+      this.target=this.clamp(Math.round(this.pos+v*.24)); this.run();
+    } else if(e.type==="wheel"){
+      e.preventDefault();
+      const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+      this.target=this.clamp(this.target+d/(this.unit*1.4)); this.run();
+      clearTimeout(this.wt); this.wt=setTimeout(()=>this.setTarget(this.target),110);
+    }
+  }
+}
+
 /* --- consoles --- */
 function buildConsoles(){
   view="consoles"; setSnap(null);
   els.top.innerHTML = `<h1>Consoles</h1><div class="spacer"></div>${clockHTML()}`;
-  els.stage.innerHTML = `<section class="consoles">
-      <div class="carousel" id="carousel">${library.map((s,i)=>{ const p=photo(info(s.system).img);
-        return `<div class="cons" data-i="${i}">${p?`<img src="${p}" alt="" onerror="this.outerHTML='<div class=noimg>${esc(info(s.system).short)}</div>'">`:`<div class="noimg">${esc(info(s.system).short)}</div>`}</div>`; }).join("")}</div>
-      <div class="caption" id="caption"></div>
-    </section>`;
-  els.carousel=$("carousel"); els.caption=$("caption");
-  els.carousel.querySelectorAll(".cons").forEach(el=>el.onclick=()=>{ const i=+el.dataset.i; if(i===ci) input("ok"); else { ci=i; updateConsoles(); } });
+  els.stage.innerHTML = `<section class="consoles"><div id="flow"></div><div class="caption" id="caption"></div></section>`;
+  els.caption=$("caption");
+  els.flow=new Flow($("flow"),{count:library.length,start:ci,
+    make:i=>{ const el=document.createElement("div"), s=library[i], p=photo(info(s.system).img);
+      el.innerHTML=`<div class="cover">${p?`<img src="${p}" alt="" draggable="false">`:`<div class="noimg">${esc(info(s.system).short)}</div>`}</div>`; return el; },
+    onFocus:i=>{ ci=i; const s=sys();
+      els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}</p>`;
+      ui.sys=s.system; saveUI(); },
+    onTap:()=>input("ok")});
   bottomBar([["dpad","Choose"],["A","Open"]], true);
-  sizeConsoles(); updateConsoles();
+  sizeConsoles();
 }
 function sizeConsoles(){
-  const h=els.carousel.clientHeight, w=els.carousel.clientWidth;
-  els.ch = Math.min(h*1.05, w*.4); els.cw = els.ch;
-  els.carousel.style.setProperty("--cw", els.cw+"px");
-  els.carousel.style.setProperty("--chh", els.ch+"px");
-}
-function updateConsoles(){
-  const cw=els.cw;
-  els.carousel.querySelectorAll(".cons").forEach(el=>{
-    const o=+el.dataset.i-ci, a=Math.abs(o);
-    const x = a===0?0:Math.sign(o)*cw*(.86+(a-1)*.56);
-    el.style.transform=`translateX(${x}px) scale(${a===0?1:.56})`;
-    el.style.opacity = a===0?1:a===1?.4:a===2?.14:0;
-    el.style.zIndex = 10-a;
-  });
-  const s=sys();
-  els.caption.innerHTML = `<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}</p>`;
-  ui.sys=s.system; saveUI();
+  const f=els.flow, H=f.host.clientHeight, W=f.host.clientWidth;
+  const s=Math.round(Math.min(H*.66, W*.3));
+  f.layout({w:s,h:s,top:Math.round((H-s*1.22)/2)});
 }
 
 /* --- games --- */
-const WIN = 12;
 function buildGames(){
   view="games";
   const s=sys(), i=info(s.system);
@@ -265,58 +341,42 @@ function buildGames(){
   els.top.innerHTML = `<button class="back" id="back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <h1>${esc(i.short)}<span class="n">${s.games.length}</span></h1><div class="spacer"></div>${clockHTML()}`;
   $("back").onclick=()=>input("back");
-  els.stage.innerHTML = `<section class="games">
-      <div class="row" id="row"><div class="track" id="track"></div><div class="letter" id="letter"></div></div>
-      <div class="info" id="info"><h2 id="title"></h2><p id="details"></p></div>
-    </section>`;
-  Object.assign(els,{row:$("row"),track:$("track"),letter:$("letter"),info:$("info"),title:$("title"),details:$("details")});
-  els.tiles=new Map();
-  els.track.onclick=e=>{ const t=e.target.closest(".tile"); if(!t) return; const k=+t.dataset.i; if(k===gi) input("ok"); else { gi=k; updateGames(); } };
+  els.stage.innerHTML = `<section class="games"><div id="flow"><div class="letter" id="letter"></div></div>
+      <div class="caption"><h2 id="title"></h2><p id="details"></p></div></section>`;
+  Object.assign(els,{letter:$("letter"),title:$("title"),details:$("details")});
+  els.flow=new Flow($("flow"),{count:s.games.length,start:gi,make:coverEl,onFocus:focusGame,onTap:()=>input("ok")});
   bottomBar([["dpad","Browse"],["LR","Jump to letter"],["A","Play"],["B","Back"]], false);
-  sizeGames(); updateGames(true);
+  sizeGames();
 }
 function sizeGames(){
-  const H=els.stage.clientHeight-100, W=els.row.clientWidth, ar=info(sys().system).ar;
-  els.th = Math.round(Math.min(H*.8, 380));
-  els.tw = Math.round(els.th*ar);
-  if(els.tw > W*.32){ els.tw=Math.round(W*.32); els.th=Math.round(els.tw/ar); }
-  els.step = els.tw + Math.round(Math.max(18, els.th*.08));
-  els.row.style.setProperty("--rowh", (els.th+36)+"px");
-  els.pad = parseFloat(getComputedStyle(els.info).paddingLeft)||32;
-  els.tiles.forEach(el=>el.remove()); els.tiles.clear();
+  const f=els.flow, H=f.host.clientHeight, W=f.host.clientWidth, ar=info(sys().system).ar;
+  let h=Math.min(H*.66, 420), w=h*ar;
+  if(w>W*.34){ w=W*.34; h=w/ar; }
+  w=Math.round(w); h=Math.round(h);
+  els.fbs=Math.max(13,Math.round(h*.07));
+  f.layout({w,h,top:Math.round((H-h*1.22)/2)});   // leave room for the reflection
 }
-function tileEl(k){
+function coverEl(k){
   const s=sys(), g=s.games[k], [name]=splitTitle(g.label);
   const el=document.createElement("div");
-  el.className="tile"; el.dataset.i=k;
-  el.style.cssText=`left:${k*els.step}px;width:${els.tw}px;height:${els.th}px`;
-  el.innerHTML=`<div class="art"></div>`;
-  const art=el.firstChild, url=thumbURL(s.system,g.label);
-  const fb=()=>{ art.innerHTML=`<div class="fb" style="--fbs:${Math.max(13,Math.round(els.th*.07))}px">${esc(name)}</div>`; };
+  el.innerHTML=`<div class="cover"></div>`;
+  const cover=el.firstChild, url=thumbURL(s.system,g.label);
+  const fb=()=>{ cover.innerHTML=`<div class="fb" style="--fbs:${els.fbs}px">${esc(name)}</div>`; };
   if(failed.has(url)) fb(); else {
     const img=new Image(); img.alt=""; img.decoding="async"; img.draggable=false;
     img.onerror=()=>{ failed.add(url); fb(); };
-    img.src=url; art.appendChild(img);
+    img.src=url; cover.appendChild(img);
   }
   return el;
 }
 let snapTimer, letterTimer;
-function updateGames(first){
-  const s=sys(), n=s.games.length, g=s.games[gi];
-  for(const [k,el] of els.tiles) if(Math.abs(k-gi)>WIN){ el.remove(); els.tiles.delete(k); }
-  for(let k=Math.max(0,gi-WIN);k<=Math.min(n-1,gi+WIN);k++) if(!els.tiles.has(k)){ const el=tileEl(k); els.tiles.set(k,el); els.track.appendChild(el); }
-  for(const [k,el] of els.tiles) el.classList.toggle("on",k===gi);
-  /* focus sits one tile in from the left edge (first tile: at the edge), like a console home screen */
-  const x = els.pad + Math.min(gi,1)*els.step - gi*els.step;
-  els.track.classList.toggle("jump",!!first);
-  els.track.style.transform=`translateX(${x}px)`;
-  if(first) requestAnimationFrame(()=>els.track.classList.remove("jump"));
-
-  const [name,tags]=splitTitle(g.label);
+function focusGame(k){
+  gi=k;
+  const s=sys(), g=s.games[gi], [name,tags]=splitTitle(g.label);
   els.title.textContent=name;
-  els.details.textContent=[tags.join(", "), `${gi+1} of ${n}`].filter(Boolean).join("  ·  ");
+  els.details.textContent=[tags.join(", "), `${gi+1} of ${s.games.length}`].filter(Boolean).join("  ·  ");
   clearTimeout(snapTimer);
-  snapTimer=setTimeout(()=>setSnap(thumbURL(s.system,g.label,"Named_Snaps")), first?0:200);
+  snapTimer=setTimeout(()=>setSnap(thumbURL(s.system,g.label,"Named_Snaps")), 250);
   ui.pos[s.system]=gi; saveUI();
 }
 let snapFlip=false, snapWant=null;
@@ -330,26 +390,24 @@ function setSnap(url){
   img.onerror=()=>{ failed.add(url); if(snapWant===url){ a.classList.remove("on"); b.classList.remove("on"); } };
   img.src=url;
 }
-function showLetter(){
-  els.letter.textContent=sys().keys[gi]; els.letter.classList.add("on");
+function showLetter(j){
+  els.letter.textContent=sys().keys[j]; els.letter.classList.add("on");
   clearTimeout(letterTimer); letterTimer=setTimeout(()=>els.letter.classList.remove("on"),450);
 }
 
 /* ---------- input ---------- */
 let launching=false;
 function input(a){
-  if(launching || !library.length) return;
-  if(view==="consoles"){
-    if(a==="left"&&ci>0){ ci--; updateConsoles(); }
-    else if(a==="right"&&ci<library.length-1){ ci++; updateConsoles(); }
-    else if(a==="ok"){ history.pushState({v:"games"},""); buildGames(); }
-  } else {
-    const s=sys(), n=s.games.length;
-    if(a==="left"&&gi>0){ gi--; updateGames(); }
-    else if(a==="right"&&gi<n-1){ gi++; updateGames(); }
-    else if(a==="next"||a==="down"){ const k=s.keys[gi]; let j=gi; while(j<n&&s.keys[j]===k) j++; if(j<n){ gi=j; updateGames(); showLetter(); } }
-    else if(a==="prev"||a==="up"){ let j=gi; const k=s.keys[gi]; if(j>0&&s.keys[j-1]===k){ while(j>0&&s.keys[j-1]===k) j--; } else if(j>0){ j--; const k2=s.keys[j]; while(j>0&&s.keys[j-1]===k2) j--; } if(j!==gi){ gi=j; updateGames(); showLetter(); } }
-    else if(a==="ok") launch();
+  if(launching || !library.length || !els.flow) return;
+  const f=els.flow;
+  if(a==="left") f.go(-1);
+  else if(a==="right") f.go(1);
+  else if(view==="consoles"){ if(a==="ok"){ ci=f.focus; history.pushState({v:"games"},""); buildGames(); } }
+  else {
+    const s=sys(), n=s.games.length, keys=s.keys, cur=Math.round(f.target);
+    if(a==="next"||a==="down"){ const k=keys[cur]; let j=cur; while(j<n&&keys[j]===k) j++; if(j<n){ f.setTarget(j); showLetter(j); } }
+    else if(a==="prev"||a==="up"){ let j=cur; const k=keys[cur]; if(j>0&&keys[j-1]===k){ while(j>0&&keys[j-1]===k) j--; } else if(j>0){ j--; const k2=keys[j]; while(j>0&&keys[j-1]===k2) j--; } if(j!==cur){ f.setTarget(j); showLetter(j); } }
+    else if(a==="ok"){ gi=f.focus; launch(); }
     else if(a==="back") history.back();
   }
 }
@@ -373,19 +431,6 @@ addEventListener("keydown",e=>{
   const a=map[e.key]; if(!a) return;
   e.preventDefault(); input(a);
 });
-
-/* swipe */
-let sx=null, sy=0, st=0, suppressClick=false;
-addEventListener("pointerdown",e=>{ if(e.target.closest(".stage")){ sx=e.clientX; sy=e.clientY; st=Date.now(); } });
-addEventListener("pointerup",e=>{
-  if(sx===null) return; const dx=e.clientX-sx, dy=e.clientY-sy; sx=null;
-  if(Math.abs(dx)<40 || Math.abs(dx)<Math.abs(dy)) return;
-  const step = view==="games"?els.step:els.cw*.8;
-  const n = Math.max(1,Math.round(Math.abs(dx)/step*(Date.now()-st<220?2:1)));
-  for(let i=0;i<n;i++) input(dx<0?"right":"left");
-  suppressClick=true; setTimeout(()=>suppressClick=false,50);
-});
-addEventListener("click",e=>{ if(suppressClick){ e.stopPropagation(); e.preventDefault(); } },true);
 
 /* Gamepad, standard mapping: bottom face button confirms, right face button goes back. */
 const BTN={0:"ok",1:"back",4:"prev",5:"next",6:"prev",7:"next",12:"up",13:"down",14:"left",15:"right"};
@@ -424,7 +469,7 @@ setInterval(()=>{ const c=$("clock"); if(c) c.textContent=new Date().toLocaleTim
 
 let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>{
   if(!library.length || !els.stage) return;
-  if(view==="games"){ sizeGames(); updateGames(true); } else { sizeConsoles(); updateConsoles(); }
+  if(view==="games") sizeGames(); else sizeConsoles();
 },80); });
 
 let tt; function toast(msg){ const t=$("toast"); t.textContent=msg; t.hidden=false; clearTimeout(tt); tt=setTimeout(()=>t.hidden=true,3000); }

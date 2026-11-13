@@ -2,9 +2,9 @@
 
 Arcade Shelf: a PWA launcher for RetroArch on iPad/iPhone, built to be driven by a controller in landscape.
 
-- Consoles: one console in focus with its neighbours on either side. D-pad or stick to choose, A to open.
-- Games: a row of box art (from the libretro thumbnail server) with the selected game's title below. LB/RB (or up/down) jumps by letter, A launches in RetroArch, B goes back.
-- Touch and keyboard work too (swipe or tap, arrows, Enter, Esc, PageUp/PageDown).
+- Consoles and games both scroll as a coverflow: the selected item faces you, its neighbours angle away to the sides.
+- Games show their box art (from the libretro thumbnail server). LB/RB (or up/down) jumps by letter, A launches in RetroArch, B goes back.
+- Touch follows your finger, flicks carry momentum, and tapping a cover selects it (tap again to open). Keyboard, mouse wheel and trackpad work too.
 
 System icons are from RetroArch's Retrosystem theme, CC BY 4.0 (see `img/systems/CREDITS.md`).
 
