@@ -1,24 +1,45 @@
-# RALauncher
+# Arcade Shelf
 
-Arcade Shelf: a PWA launcher for RetroArch on iPad/iPhone, built to be driven by a controller in landscape.
+A controller-first launcher for RetroArch on iPad and iPhone. Pick a console, flick through your games as box art, press a button and RetroArch starts the game.
 
-- Consoles and games both scroll as a coverflow: the selected item faces you, its neighbours angle away to the sides.
-- Games show their box art (from the libretro thumbnail server). LB/RB (or up/down) jumps by letter, A launches in RetroArch, B goes back.
-- Touch follows your finger, flicks carry momentum, and tapping a cover selects it (tap again to open). Keyboard, mouse wheel and trackpad work too.
+![Consoles](docs/ipad-consoles.png)
+![Games](docs/ipad-games.png)
 
-System icons are from RetroArch's Retrosystem theme, CC BY 4.0 (see `img/systems/CREDITS.md`).
+## Set up
 
-Works offline. The app itself is stored on the device when installed. Box art and screenshots are kept once you've seen them, and **Save artwork offline** (or X on the controller) on the consoles screen downloads the art for your whole library in one go.
+1. Open the launcher's page in Safari, then **Share › Add to Home Screen**.
+2. Open it from the Home Screen, tap **Choose playlists**, go to **On My iPad › RetroArch › playlists** and select all the `.lpl` files.
+3. Optional: tap **Save artwork offline** so the box art is there without internet.
 
-Add it to the home screen from Safari, then tap **Update library** and pick the `.lpl` playlists from `RetroArch › playlists`.
+Tap **Update library** whenever you add games in RetroArch.
 
-## Releasing changes
+## Controls
 
-Bump the version with every change you push, or installed copies won't notice:
+| | Controller | Touch |
+|---|---|---|
+| Browse | D-pad / left stick | Swipe or flick |
+| Open / play | Bottom face button | Tap the front item |
+| Back | Right face button | ‹ in the top left |
+| Jump to next letter | L / R (or up / down) | |
+| Save artwork offline | Left face button | Button at the bottom |
 
-```sh
-tools/bump-version.sh          # 1.1.0 -> 1.1.1
-tools/bump-version.sh minor    # 1.1.0 -> 1.2.0
-```
+## Come back here when you leave RetroArch
 
-This updates `APP_VERSION` and the `app-version` meta tag in `index.html`. The page registers `sw.js?v=<version>`, so a new version installs a fresh service worker and clears the old cache. Each time you come back to the app (for example after quitting a game in RetroArch), it checks the live version and reloads if it changed. Your library and position are kept. The service worker serves the app network-first (falling back to the stored copy when offline or on a slow connection) and keeps artwork in a separate cache that survives updates. If you add files the app needs, list them in `SHELL` in `sw.js`.
+Use a Shortcuts automation so closing RetroArch drops you back in the launcher:
+
+1. **Shortcuts › Automation › New Automation › App**.
+2. Choose **RetroArch**, tick **Is Closed** only, and pick **Run Immediately**.
+3. Add an **Open App** action and pick **Arcade Shelf**. If it isn't in the list (iOS doesn't always offer web apps there), use **Open URLs** with the launcher's address instead. That opens it in Safari rather than as the Home Screen app.
+
+"Is Closed" fires when you leave RetroArch, for example by quitting a game and swiping home.
+
+## Good to know
+
+- Works offline once installed. Art you've looked at is kept, and **Save artwork offline** fetches the rest.
+- Box art and screenshots come from the [libretro thumbnail server](https://thumbnails.libretro.com) and match on the game names in your playlists.
+- New versions install themselves the next time you switch back to the app. To publish one, run `tools/bump-version.sh` before pushing.
+
+## Credits
+
+- System icons: RetroArch's Retrosystem theme from [libretro/retroarch-assets](https://github.com/libretro/retroarch-assets), CC BY 4.0. See `img/systems/CREDITS.md`.
+- The screenshots show open-source homebrew, with each game's title screen standing in for box art: [Tobu Tobu Girl](https://github.com/SimonLarsen/tobutobugirl) (Tangram Games; MIT, art CC BY 4.0), [Libbet and the Magic Floor](https://github.com/pinobatch/libbet) (Damian Yerrick; zlib), [µCity](https://github.com/AntonioND/ucity) (Antonio Niño Díaz; GPL-3.0+).
