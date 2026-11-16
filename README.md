@@ -21,7 +21,9 @@ Tap **Update library** whenever you add games in RetroArch.
 | Open / play | Bottom face button | Tap the front item |
 | Back | Right face button | ‹ in the top left |
 | Jump to next letter | L / R (or up / down) | |
-| Save artwork offline | Left face button | Button at the bottom |
+| Favourite a game | Top face button | Star next to the title |
+| Show only favourites | Left face button | **Favourites** in the top bar |
+| Save artwork offline | Left face button (on the consoles screen) | Button at the bottom |
 
 ## Come back here when you leave RetroArch
 

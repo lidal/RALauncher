@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.5.1">
+<meta name="app-version" content="2.6.0">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -31,6 +31,19 @@ img{-webkit-user-drag:none}
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 #bg div{position:absolute;inset:0;background-size:cover;background-position:center;image-rendering:pixelated;opacity:0;transition:opacity .5s ease}
 #bg div.on{opacity:.06}
+/* consoles: a faint wall of in-game screenshots from the focused console's library */
+#bg .wall{inset:-12px;background:none;display:grid;grid-template-columns:repeat(var(--wcols),1fr);gap:10px;align-content:start;transition:opacity .7s ease}
+#bg .wall img{width:100%;aspect-ratio:4/3;object-fit:cover;image-rendering:pixelated;border-radius:4px;display:block}
+#bg .wall.on{opacity:.13}
+body:not(.onconsoles) #bg .wall.on{opacity:0}
+#bg .veil{inset:0;opacity:1;background:radial-gradient(ellipse 60% 55% at 50% 48%,rgba(20,20,20,.75),rgba(20,20,20,.25) 70%,rgba(20,20,20,.1)),
+  linear-gradient(180deg,rgba(20,20,20,.85),transparent 18%,transparent 78%,rgba(20,20,20,.9))}
+body:not(.onconsoles) #bg .veil{display:none}
+/* Home Screen app: cover the whole screen, including the strip under the home indicator */
+@media (display-mode:standalone){
+  html,body,body.app{min-height:100vh;min-height:100lvh}
+  body.app,#bg,.screen{bottom:auto;height:100vh;height:100lvh}
+}
 
 .screen{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:auto 1fr auto}
 
@@ -65,6 +78,20 @@ img{-webkit-user-drag:none}
 .caption{text-align:center;padding:0 var(--sr) 18px var(--sl);min-height:84px}
 .caption h2{font-size:clamp(24px,3vh + .9vw,36px);font-weight:700;letter-spacing:-.02em;margin:0 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .caption p{margin:0;color:var(--muted);font-size:17px;font-variant-numeric:tabular-nums}
+.caption h2 .star{display:inline-grid;place-items:center;width:1.1em;height:1.1em;margin-left:.3em;vertical-align:-.12em;border-radius:50%}
+.star svg,.toggle svg,.favbadge svg,.bigstar svg{fill:none;stroke:currentColor;stroke-width:1.8}
+.caption h2 .star svg{width:.72em;height:.72em;color:var(--muted)}
+.caption h2 .star.on svg,.toggle.on svg{fill:#f5c84c;stroke:#f5c84c;color:#f5c84c}
+.toggle{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;color:var(--muted);padding:6px 12px 6px 10px;border-radius:17px;background:rgba(255,255,255,.07)}
+.toggle svg{width:16px;height:16px}
+.toggle.on{color:var(--fg);background:rgba(245,200,76,.16)}
+.cf .favbadge{display:none;position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:13px;background:rgba(0,0,0,.6);place-items:center;z-index:1}
+.cf.fav .favbadge{display:grid}
+.cf .favbadge svg{width:15px;height:15px;fill:#f5c84c;stroke:#f5c84c}
+.nofav{display:grid;place-items:center;text-align:center;padding:0 var(--sr) 0 var(--sl)}
+.nofav h2{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:10px 0 8px}
+.nofav p{color:var(--muted);font-size:17px;margin:0 0 22px}
+.bigstar svg{width:56px;height:56px;color:#555}
 .letter{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:20px;background:rgba(20,20,20,.94);
   border:1px solid #333;display:grid;place-items:center;font-size:64px;font-weight:700;opacity:0;transition:opacity .2s ease;pointer-events:none;z-index:2000}
 .letter.on{opacity:1;transition:none}
@@ -73,6 +100,7 @@ img{-webkit-user-drag:none}
 .bottom{display:flex;align-items:center;gap:24px;padding:8px var(--sr) calc(14px + env(safe-area-inset-bottom,0px)) var(--sl);
   color:var(--muted);font-size:15px;min-height:50px}
 .bottom .h{display:flex;align-items:center;gap:8px;white-space:nowrap}
+@media (max-width:960px){.bottom{gap:14px;font-size:13px}.bottom .h{gap:6px}}
 .g{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:700;line-height:1}
 .g.sq{border-radius:6px}
 .g svg{width:14px;height:14px}
@@ -107,7 +135,7 @@ img{-webkit-user-drag:none}
 </style>
 </head>
 <body>
-<div id="bg"><div id="snapA"></div><div id="snapB"></div></div>
+<div id="bg"><div class="wall" id="wallA"></div><div class="wall" id="wallB"></div><div class="veil"></div><div id="snapA"></div><div id="snapB"></div></div>
 <div id="root"></div>
 <input id="lpl" type="file" multiple hidden>
 <div class="launch" id="launch"><div><p>Starting</p><h2 id="launchTitle"></h2></div></div>
@@ -115,7 +143,7 @@ img{-webkit-user-drag:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.5.1";
+const APP_VERSION = "2.6.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -192,7 +220,8 @@ function glyph(btn){
       k===pos?`<circle cx="${x}" cy="${y}" r="4.2" fill="currentColor"/>`:`<circle cx="${x}" cy="${y}" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".55"/>`).join("")}</svg></span>`; };
   if(btn==="ok") return face("south");
   if(btn==="back") return face("east");
-  if(btn==="save") return face("west");
+  if(btn==="save"||btn==="filter") return face("west");
+  if(btn==="fav") return face("north");
   if(btn==="leftright") return `<span class="g wide"><svg viewBox="0 0 28 16"><path d="M9 3 4 8l5 5M19 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
   if(btn==="LR") return `<span class="g sq">L</span><span class="g sq">R</span>`;
   return "";
@@ -351,7 +380,7 @@ class Flow{
 
 /* --- consoles --- */
 function buildConsoles(){
-  view="consoles"; setSnap(null);
+  view="consoles"; setSnap(null); document.body.classList.add("onconsoles");
   els.top.innerHTML = `<h1>Consoles</h1><div class="spacer"></div>${clockHTML()}`;
   els.stage.innerHTML = `<section class="consoles"><div id="flow"></div><div class="caption" id="caption"></div></section>`;
   els.caption=$("caption");
@@ -359,8 +388,9 @@ function buildConsoles(){
     make:i=>{ const el=document.createElement("div"), s=library[i], p=photo(info(s.system).img);
       el.innerHTML=`<div class="cover">${p?`<img src="${p}" alt="" draggable="false">`:`<div class="noimg">${esc(info(s.system).short)}</div>`}</div>`; return el; },
     onFocus:i=>{ ci=i; const s=sys();
-      els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}</p>`;
-      ui.sys=s.system; saveUISoon(); },
+      const nf=favCount(s);
+      els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}${nf?`  ·  ${nf} favourite${nf===1?"":"s"}`:""}</p>`;
+      ui.sys=s.system; saveUISoon(); setWallSoon(s); },
     onTap:()=>input("ok")});
   bottomBar([["leftright","Browse consoles"],["ok","Open"],["save","Save artwork offline"]], true);
   sizeConsoles();
@@ -371,23 +401,51 @@ function sizeConsoles(){
   f.layout({w:s,h:s,top:Math.round((H-s)/2)});
 }
 
+/* --- favourites ---
+   Kept by system + game name, so they survive re-importing the playlists. */
+const FAVKEY="arcade-shelf-favs-v1";
+const favs=new Set((()=>{ try{ return JSON.parse(localStorage.getItem(FAVKEY))||[] }catch(e){ return [] } })());
+const favId=(system,label)=>system+"\u0001"+label;
+const isFav=(system,label)=>favs.has(favId(system,label));
+function saveFavs(){ try{ localStorage.setItem(FAVKEY, JSON.stringify([...favs])) }catch(e){} }
+function favCount(s){ let n=0; for(const g of s.games) if(isFav(s.system,g.label)) n++; return n; }
+const STAR=`<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z" stroke-linejoin="round"/></svg>`;
+
 /* --- games --- */
 function buildGames(){
-  view="games";
-  const s=sys(), i=info(s.system);
+  view="games"; document.body.classList.remove("onconsoles");
+  const s=sys(), i=info(s.system), favOnly=!!ui.favOnly;
+  /* vis: the games shown, as indexes into s.games (all of them, or just the favourites) */
+  const vis=[]; s.games.forEach((g,k)=>{ if(!favOnly || isFav(s.system,g.label)) vis.push(k); });
+  els.vis=vis;
   gi = Math.min(ui.pos[s.system]||0, s.games.length-1);
-  s.keys = s.games.map(g=>letterOf(g.label));
+  let start=vis.findIndex(k=>k>=gi); if(start<0) start=vis.length-1;
+  s.keys = vis.map(k=>letterOf(s.games[k].label));
   els.top.innerHTML = `<button class="back" id="back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <h1>${esc(i.short)}<span class="n">${s.games.length}</span></h1><div class="spacer"></div>${clockHTML()}`;
+    <h1>${esc(i.short)}<span class="n">${vis.length}${favOnly?" favourite"+(vis.length===1?"":"s"):""}</span></h1><div class="spacer"></div>
+    <button class="toggle${favOnly?" on":""}" id="favfilter" aria-pressed="${favOnly}">${STAR}Favourites</button>${clockHTML()}`;
   $("back").onclick=()=>input("back");
+  $("favfilter").onclick=()=>input("filter");
+  const hints=[["leftright","Browse"],["LR","Letter"],["fav","Favourite"],["filter",favOnly?"Show all":"Favourites only"],["ok","Play"],["back","Back"]];
+  if(!vis.length){
+    els.flow=null; setSnap(null);
+    els.stage.innerHTML = `<section class="games nofav"><div class="none"><div class="bigstar">${STAR}</div><h2>No favourites yet</h2>
+      <p>Mark a game with the star next to its title${padKind?" or the top face button":""}, then come back here.</p>
+      <button class="primary" id="showall">Show all games</button></div></section>`;
+    $("showall").onclick=()=>input("filter");
+    bottomBar([["filter","Show all"],["back","Back"]], false);
+    return;
+  }
   els.stage.innerHTML = `<section class="games"><div id="flow"><div class="letter" id="letter"></div></div>
-      <div class="caption"><h2 id="title"></h2><p id="details"></p></div></section>`;
-  Object.assign(els,{letter:$("letter"),title:$("title"),details:$("details")});
-  els.flow=new Flow($("flow"),{count:s.games.length,start:gi,make:coverEl,onFocus:focusGame,onTap:()=>input("ok")});
-  bottomBar([["leftright","Browse games"],["LR","Jump to letter"],["ok","Play"],["back","Back"]], false);
+      <div class="caption"><h2><span id="title"></span><button class="star" id="star" aria-label="Favourite">${STAR}</button></h2><p id="details"></p></div></section>`;
+  Object.assign(els,{letter:$("letter"),title:$("title"),details:$("details"),star:$("star")});
+  els.star.onclick=()=>input("fav");
+  els.flow=new Flow($("flow"),{count:vis.length,start,make:coverEl,onFocus:focusGame,onTap:()=>input("ok")});
+  bottomBar(hints, false);
   sizeGames();
 }
 function sizeGames(){
+  if(!els.flow) return;
   const f=els.flow, H=f.host.clientHeight, W=f.host.clientWidth, ar=info(sys().system).ar;
   let h=Math.min(H*.66, 420), w=h*ar;
   if(w>W*.34){ w=W*.34; h=w/ar; }
@@ -396,9 +454,10 @@ function sizeGames(){
   f.layout({w,h,top:Math.round((H-h*1.22)/2)});   // leave room for the reflection
 }
 function coverEl(k){
-  const s=sys(), g=s.games[k], [name]=splitTitle(g.label);
+  const s=sys(), g=s.games[els.vis[k]], [name]=splitTitle(g.label);
   const el=document.createElement("div");
-  el.innerHTML=`<div class="cover"></div>`;
+  el.innerHTML=`<div class="cover"></div><div class="favbadge">${STAR}</div>`;
+  el.classList.toggle("fav", isFav(s.system,g.label));
   const cover=el.firstChild, url=thumbURL(s.system,g.label);
   const fb=()=>{ cover.innerHTML=`<div class="fb" style="--fbs:${els.fbs}px">${esc(name)}</div>`; };
   if(failed.has(url)) fb(); else {
@@ -410,13 +469,26 @@ function coverEl(k){
 }
 let snapTimer, letterTimer;
 function focusGame(k){
-  gi=k;
+  gi=els.vis[k];
   const s=sys(), g=s.games[gi], [name,tags]=splitTitle(g.label);
   els.title.textContent=name;
-  els.details.textContent=[tags.join(", "), `${gi+1} of ${s.games.length}`].filter(Boolean).join("  ·  ");
+  els.star.classList.toggle("on", isFav(s.system,g.label));
+  els.details.textContent=[tags.join(", "), `${k+1} of ${els.vis.length}`].filter(Boolean).join("  ·  ");
   clearTimeout(snapTimer);
   snapTimer=setTimeout(()=>setSnap(thumbURL(s.system,g.label,"Named_Snaps")), 250);
   ui.pos[s.system]=gi; saveUISoon();
+}
+function toggleFav(){
+  const s=sys(), g=s.games[gi], id=favId(s.system,g.label), on=!favs.has(id);
+  on ? favs.add(id) : favs.delete(id); saveFavs();
+  if(ui.favOnly && !on){ ui.pos[s.system]=gi; buildGames(); toast("Removed from favourites"); return; }  // it leaves the filtered list
+  els.star.classList.toggle("on", on);
+  const el=els.flow.items.get(els.flow.focus); if(el) el.classList.toggle("fav", on);
+}
+function toggleFilter(){
+  ui.favOnly=!ui.favOnly; saveUI();
+  ui.pos[sys().system]=gi;
+  buildGames();
 }
 let snapFlip=false, snapWant=null;
 function setSnap(url){
@@ -434,19 +506,44 @@ function showLetter(j){
   clearTimeout(letterTimer); letterTimer=setTimeout(()=>els.letter.classList.remove("on"),450);
 }
 
+/* consoles background: a wall of screenshots from that console's games (favourites first).
+   Screenshots are small, come through the artwork cache, and only start once browsing pauses. */
+let wallTimer, wallFlip=false, wallWant=null; const wallCache={};
+function setWallSoon(s){ clearTimeout(wallTimer); wallWant=s.system; wallTimer=setTimeout(()=>setWall(s),350); }
+async function setWall(s){
+  const W=innerWidth, H=innerHeight, cell=W<900?150:190, cols=Math.ceil(W/cell)+1, need=cols*(Math.ceil(H/(cell*.75))+1);
+  let ok=wallCache[s.system];
+  if(!ok){
+    const games=[...s.games].sort((a,b)=>isFav(s.system,b.label)-isFav(s.system,a.label)).slice(0,Math.min(need*2,60));
+    const urls=games.map(g=>thumbURL(s.system,g.label,"Named_Snaps")).filter(u=>!failed.has(u));
+    const res=await Promise.all(urls.map(u=>new Promise(r=>{ const im=new Image(); im.onload=()=>r(u); im.onerror=()=>{ failed.add(u); forgetArt(u); r(null); }; im.src=u; })));
+    ok=wallCache[s.system]=res.filter(Boolean).slice(0,need);
+  }
+  if(wallWant!==s.system) return;
+  const a=$("wallA"), b=$("wallB");
+  if(!ok.length){ a.classList.remove("on"); b.classList.remove("on"); return; }
+  wallFlip=!wallFlip; const show=wallFlip?a:b, hide=wallFlip?b:a;
+  show.style.setProperty("--wcols",cols);
+  show.innerHTML=Array.from({length:need},(_,i)=>`<img src="${ok[i%ok.length]}" alt="">`).join("");
+  show.classList.add("on"); hide.classList.remove("on");
+}
+
 /* ---------- input ---------- */
 let launching=false;
 function input(a){
-  if(launching || !library.length || !els.flow) return;
+  if(launching || !library.length) return;
+  if(view==="games" && (a==="filter"||a==="west")) return toggleFilter();
+  if(view==="games" && !els.flow){ if(a==="back") history.back(); return; }   // empty favourites screen
   const f=els.flow;
   if(a==="left") f.go(-1);
   else if(a==="right") f.go(1);
-  else if(view==="consoles"){ if(a==="save") saveOffline(); else if(a==="ok"){ ci=f.focus; history.pushState({v:"games"},""); buildGames(); } }
+  else if(view==="consoles"){ if(a==="save"||a==="west") saveOffline(); else if(a==="ok"){ ci=f.focus; history.pushState({v:"games"},""); buildGames(); } }
   else {
-    const s=sys(), n=s.games.length, keys=s.keys, cur=Math.round(f.target);
+    const s=sys(), n=els.vis.length, keys=s.keys, cur=Math.round(f.target);
     if(a==="next"||a==="down"){ const k=keys[cur]; let j=cur; while(j<n&&keys[j]===k) j++; if(j<n){ f.setTarget(j); showLetter(j); } }
     else if(a==="prev"||a==="up"){ let j=cur; const k=keys[cur]; if(j>0&&keys[j-1]===k){ while(j>0&&keys[j-1]===k) j--; } else if(j>0){ j--; const k2=keys[j]; while(j>0&&keys[j-1]===k2) j--; } if(j!==cur){ f.setTarget(j); showLetter(j); } }
-    else if(a==="ok"){ gi=f.focus; launch(); }
+    else if(a==="ok"){ gi=els.vis[f.focus]; launch(); }
+    else if(a==="fav"||a==="north") toggleFav();
     else if(a==="back") history.back();
   }
 }
@@ -466,13 +563,13 @@ window.addEventListener("popstate",()=>{
 });
 
 addEventListener("keydown",e=>{
-  const map={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",Enter:"ok"," ":"ok",Escape:"back",Backspace:"back",PageUp:"prev",PageDown:"next"};
+  const map={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",Enter:"ok"," ":"ok",Escape:"back",Backspace:"back",PageUp:"prev",PageDown:"next",f:"fav",v:"filter"};
   const a=map[e.key]; if(!a) return;
   e.preventDefault(); input(a);
 });
 
 /* Gamepad, standard mapping: bottom face button confirms, right face button goes back. */
-const BTN={0:"ok",1:"back",2:"save",4:"prev",5:"next",6:"prev",7:"next",12:"up",13:"down",14:"left",15:"right"};
+const BTN={0:"ok",1:"back",2:"west",3:"north",4:"prev",5:"next",6:"prev",7:"next",12:"up",13:"down",14:"left",15:"right"};
 const REPEATS=new Set(["left","right","up","down","prev","next"]);
 const held={}; let prevPressed={}, ignoreUntilRelease=false;
 function padReset(){ prevPressed={}; for(const k in held) delete held[k]; ignoreUntilRelease=true; }
