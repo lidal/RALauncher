@@ -6,10 +6,12 @@
 <title>Arcade Shelf</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- "black", not "black-translucent": with translucent, iOS sizes the web view as screen minus status bar and
+     shifts it up under the status bar, leaving an unpaintable dark strip at the bottom. -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.6.0">
+<meta name="app-version" content="2.6.1">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -39,11 +41,7 @@ body:not(.onconsoles) #bg .wall.on{opacity:0}
 #bg .veil{inset:0;opacity:1;background:radial-gradient(ellipse 60% 55% at 50% 48%,rgba(20,20,20,.75),rgba(20,20,20,.25) 70%,rgba(20,20,20,.1)),
   linear-gradient(180deg,rgba(20,20,20,.85),transparent 18%,transparent 78%,rgba(20,20,20,.9))}
 body:not(.onconsoles) #bg .veil{display:none}
-/* Home Screen app: cover the whole screen, including the strip under the home indicator */
-@media (display-mode:standalone){
-  html,body,body.app{min-height:100vh;min-height:100lvh}
-  body.app,#bg,.screen{bottom:auto;height:100vh;height:100lvh}
-}
+
 
 .screen{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:auto 1fr auto}
 
@@ -143,7 +141,7 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.6.0";
+const APP_VERSION = "2.6.1";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -692,6 +690,15 @@ setInterval(()=>{ if(!document.hidden) checkForUpdate(); }, 30*60*1000);
 
 history.replaceState({v:"consoles"},"");
 render();
+/* Home Screen icons keep the status-bar style they were installed with. If this one still has the old
+   translucent style (content under the status bar) and a web view shorter than the screen, say how to fix it. */
+setTimeout(()=>{
+  if(!navigator.standalone) return;
+  const probe=document.createElement("div"); probe.style.cssText="position:fixed;top:0;height:env(safe-area-inset-top,0px);visibility:hidden";
+  document.body.appendChild(probe); const top=probe.offsetHeight; probe.remove();
+  const screenH = innerWidth>innerHeight ? Math.min(screen.width,screen.height) : Math.max(screen.width,screen.height);
+  if(top>0 && screenH-innerHeight>20) toast("To remove the dark strip at the bottom, delete Arcade Shelf from the Home Screen and add it again from Safari. You'll need to choose your playlists again.", 12000);
+}, 1500);
 /* libraries imported before v2.3 stored the zip name, which RetroArch can't match for zipped games */
 if(library.some(s=>!s.fmt)) setTimeout(()=>toast("Tap Update library once and pick your playlists again, so games inside zip files launch.", 9000), 600);
 try{ const u=sessionStorage.getItem("arcade-shelf-updated"); if(u){ sessionStorage.removeItem("arcade-shelf-updated"); toast(`Updated to v${APP_VERSION}`); } }catch(e){}
