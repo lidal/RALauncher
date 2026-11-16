@@ -42,6 +42,7 @@ The `webapp://` prefix opens the Home Screen app rather than Safari. If you host
 
 ## Good to know
 
+- **Back up** (bottom of the consoles screen) saves your library and favourites to a file. To restore, pick that file with **Update library** or **Choose playlists**. Restoring merges, so nothing you have is lost. Do this before deleting and re-adding the app, which wipes its data.
 - Works offline once installed. Art you've looked at is kept, and **Save artwork offline** fetches the rest.
 - Box art and screenshots come from the [libretro thumbnail server](https://thumbnails.libretro.com) and match on the game names in your playlists.
 - New versions install themselves the next time you switch back to the app. To publish one, run `tools/bump-version.sh` before pushing.

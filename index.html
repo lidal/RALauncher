@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.6.1">
+<meta name="app-version" content="2.7.0">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -141,7 +141,7 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.6.1";
+const APP_VERSION = "2.7.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, console photo, box art shape (width / height) */
@@ -252,6 +252,7 @@ function renderEmpty(){
         <li>Go to <b>On My iPad › RetroArch › playlists</b>.</li>
         <li>Select every <b>.lpl</b> file and tap Open.</li>
       </ol>
+      <p>Moving from another install? Pick your Arcade Shelf backup file in the same place to bring back your library and favourites.</p>
       <label class="primary" for="lpl">Choose playlists</label>
     </div>
     <img src="img/systems/snes.svg" alt="">
@@ -262,10 +263,11 @@ function clockHTML(){ return `<span class="clock" id="clock">${new Date().toLoca
 
 function bottomBar(hints, withLibrary){
   els.hints=hints; els.withLibrary=withLibrary;
-  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button>${padKind&&!offlineJob?"":`<button class="textbtn" id="offline">${offlineLabel()}</button>`}<span class="ver">v${APP_VERSION}</span>`:"")
+  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><button class="textbtn" id="backup">Back up</button>${padKind&&!offlineJob?"":`<button class="textbtn" id="offline">${offlineLabel()}</button>`}<span class="ver">v${APP_VERSION}</span>`:"")
     + `<div class="spacer"></div>` + (padKind ? hints.map(([g,t])=>`<span class="h">${glyph(g)}${t}</span>`).join("") : "");
   const r=$("reload"); if(r) r.onclick=()=>$("lpl").click();
   const o=$("offline"); if(o) o.onclick=saveOffline;
+  const bk=$("backup"); if(bk) bk.onclick=backup;
 }
 
 /* ---------- coverflow ----------
@@ -610,10 +612,11 @@ let tt; function toast(msg,ms=3000){ const t=$("toast"); t.textContent=msg; t.hi
 
 $("lpl").addEventListener("change", async e=>{
   const files=[...e.target.files]; if(!files.length) return;
-  const next=[...library]; let added=0; const bad=[];
+  const next=[...library]; let added=0; const bad=[], restored=[];
   for(const f of files){
     try{
       const data=JSON.parse(await f.text());
+      if(data && data.arcadeShelfBackup){ restored.push(restoreBackup(data,next)); continue; }
       const fallback=f.name.replace(/\.lpl$/i,"");
       const by={};
       (data.items||[]).forEach(it=>{
@@ -630,9 +633,40 @@ $("lpl").addEventListener("change", async e=>{
   }
   library=next.sort((a,b)=>info(a.system).order-info(b.system).order || a.system.localeCompare(b.system));
   save(); view="consoles"; ci=Math.max(0,library.findIndex(s=>s.system===ui.sys)); history.replaceState({v:"consoles"},""); render();
-  toast(bad.length?`Couldn't read ${bad.join(", ")}. Pick the .lpl files in RetroArch › playlists.`:`Loaded ${added} games`);
+  const r=restored.reduce((a,b)=>({favs:a.favs+b.favs,systems:a.systems+b.systems}),{favs:0,systems:0});
+  toast(bad.length?`Couldn't read ${bad.join(", ")}. Pick the .lpl files in RetroArch › playlists, or an Arcade Shelf backup.`
+    : restored.length ? `Backup restored: ${r.favs} favourite${r.favs===1?"":"s"}${r.systems?`, ${r.systems} console${r.systems===1?"":"s"}`:""}${added?`, and ${added} games loaded`:""}.`
+    : `Loaded ${added} games`, 5000);
   e.target.value="";
 });
+
+/* ---------- backup ----------
+   One JSON file with the library and favourites. Saved through the share sheet (Save to Files) where
+   available; restored by picking it in the same file picker as the playlists. Restoring merges. */
+function backupData(){
+  return {arcadeShelfBackup:1, appVersion:APP_VERSION, created:new Date().toISOString(),
+    favourites:[...favs].map(id=>{ const [system,label]=id.split("\u0001"); return {system,label}; }),
+    library:library.map(({system,games,fmt})=>({system,games,fmt})),
+    settings:{favOnly:!!ui.favOnly}};
+}
+async function backup(){
+  const name=`arcade-shelf-backup-${new Date().toISOString().slice(0,10)}.json`;
+  const file=new File([JSON.stringify(backupData(),null,1)],name,{type:"application/json"});
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{ await navigator.share({files:[file],title:"Arcade Shelf backup"}); return; }
+    catch(e){ if(e.name==="AbortError") return; }
+  }
+  const a=document.createElement("a"); a.href=URL.createObjectURL(file); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),10000);
+}
+function restoreBackup(data,next){
+  let nf=0, ns=0;
+  for(const f of data.favourites||[]) if(f && f.system && f.label){ const id=favId(f.system,f.label); if(!favs.has(id)){ favs.add(id); nf++; } }
+  saveFavs();
+  for(const s of data.library||[]) if(s && s.system && Array.isArray(s.games) && !next.some(x=>x.system===s.system)){ next.push({system:s.system,games:s.games,fmt:s.fmt||0}); ns++; }
+  if(data.settings && typeof data.settings.favOnly==="boolean" && ui.favOnly===undefined) ui.favOnly=data.settings.favOnly;
+  return {favs:nf,systems:ns};
+}
 
 /* ---------- offline artwork ----------
    Loads every game's box art and screenshot once, through the service worker, which keeps them.
@@ -697,7 +731,7 @@ setTimeout(()=>{
   const probe=document.createElement("div"); probe.style.cssText="position:fixed;top:0;height:env(safe-area-inset-top,0px);visibility:hidden";
   document.body.appendChild(probe); const top=probe.offsetHeight; probe.remove();
   const screenH = innerWidth>innerHeight ? Math.min(screen.width,screen.height) : Math.max(screen.width,screen.height);
-  if(top>0 && screenH-innerHeight>20) toast("To remove the dark strip at the bottom, delete Arcade Shelf from the Home Screen and add it again from Safari. You'll need to choose your playlists again.", 12000);
+  if(top>0 && screenH-innerHeight>20) toast("To remove the dark strip at the bottom, delete Arcade Shelf from the Home Screen and add it again from Safari. Tap Back up first, then pick that file in the new install to get your library and favourites back.", 12000);
 }, 1500);
 /* libraries imported before v2.3 stored the zip name, which RetroArch can't match for zipped games */
 if(library.some(s=>!s.fmt)) setTimeout(()=>toast("Tap Update library once and pick your playlists again, so games inside zip files launch.", 9000), 600);
