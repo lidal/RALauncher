@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.7.0">
+<meta name="app-version" content="2.7.1">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -141,28 +141,29 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.7.0";
+const APP_VERSION = "2.7.1";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
-/* libretro playlist name -> display name, console photo, box art shape (width / height) */
+/* libretro playlist name -> display name, system icon, cover slot shape (width / height): the median of
+   libretro's box art for that system. Covers are fitted into the slot whole, never cropped. */
 const SYSTEMS = [
-  ["Nintendo - Nintendo Entertainment System","NES","nes",.72],
-  ["Nintendo - Family Computer Disk System","Famicom Disk System","fds",.72],
-  ["Nintendo - Super Nintendo Entertainment System","Super Nintendo","snes",1.38],
-  ["Nintendo - Nintendo 64","Nintendo 64","n64",1.38],
+  ["Nintendo - Nintendo Entertainment System","NES","nes",.73],
+  ["Nintendo - Family Computer Disk System","Famicom Disk System","fds",.98],
+  ["Nintendo - Super Nintendo Entertainment System","Super Nintendo","snes",1.15],
+  ["Nintendo - Nintendo 64","Nintendo 64","n64",1.37],
   ["Nintendo - GameCube","GameCube","gc",.71],
-  ["Nintendo - Game Boy","Game Boy","gb",.98],
-  ["Nintendo - Game Boy Color","Game Boy Color","gbc",.98],
-  ["Nintendo - Game Boy Advance","Game Boy Advance","gba",.98],
-  ["Nintendo - Nintendo DS","Nintendo DS","nds",.9],
-  ["Nintendo - Virtual Boy","Virtual Boy","vb",.72],
-  ["Sega - Master System - Mark III","Master System","sms",.72],
-  ["Sega - Mega Drive - Genesis","Mega Drive","md",.7],
-  ["Sega - Dreamcast","Dreamcast","dc",.9],
-  ["NEC - PC Engine - TurboGrafx 16","PC Engine","pce",.9],
+  ["Nintendo - Game Boy","Game Boy","gb",.9],
+  ["Nintendo - Game Boy Color","Game Boy Color","gbc",1],
+  ["Nintendo - Game Boy Advance","Game Boy Advance","gba",.9],
+  ["Nintendo - Nintendo DS","Nintendo DS","nds",1.11],
+  ["Nintendo - Virtual Boy","Virtual Boy","vb",1.02],
+  ["Sega - Master System - Mark III","Master System","sms",.71],
+  ["Sega - Mega Drive - Genesis","Mega Drive","md",.71],
+  ["Sega - Dreamcast","Dreamcast","dc",1],
+  ["NEC - PC Engine - TurboGrafx 16","PC Engine","pce",1],
   ["Sony - PlayStation","PlayStation","ps1",1],
-  ["FBNeo - Arcade Games","Arcade","arcade",.75],
-  ["MAME","Arcade","arcade",.75]
+  ["FBNeo - Arcade Games","Arcade","arcade",.71],
+  ["MAME","Arcade","arcade",.71]
 ];
 /* flat system icons in img/systems: RetroArch "Retrosystem" theme, CC BY 4.0 (see img/systems/CREDITS.md) */
 const ICONS = new Set(["nes","fds","snes","n64","gc","gb","gbc","gba","nds","vb","sms","md","dc","pce","ps1","arcade"]);
@@ -324,6 +325,7 @@ class Flow{
     for(let k=Math.max(0,c-R);k<=Math.min(n-1,c+R);k++) if(!this.items.has(k)){
       const el=this.make(k); el.classList.add("cf"); el.dataset.i=k; el._lazy=el.querySelector("img[data-src]");
       if(!el.querySelector(".shade")) el.insertAdjacentHTML("beforeend",'<div class="shade"></div>');
+      el._shade=el.querySelector(".shade");
       this.items.set(k,el); this.host.appendChild(el);
     }
     for(const [k,el] of this.items){
@@ -337,7 +339,7 @@ class Flow{
       const dim=Math.min(a,1)*.55+Math.max(0,a-1)*.05;
       el.style.opacity=edge;
       if(this.fade) el.style.filter=`brightness(${(1-dim).toFixed(3)})`;   // transparent icons: darken, never see-through
-      else el.lastChild.style.opacity=dim.toFixed(3);                       // covers: shade overlay
+      else el._shade.style.opacity=dim.toFixed(3);                       // covers: shade overlay
       /* big box art decodes slowly: only start it once scrolling slows, or right next to the centre */
       if(el._lazy && (this.speed<8 || a<1.6)){ el._lazy.src=el._lazy.dataset.src; el._lazy=null; }
     }
@@ -456,14 +458,18 @@ function sizeGames(){
 function coverEl(k){
   const s=sys(), g=s.games[els.vis[k]], [name]=splitTitle(g.label);
   const el=document.createElement("div");
-  el.innerHTML=`<div class="cover"></div><div class="favbadge">${STAR}</div>`;
+  el.innerHTML=`<div class="cover"><div class="shade"></div><div class="favbadge">${STAR}</div></div>`;
   el.classList.toggle("fav", isFav(s.system,g.label));
-  const cover=el.firstChild, url=thumbURL(s.system,g.label);
-  const fb=()=>{ cover.innerHTML=`<div class="fb" style="--fbs:${els.fbs}px">${esc(name)}</div>`; };
+  const cover=el.firstChild, url=thumbURL(s.system,g.label), slot=info(s.system).ar;
+  const fb=()=>{ cover.removeAttribute("style"); cover.querySelector("img")?.remove(); cover.insertAdjacentHTML("afterbegin",`<div class="fb" style="--fbs:${els.fbs}px">${esc(name)}</div>`); };
   if(failed.has(url)) fb(); else {
     const img=new Image(); img.alt=""; img.decoding="async"; img.draggable=false;
     img.onerror=()=>{ failed.add(url); forgetArt(url); fb(); };
-    img.dataset.src=url; cover.appendChild(img);
+    /* shrink the cover box to the art's own shape: full width (wider art) or full height (taller art), on the baseline */
+    img.onload=()=>{ const ar=img.naturalWidth/img.naturalHeight;
+      cover.style.cssText = ar>=slot ? `top:auto;height:${(slot/ar*100).toFixed(2)}%`
+                                     : `left:${((1-ar/slot)*50).toFixed(2)}%;right:auto;width:${(ar/slot*100).toFixed(2)}%`; };
+    img.dataset.src=url; cover.prepend(img);
   }
   return el;
 }
@@ -673,30 +679,46 @@ function restoreBackup(data,next){
    Loading as images (not fetch) is what tells real art apart from the server's missing-file replies. */
 let offlineJob=null;
 function offlineLabel(){
-  if(!offlineJob) return "Save artwork offline";
-  return offlineJob.done ? `Artwork saved (${offlineJob.ok} images)` : `Saving artwork ${offlineJob.n} / ${offlineJob.total}`;
+  const j=offlineJob;
+  if(!j) return "Save artwork offline";
+  if(j.checking) return "Checking saved artwork…";
+  return j.done ? `Artwork saved (${j.ok} images)` : `Saving artwork ${j.n} / ${j.total}`;
 }
-function refreshOfflineLabel(){ const o=$("offline"); if(o) o.textContent=offlineLabel(); }
+/* The text button is hidden while a controller is connected (the hint replaces it), so while a save runs
+   the bar is redrawn to show it; progress updates at most once a frame. */
+let labelQueued=false;
+function refreshOfflineLabel(){
+  if(labelQueued) return; labelQueued=true;
+  requestAnimationFrame(()=>{ labelQueued=false;
+    const o=$("offline");
+    if(o) o.textContent=offlineLabel();
+    else if(view==="consoles" && els.bottom && els.hints) bottomBar(els.hints, els.withLibrary);
+  });
+}
 async function saveOffline(){
   if(offlineJob && !offlineJob.done) return;
   if(!navigator.serviceWorker || !navigator.serviceWorker.controller){ toast("Offline saving needs the installed app over the internet. Reopen it and try again."); return; }
   if(!navigator.onLine){ toast("You're offline. Connect to the internet to save artwork."); return; }
   if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+  const job=offlineJob={checking:true,n:0,total:0,ok:0,done:false};
+  refreshOfflineLabel();
   const cache=await caches.open(ART_CACHE), urls=[];
   for(const s of library) for(const g of s.games){ urls.push(thumbURL(s.system,g.label)); urls.push(thumbURL(s.system,g.label,"Named_Snaps")); }
-  const todo=[];
-  for(const u of urls) if(!failed.has(u) && !(await cache.match(u))) todo.push(u);
-  const job=offlineJob={n:urls.length-todo.length,total:urls.length,ok:urls.length-todo.length,done:false};
+  /* one listing of the cache instead of a lookup per image: fast even with thousands saved */
+  const have=new Set((await cache.keys()).map(r=>r.url));
+  const todo=urls.filter(u=>!failed.has(u) && !have.has(new URL(u).href));
+  Object.assign(job,{checking:false,total:urls.length,n:urls.length-todo.length,ok:urls.length-todo.length});
   refreshOfflineLabel();
   const one=u=>new Promise(res=>{ const im=new Image();
     im.onload=()=>{ job.ok++; res(); };
     im.onerror=()=>{ failed.add(u); cache.delete(u).catch(()=>{}); res(); };
     im.src=u; });
   let i=0;
-  const worker=async()=>{ while(i<todo.length && offlineJob===job){ await one(todo[i++]); job.n++; if(job.n%5===0||job.n===job.total) refreshOfflineLabel(); } };
+  const worker=async()=>{ while(i<todo.length && offlineJob===job){ await one(todo[i++]); job.n++; refreshOfflineLabel(); } };
   await Promise.all([1,2,3,4,5,6].map(worker));
   job.done=true; refreshOfflineLabel();
-  toast(`Artwork saved for offline use: ${job.ok} of ${job.total} images. The rest aren't on libretro's server.`, 6000);
+  toast(todo.length ? `Artwork saved for offline use: ${job.ok} of ${job.total} images. The rest aren't on libretro's server.`
+                    : `All artwork was already saved (${job.ok} of ${job.total} images).`, 6000);
 }
 
 /* ---------- updates ----------
