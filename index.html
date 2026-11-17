@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.7.3">
+<meta name="app-version" content="2.7.4">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -143,7 +143,7 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.7.3";
+const APP_VERSION = "2.7.4";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, system icon, cover slot shape (width / height): the median of
@@ -490,9 +490,15 @@ function focusGame(k){
   els.title.textContent=name;
   els.star.classList.toggle("on", isFav(s.system,g.label));
   els.details.textContent=[tags.join(", "), `${k+1} of ${els.vis.length}`].filter(Boolean).join("  ·  ");
-  clearTimeout(snapTimer);
-  snapTimer=setTimeout(()=>setSnap(thumbURL(s.system,g.label,"Named_Snaps")), 250);
+  scheduleSnap();
   ui.pos[s.system]=gi; saveUISoon();
+}
+/* background screenshot for the selected game; nothing loads while letters are being skipped */
+function scheduleSnap(){
+  clearTimeout(snapTimer);
+  if(els.flow && els.flow.scrubbing) return;
+  const s=sys(), g=s.games[gi];
+  snapTimer=setTimeout(()=>setSnap(thumbURL(s.system,g.label,"Named_Snaps")), 250);
 }
 function toggleFav(){
   const s=sys(), g=s.games[gi], id=favId(s.system,g.label), on=!favs.has(id);
@@ -524,7 +530,8 @@ function showLetter(j){
   els.letter.textContent=sys().keys[j]; els.letter.classList.add("on");
   f.scrubbing=true; f.host.classList.add("scrub");
   clearTimeout(letterTimer);
-  letterTimer=setTimeout(()=>{ els.letter.classList.remove("on"); f.host.classList.remove("scrub"); f.scrubbing=false; f.render(); },380);
+  /* must outlast the gap before a held button's first repeat (380 ms), or skipping "ends" between repeats */
+  letterTimer=setTimeout(()=>{ els.letter.classList.remove("on"); f.host.classList.remove("scrub"); f.scrubbing=false; f.render(); scheduleSnap(); },480);
 }
 
 /* consoles background: a wall of screenshots from that console's games (favourites first).
