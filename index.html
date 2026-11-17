@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.7.2">
+<meta name="app-version" content="2.7.3">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -92,7 +92,9 @@ body:not(.onconsoles) #bg .veil{display:none}
 .bigstar svg{width:56px;height:56px;color:#555}
 .letter{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:20px;background:rgba(20,20,20,.94);
   border:1px solid #333;display:grid;place-items:center;font-size:64px;font-weight:700;opacity:0;transition:opacity .2s ease;pointer-events:none;z-index:2000}
-.letter.on{opacity:1;transition:none}
+.letter.on{opacity:1;transition:opacity .1s ease}
+.flow{transition:opacity .22s ease}
+.flow.scrub{opacity:.3;transition:opacity .1s ease}
 
 /* ---------- bottom bar ---------- */
 .bottom{display:flex;align-items:center;gap:24px;padding:8px var(--sr) calc(14px + env(safe-area-inset-bottom,0px)) var(--sl);
@@ -141,7 +143,7 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.7.2";
+const APP_VERSION = "2.7.3";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, system icon, cover slot shape (width / height): the median of
@@ -300,11 +302,12 @@ class Flow{
   setTarget(i,instant){ this.target=this.clamp(Math.round(i)); if(instant){ this.pos=this.target; this.render(); } else this.run(); }
   go(d){ this.setTarget(Math.round(this.target)+d); }
   /* long jumps (letters): cut to just short of the target, then glide the last stretch so the direction still reads */
+  /* letter skips: cut straight there, no motion (the screen dims while skipping, see scrub()) */
   jumpTo(i){
     i=this.clamp(Math.round(i));
-    const from=this.pos, d=i-from;
-    if(Math.abs(d)>2){ this.pos=i-Math.sign(d)*.45; this.vel=Math.sign(d)*3; }
-    this.setTarget(i);
+    this.pos=this.target=i; this.vel=0; this.speed=0;
+    this.scrubbing=true;   // no art for covers we only pass through; cleared when skipping stops
+    this.render();
   }
   run(){ if(!this.raf){ this.last=performance.now(); this.raf=requestAnimationFrame(this.tick); } }
   tick(now){
@@ -348,7 +351,7 @@ class Flow{
       if(this.fade) el.style.filter=`brightness(${(1-dim).toFixed(3)})`;   // transparent icons: darken, never see-through
       else el._shade.style.opacity=dim.toFixed(3);                       // covers: shade overlay
       /* big box art decodes slowly: only start it once scrolling slows, or right next to the centre */
-      if(el._lazy && (this.speed<8 || a<1.6)){ el._lazy.src=el._lazy.dataset.src; el._lazy=null; }
+      if(el._lazy && !this.scrubbing && (this.speed<8 || a<1.6)){ el._lazy.src=el._lazy.dataset.src; el._lazy=null; }
     }
     const f=this.clamp(Math.round(this.pos));
     if(f!==this.focus){ this.focus=f; this.onFocus&&this.onFocus(f); }
@@ -445,7 +448,7 @@ function buildGames(){
     bottomBar([["filter","Show all"],["back","Back"]], false);
     return;
   }
-  els.stage.innerHTML = `<section class="games"><div id="flow"><div class="letter" id="letter"></div></div>
+  els.stage.innerHTML = `<section class="games"><div class="letter" id="letter"></div><div id="flow"></div>
       <div class="caption"><h2><span id="title"></span><button class="star" id="star" aria-label="Favourite">${STAR}</button></h2><p id="details"></p></div></section>`;
   Object.assign(els,{letter:$("letter"),title:$("title"),details:$("details"),star:$("star")});
   els.star.onclick=()=>input("fav");
@@ -514,9 +517,14 @@ function setSnap(url){
   img.onerror=()=>{ failed.add(url); forgetArt(url); if(snapWant===url){ a.classList.remove("on"); b.classList.remove("on"); } };
   img.src=url;
 }
+/* Skipping letters works like an index scrubber: the carousel dims and holds still, a big letter shows,
+   and covers swap in place. Shortly after the last skip, everything fades back and art loads. */
 function showLetter(j){
+  const f=els.flow;
   els.letter.textContent=sys().keys[j]; els.letter.classList.add("on");
-  clearTimeout(letterTimer); letterTimer=setTimeout(()=>els.letter.classList.remove("on"),450);
+  f.scrubbing=true; f.host.classList.add("scrub");
+  clearTimeout(letterTimer);
+  letterTimer=setTimeout(()=>{ els.letter.classList.remove("on"); f.host.classList.remove("scrub"); f.scrubbing=false; f.render(); },380);
 }
 
 /* consoles background: a wall of screenshots from that console's games (favourites first).
@@ -606,7 +614,7 @@ function poll(){
     if(!prevPressed[a]){ input(a); held[a]=now+380; }
     else if(REPEATS.has(a) && now>=held[a]){
       input(a);
-      const t=now-(held[a]-380); held[a]=now+(a==="left"||a==="right"?(t>1600?45:t>700?75:110):(t>1000?110:170));
+      const t=now-(held[a]-380); held[a]=now+(a==="left"||a==="right"?(t>1600?45:t>700?75:110):(t>1000?140:200));
     }
   }
   prevPressed=pressed;
