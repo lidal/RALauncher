@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.7.1">
+<meta name="app-version" content="2.7.2">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -141,7 +141,7 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.7.1";
+const APP_VERSION = "2.7.2";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, system icon, cover slot shape (width / height): the median of
@@ -299,6 +299,13 @@ class Flow{
   clamp(i){ return Math.max(0,Math.min(this.count-1,i)); }
   setTarget(i,instant){ this.target=this.clamp(Math.round(i)); if(instant){ this.pos=this.target; this.render(); } else this.run(); }
   go(d){ this.setTarget(Math.round(this.target)+d); }
+  /* long jumps (letters): cut to just short of the target, then glide the last stretch so the direction still reads */
+  jumpTo(i){
+    i=this.clamp(Math.round(i));
+    const from=this.pos, d=i-from;
+    if(Math.abs(d)>2){ this.pos=i-Math.sign(d)*.45; this.vel=Math.sign(d)*3; }
+    this.setTarget(i);
+  }
   run(){ if(!this.raf){ this.last=performance.now(); this.raf=requestAnimationFrame(this.tick); } }
   tick(now){
     const dt=Math.min(.05,(now-this.last)/1000); this.last=now;
@@ -546,8 +553,8 @@ function input(a){
   else if(view==="consoles"){ if(a==="save"||a==="west") saveOffline(); else if(a==="ok"){ ci=f.focus; history.pushState({v:"games"},""); buildGames(); } }
   else {
     const s=sys(), n=els.vis.length, keys=s.keys, cur=Math.round(f.target);
-    if(a==="next"||a==="down"){ const k=keys[cur]; let j=cur; while(j<n&&keys[j]===k) j++; if(j<n){ f.setTarget(j); showLetter(j); } }
-    else if(a==="prev"||a==="up"){ let j=cur; const k=keys[cur]; if(j>0&&keys[j-1]===k){ while(j>0&&keys[j-1]===k) j--; } else if(j>0){ j--; const k2=keys[j]; while(j>0&&keys[j-1]===k2) j--; } if(j!==cur){ f.setTarget(j); showLetter(j); } }
+    if(a==="next"||a==="down"){ const k=keys[cur]; let j=cur; while(j<n&&keys[j]===k) j++; if(j<n){ f.jumpTo(j); showLetter(j); } }
+    else if(a==="prev"||a==="up"){ let j=cur; const k=keys[cur]; if(j>0&&keys[j-1]===k){ while(j>0&&keys[j-1]===k) j--; } else if(j>0){ j--; const k2=keys[j]; while(j>0&&keys[j-1]===k2) j--; } if(j!==cur){ f.jumpTo(j); showLetter(j); } }
     else if(a==="ok"){ gi=els.vis[f.focus]; launch(); }
     else if(a==="fav"||a==="north") toggleFav();
     else if(a==="back") history.back();
@@ -599,7 +606,7 @@ function poll(){
     if(!prevPressed[a]){ input(a); held[a]=now+380; }
     else if(REPEATS.has(a) && now>=held[a]){
       input(a);
-      const t=now-(held[a]-380); held[a]=now+(a==="left"||a==="right"?(t>1600?45:t>700?75:110):220);
+      const t=now-(held[a]-380); held[a]=now+(a==="left"||a==="right"?(t>1600?45:t>700?75:110):(t>1000?110:170));
     }
   }
   prevPressed=pressed;
