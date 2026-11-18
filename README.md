@@ -40,6 +40,15 @@ The `webapp://` prefix opens the Home Screen app rather than Safari. If you host
 
 **2. Make the automation:** Shortcuts › Automation › New Automation › **App** › **RetroArch**, tick **Is Closed** only, **Run Immediately**. Then add **Run Shortcut** and pick the shortcut from step 1.
 
+## Consoles that need JIT (LiveContainer)
+
+Games for chosen consoles can open in a sideloaded RetroArch running in [LiveContainer](https://github.com/LiveContainer/LiveContainer), which can use JIT:
+
+1. In LiveContainer, long-press RetroArch and choose **Copy Launch URL**.
+2. In Arcade Shelf, tap **LiveContainer** on the consoles screen, paste the link and tick the consoles.
+
+That RetroArch keeps its own files, so the games must be in its playlists too. To come back here afterwards, add **LiveContainer** to the automation's apps, and add "Current App is not LiveContainer" to the shortcut's check.
+
 ## Good to know
 
 - **Back up** (bottom of the consoles screen) saves your library and favourites to a file. To restore, pick that file with **Update library** or **Choose playlists**. Restoring merges, so nothing you have is lost. Do this before deleting and re-adding the app, which wipes its data.

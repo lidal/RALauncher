@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Arcade Shelf">
 <meta name="theme-color" content="#141414">
-<meta name="app-version" content="2.7.5">
+<meta name="app-version" content="2.8.0">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -128,6 +128,20 @@ body:not(.onconsoles) #bg .veil{display:none}
 .primary{background:var(--fg);color:var(--bg);font-weight:600;font-size:17px;padding:13px 22px;border-radius:12px;display:inline-block;cursor:pointer}
 @media (max-aspect-ratio:1/1){.empty img{display:none}}
 
+.sheet{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:20px var(--sr) 20px var(--sl);
+  -webkit-user-select:text;user-select:text;overflow:auto}
+.sheet .card{background:#1e1e1e;border:1px solid #2c2c2c;border-radius:16px;padding:22px 24px;width:min(560px,100%);max-height:100%;overflow:auto}
+.sheet h2{margin:0 0 8px;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.sheet h3{margin:18px 0 8px;font-size:15px;font-weight:600;color:var(--muted)}
+.sheet p{margin:0 0 12px;color:var(--muted);font-size:15px;line-height:1.45}
+.sheet .note{font-size:13px;margin-top:12px}
+.sheet .err{color:#ff8a7a;font-size:13px;margin:6px 0 0}
+.sheet input[type=url]{width:100%;font:inherit;font-size:15px;color:var(--fg);background:#141414;border:1px solid #333;border-radius:10px;padding:11px 12px}
+.sheet .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:4px 14px}
+.sheet label{display:flex;align-items:center;gap:10px;font-size:16px;padding:7px 0}
+.sheet input[type=checkbox]{width:20px;height:20px;accent-color:#f5c84c}
+.sheet .row{display:flex;align-items:center;gap:12px;margin-top:16px}
+.sheet .primary{padding:10px 20px;font-size:16px}
 .toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:#2a2a2a;
   padding:10px 16px;border-radius:10px;font-size:15px;max-width:calc(100vw - 48px);z-index:20}
 
@@ -143,7 +157,7 @@ body:not(.onconsoles) #bg .veil{display:none}
 
 <script>
 /* Bump on every change (tools/bump-version.sh does it). Open apps notice and reload themselves. */
-const APP_VERSION = "2.7.5";
+const APP_VERSION = "2.8.0";
 const KEY = "arcade-shelf-library-v2", UIKEY = "arcade-shelf-ui-v1";
 
 /* libretro playlist name -> display name, system icon, cover slot shape (width / height): the median of
@@ -154,21 +168,26 @@ const SYSTEMS = [
   ["Nintendo - Super Nintendo Entertainment System","Super Nintendo","snes",1.15],
   ["Nintendo - Nintendo 64","Nintendo 64","n64",1.37],
   ["Nintendo - GameCube","GameCube","gc",.71],
+  ["Nintendo - Wii","Wii","wii",.71],
   ["Nintendo - Game Boy","Game Boy","gb",.9],
   ["Nintendo - Game Boy Color","Game Boy Color","gbc",1],
   ["Nintendo - Game Boy Advance","Game Boy Advance","gba",.9],
   ["Nintendo - Nintendo DS","Nintendo DS","nds",1.11],
+  ["Nintendo - Nintendo 3DS","Nintendo 3DS","3ds",1.12],
   ["Nintendo - Virtual Boy","Virtual Boy","vb",1.02],
   ["Sega - Master System - Mark III","Master System","sms",.71],
   ["Sega - Mega Drive - Genesis","Mega Drive","md",.71],
+  ["Sega - Saturn","Saturn","saturn",.93],
   ["Sega - Dreamcast","Dreamcast","dc",1],
   ["NEC - PC Engine - TurboGrafx 16","PC Engine","pce",1],
   ["Sony - PlayStation","PlayStation","ps1",1],
+  ["Sony - PlayStation 2","PlayStation 2","ps2",.71],
+  ["Sony - PlayStation Portable","PSP","psp",.58],
   ["FBNeo - Arcade Games","Arcade","arcade",.71],
   ["MAME","Arcade","arcade",.71]
 ];
 /* flat system icons in img/systems: RetroArch "Retrosystem" theme, CC BY 4.0 (see img/systems/CREDITS.md) */
-const ICONS = new Set(["nes","fds","snes","n64","gc","gb","gbc","gba","nds","vb","sms","md","dc","pce","ps1","arcade"]);
+const ICONS = new Set(["nes","fds","snes","n64","gc","wii","gb","gbc","gba","nds","3ds","vb","sms","md","saturn","dc","pce","ps1","ps2","psp","arcade"]);
 const SYS = Object.fromEntries(SYSTEMS.map((s,i)=>[s[0],{short:s[1],img:s[2],ar:s[3],order:i}]));
 function info(name){ return SYS[name] || {short:name.replace(/^.*? - /,""),img:null,ar:.75,order:999}; }
 function photo(key){ return key && ICONS.has(key) ? `img/systems/${key}.svg` : null; }
@@ -266,11 +285,12 @@ function clockHTML(){ return `<span class="clock" id="clock">${new Date().toLoca
 
 function bottomBar(hints, withLibrary){
   els.hints=hints; els.withLibrary=withLibrary;
-  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><button class="textbtn" id="backup">Back up</button>${padKind&&!offlineJob?"":`<button class="textbtn" id="offline">${offlineLabel()}</button>`}<span class="ver">v${APP_VERSION}</span>`:"")
+  els.bottom.innerHTML = (withLibrary?`<button class="textbtn" id="reload">Update library</button><button class="textbtn" id="backup">Back up</button><button class="textbtn" id="lcbtn">LiveContainer</button>${padKind&&!offlineJob?"":`<button class="textbtn" id="offline">${offlineLabel()}</button>`}<span class="ver">v${APP_VERSION}</span>`:"")
     + `<div class="spacer"></div>` + (padKind ? hints.map(([g,t])=>`<span class="h">${glyph(g)}${t}</span>`).join("") : "");
   const r=$("reload"); if(r) r.onclick=()=>$("lpl").click();
   const o=$("offline"); if(o) o.onclick=saveOffline;
   const bk=$("backup"); if(bk) bk.onclick=backup;
+  const lb=$("lcbtn"); if(lb) lb.onclick=openLCSheet;
 }
 
 /* ---------- coverflow ----------
@@ -401,7 +421,7 @@ function buildConsoles(){
       el.innerHTML=`<div class="cover">${p?`<img src="${p}" alt="" draggable="false">`:`<div class="noimg">${esc(info(s.system).short)}</div>`}</div>`; return el; },
     onFocus:i=>{ ci=i; const s=sys();
       const nf=favCount(s);
-      els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}${nf?`  ·  ${nf} favourite${nf===1?"":"s"}`:""}</p>`;
+      els.caption.innerHTML=`<h2>${esc(info(s.system).short)}</h2><p>${s.games.length} ${s.games.length===1?"game":"games"}${nf?`  ·  ${nf} favourite${nf===1?"":"s"}`:""}${usesLC(s.system)?"  ·  opens in LiveContainer":""}</p>`;
       ui.sys=s.system; saveUISoon(); setWallSoon(s); },
     onTap:()=>input("ok")});
   bottomBar([["leftright","Browse consoles"],["ok","Open"],["save","Save artwork offline"]], true);
@@ -562,6 +582,7 @@ async function setWall(s){
 let launching=false;
 function input(a){
   if(launching || !library.length) return;
+  if($("lcsheet")){ if(a==="back") closeLCSheet(); return; }
   if(view==="games" && (a==="filter"||a==="west")) return toggleFilter();
   if(view==="games" && !els.flow){ if(a==="back") history.back(); return; }   // empty favourites screen
   const f=els.flow;
@@ -581,7 +602,9 @@ function launch(){
   const g=sys().games[gi], [name]=splitTitle(g.label);
   launching=true; saveUI();
   $("launchTitle").textContent=name; $("launch").classList.add("on");
-  setTimeout(()=>{ location.href="retroarch://game/"+encodeURIComponent(g.file); }, 250);
+  const viaLC=usesLC(sys().system);
+  $("launch").querySelector("p").textContent = viaLC ? "Starting in LiveContainer" : "Starting";
+  setTimeout(()=>{ location.href=launchURL(sys().system, g.file); }, 250);
   setTimeout(endLaunch, 2500);
 }
 function endLaunch(){ if(!launching) return; launching=false; $("launch").classList.remove("on"); }
@@ -593,6 +616,7 @@ window.addEventListener("popstate",()=>{
 });
 
 addEventListener("keydown",e=>{
+  if(e.target.closest && e.target.closest("input,textarea")) return;   // typing in a field, not navigating
   const map={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",Enter:"ok"," ":"ok",Escape:"back",Backspace:"back",PageUp:"prev",PageDown:"next",f:"fav",v:"filter"};
   const a=map[e.key]; if(!a) return;
   e.preventDefault(); input(a);
@@ -670,6 +694,49 @@ $("lpl").addEventListener("change", async e=>{
   e.target.value="";
 });
 
+/* ---------- LiveContainer ----------
+   Consoles that need JIT can run in a sideloaded RetroArch inside LiveContainer. LiveContainer's launch link
+   takes an "open-url" parameter (base64) and hands that URL to the app it starts, so the usual
+   retroarch://game/<file> link reaches that RetroArch's own handler. The game has to be in that RetroArch's
+   playlists, since it has its own files. */
+const LCKEY="arcade-shelf-lc-v1";
+const lc=(()=>{ try{ return Object.assign({url:"",systems:[]}, JSON.parse(localStorage.getItem(LCKEY))||{}) }catch(e){ return {url:"",systems:[]} } })();
+function saveLC(){ try{ localStorage.setItem(LCKEY, JSON.stringify(lc)) }catch(e){} }
+/* accept LiveContainer's own "copy launch URL" link; drop any open-url already in it */
+function cleanLCLink(v){
+  v=(v||"").trim();
+  if(!/^[a-z][a-z0-9+.-]*:\/\/livecontainer-launch\?/i.test(v)) return "";
+  return v.replace(/([?&])open-url=[^&]*&?/,"$1").replace(/[?&]$/,"");
+}
+const usesLC=system=>!!lc.url && lc.systems.includes(system);
+function launchURL(system,file){
+  const inner="retroarch://game/"+encodeURIComponent(file);
+  return usesLC(system) ? lc.url+"&open-url="+encodeURIComponent(btoa(inner)) : inner;
+}
+function openLCSheet(){
+  if($("lcsheet")) return;
+  const el=document.createElement("div"); el.className="sheet"; el.id="lcsheet";
+  el.innerHTML=`<div class="card" role="dialog" aria-label="LiveContainer">
+    <h2>LiveContainer</h2>
+    <p>For consoles that need JIT, open games in a sideloaded RetroArch running in LiveContainer. In LiveContainer, long-press RetroArch, choose <b>Copy Launch URL</b>, then paste it here.</p>
+    <input id="lcurl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="livecontainer://livecontainer-launch?bundle-name=…">
+    <p class="err" id="lcerr" hidden>That doesn't look like a LiveContainer launch link.</p>
+    <h3>Open these consoles in LiveContainer</h3>
+    <div class="list">${library.map(x=>`<label><input type="checkbox" value="${esc(x.system)}" ${lc.systems.includes(x.system)?"checked":""}><span>${esc(info(x.system).short)}</span></label>`).join("")}</div>
+    <p class="note">The games must also be in that RetroArch's own playlists, since it keeps its own files.</p>
+    <div class="row"><button class="textbtn" id="lctest">Open RetroArch in LiveContainer</button><span class="spacer"></span><button class="primary" id="lcdone">Done</button></div>
+  </div>`;
+  document.body.appendChild(el);
+  const url=$("lcurl"); url.value=lc.url;
+  url.oninput=()=>{ const c=cleanLCLink(url.value); $("lcerr").hidden = !url.value.trim() || !!c; lc.url=c; saveLC(); };
+  el.querySelectorAll(".list input").forEach(cb=>cb.onchange=()=>{ lc.systems=[...el.querySelectorAll(".list input:checked")].map(x=>x.value); saveLC(); });
+  $("lctest").onclick=()=>{ if(lc.url) location.href=lc.url; else toast("Paste the LiveContainer launch link first."); };
+  $("lcdone").onclick=closeLCSheet;
+  el.onclick=e=>{ if(e.target===el) closeLCSheet(); };
+}
+/* closing re-runs the caption so "opens in LiveContainer" appears or goes */
+function closeLCSheet(){ const el=$("lcsheet"); if(el) el.remove(); if(view==="consoles" && els.flow){ els.flow.focus=-1; els.flow.render(); } }
+
 /* ---------- backup ----------
    One JSON file with the library and favourites. Saved through the share sheet (Save to Files) where
    available; restored by picking it in the same file picker as the playlists. Restoring merges. */
@@ -677,7 +744,7 @@ function backupData(){
   return {arcadeShelfBackup:1, appVersion:APP_VERSION, created:new Date().toISOString(),
     favourites:[...favs].map(id=>{ const [system,label]=id.split("\u0001"); return {system,label}; }),
     library:library.map(({system,games,fmt})=>({system,games,fmt})),
-    settings:{favOnly:!!ui.favOnly}};
+    settings:{favOnly:!!ui.favOnly}, liveContainer:{url:lc.url, systems:lc.systems}};
 }
 async function backup(){
   const name=`arcade-shelf-backup-${new Date().toISOString().slice(0,10)}.json`;
@@ -695,6 +762,8 @@ function restoreBackup(data,next){
   saveFavs();
   for(const s of data.library||[]) if(s && s.system && Array.isArray(s.games) && !next.some(x=>x.system===s.system)){ next.push({system:s.system,games:s.games,fmt:s.fmt||0}); ns++; }
   if(data.settings && typeof data.settings.favOnly==="boolean" && ui.favOnly===undefined) ui.favOnly=data.settings.favOnly;
+  const blc=data.liveContainer;
+  if(blc && !lc.url && cleanLCLink(blc.url||"")){ lc.url=cleanLCLink(blc.url); lc.systems=[...new Set([...lc.systems, ...(blc.systems||[])])]; saveLC(); }
   return {favs:nf,systems:ns};
 }
 

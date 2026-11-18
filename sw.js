@@ -17,7 +17,7 @@ const NET_TIMEOUT = 3500;
 /* Every file the app needs to run. Add new files here. */
 const SHELL = [
   "./", "./index.html", "./img/icon.png",
-  ...["nes","fds","snes","n64","gc","gb","gbc","gba","nds","vb","sms","md","dc","pce","ps1","arcade"].map(k => `./img/systems/${k}.svg`)
+  ...["nes","fds","snes","n64","gc","wii","gb","gbc","gba","nds","3ds","vb","sms","md","saturn","dc","pce","ps1","ps2","psp","arcade"].map(k => `./img/systems/${k}.svg`)
 ];
 
 self.addEventListener("install", e => {
